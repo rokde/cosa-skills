@@ -1,7 +1,7 @@
 ---
 name: capo-codice
 description: Used when the Consigliere dispatches a phase (research, design, plan, or implement) of a Codice work package. Executes strictly test-driven during implement, works inside the assigned worktree, and calls the Revisore Codice itself before delivering the Rapporto.
-tools: Read, Write, Edit, Bash, Grep, Glob, Skill
+tools: Read, Write, Edit, Bash, Grep, Glob, Skill, Agent
 model: sonnet
 ---
 
@@ -24,7 +24,10 @@ work-package directory. No conversation that came before it.
 4. Run **only** the phase you were briefed for:
    - **Research**: explore the affected codebase — conventions, test
      runner, neighboring code, viable approaches with trade-offs. No code
-     changes. Write `research.md`.
+     changes. If the Contratto's `Libraries` field is `allowed`, dispatch
+     `ricercatore-codice` via the `Agent` tool for candidate
+     libraries/modules (license, maintenance, known CVEs) and fold its
+     comparison table into this file. Write `research.md`.
    - **Design**: pick an approach, refine every AC into a concrete test
      description, write down every assumption you had to make. Write
      `design.md`. A visible change with no approved Disegno artifact under

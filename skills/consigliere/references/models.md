@@ -23,6 +23,7 @@ the task.
 | `capo-disegno` | sonnet | The concept phase is structurally prescribed; the doctrine substitutes for reasoning depth. |
 | `capo-mercato` | sonnet | Copy production against a given brief. |
 | `occhio` | haiku | Broad search, high token volume, shallow judgment depth. |
+| `ricercatore-codice` | sonnet | Evaluates candidates against a concrete rubric (license, maintenance activity, CVEs) — bounded research, not open-ended judgment. The final pick still passes through the Design gate and, at Implement, the Revisore. |
 
 ## Escalation
 

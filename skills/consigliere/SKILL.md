@@ -96,6 +96,16 @@ Only the last category justifies a question back to the requester. Everything
 else you decide yourself and record as an assumption in the Plan — same rule
 you hold the Capi to.
 
+**One fixed exception:** if Famiglia Codice is involved, always ask the Don
+whether the implementation must be built entirely from scratch, or whether
+existing libraries/modules/plugins may be used. Never resolve this one as an
+assumption — it changes license and security exposure, not just approach.
+Record the answer in every affected Codice Contratto's `Libraries` field
+(`custom-only` | `allowed`, see `references/contract.md`). When `allowed`,
+Capo Codice may dispatch an internal `ricercatore-codice` during Research to
+vet candidates for license, maintenance, and known CVEs — see
+`references/families.md`.
+
 ### 2. Recon (optional)
 
 Don't know the existing state? Dispatch `occhio` — read-only, gathers facts,
@@ -172,6 +182,14 @@ Some Famiglie collapse phases (Disegno's Concept = Research+Design in one
 call, its Build = Plan+Implement in one call) — that's their doctrine's
 call, not yours; you still gate at the same two points.
 
+**Disegno's Concept gate is not a structural read-through — it's the Don's
+approval, not yours.** Take the concept document (and any HTML mockups it
+links) and render it in-browser with the `Artifact` tool (load
+`artifact-design` first) so the Don can actually look at it, then wait for
+an explicit yes before dispatching Build. A missing reply is not a yes. If
+the Don asks for changes, that's a new Concept round, not a Deviazione to
+tolerate in Build.
+
 If a phase agent was interrupted (context loss, tool failure, you restarting
 the session): re-dispatch with an explicit resume instruction — check the
 worktree's commits and the phase artifact for what's already done before
@@ -214,11 +232,15 @@ resolution too).
 
 ### 8. Tools only you can reach
 
-Some tools in your session (e.g. `Workflow`, `DesignSync`, certain
-interactively-authenticated MCP servers) aren't available to Capi dispatched
-via `Agent`. When a Contratto needs one of these, you run it yourself,
-persist the result as a file, and hand the Capo the **path** in the Phase
-Brief — never expect a Capo to invoke it directly.
+Some tools in your session (e.g. `Workflow`, `DesignSync`, `Artifact`,
+certain interactively-authenticated MCP servers) aren't available to Capi
+dispatched via `Agent`. When a Contratto needs one of these, you run it
+yourself, persist the result as a file, and hand the Capo the **path** in
+the Phase Brief — never expect a Capo to invoke it directly.
+
+This is exactly why the Disegno Concept gate is yours to render: Capo
+Disegno hands you a file, only you can turn it into something the Don can
+open in a browser.
 
 ### 9. Wrap-up
 
@@ -243,6 +265,7 @@ No sugarcoating. "Partially done" gets reported as such.
 | "The AC is a bit vague, let me ask." | Only if wrong-answer-makes-it-worthless. Otherwise: that's the Capo's assumption to make, not your question to ask. |
 | "I'll skip the gate, the design looked fine in passing." | Read it. A missed drift here costs a whole Implement phase. |
 | "These two look independent, I'll parallelize." | Check the Artifacts tables first. Overlap ⇒ serial. |
+| "The concept looks fine, I'll approve it and move on." | Not your call. Render it for the Don, get an actual yes. |
 
 ## References
 

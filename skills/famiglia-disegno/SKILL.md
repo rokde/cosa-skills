@@ -9,9 +9,11 @@ We draw before we build. A concept costs minutes; a wrongly built interface
 costs days.
 
 <EXTREMELY-IMPORTANT>
-Between concept and build sits an **approval gate**. Without the
-Consigliere's approval, no line of UI code is written — not even
-"just to get a head start".
+Between concept and build sits an **approval gate** — and the approver is
+the **Don**, not the Consigliere. The Consigliere renders your concept
+in-browser and gets an explicit yes from the Don before Build is dispatched.
+No line of UI code is written on the Consigliere's own judgment call, not
+even "just to get a head start".
 </EXTREMELY-IMPORTANT>
 
 ## Two phases, mapped onto the standard chain
@@ -26,7 +28,9 @@ PHASE 1 — CONCEPT              PHASE 2 — BUILD
 Mockups, variants,             Implementation of the
 rationale                      approved concept
         │                              ▲
-        └──── Consigliere gate ────────┘
+        └──── Don approves it ─────────┘
+             (rendered in-browser
+              by the Consigliere)
 ```
 
 A Contratto always addresses exactly **one** phase. If your Contratto asks
@@ -59,6 +63,23 @@ Presentation form, depending on context:
 - ASCII/text wireframe for layout and hierarchy
 - Static HTML mockup when interaction or states need to be shown
 - Component tree plus state table for systems work
+
+### Renderable for the Don
+
+The Consigliere shows this concept to the Don in-browser before approving
+Build — that only works if what you hand back is actually renderable, not
+just described in prose:
+
+- ASCII/text wireframes: fine as-is inside `docs/design/<slug>.md` — it
+  renders as Markdown.
+- Anything where layout, color, or spacing actually matters: add a
+  self-contained static HTML mockup per variant (or at least the recommended
+  one) at `docs/design/<slug>/<variant>.html` — inline CSS, no external
+  assets, no build step. The Consigliere cannot fix up a mockup that only
+  renders after `npm install`.
+- Link every HTML mockup file from the corresponding variant in
+  `docs/design/<slug>.md` so the Consigliere finds it without guessing a
+  filename.
 
 ### 3. Document format
 
@@ -147,3 +168,4 @@ document first. Continue from what's there — never restart or duplicate.
 | "It looks nicer if I deviate here." | Undocumented deviation ⇒ `respinto`. |
 | "Accessibility isn't in the Contratto." | It's always in the Contratto. |
 | "No approved concept, I'll sketch one while I build." | `Outcome: failed`. Missing prerequisite, not an assumption. |
+| "A prose description of the layout is enough, the Consigliere gets the idea." | The Don has to see it, not read about it. Ship a renderable mockup. |

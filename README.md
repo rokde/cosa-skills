@@ -163,6 +163,7 @@ Consigliere itself.
 agents/                        Subagent definitions (executors)
 │   ├── capo-codice.md         Implementation, strictly test-driven
 │   ├── revisore-codice.md     Code acceptance
+│   ├── ricercatore-codice.md  Library research (license, CVEs, currency)
 │   ├── capo-disegno.md        Visual concepts & UI implementation
 │   ├── revisore-disegno.md    Design acceptance
 │   ├── capo-mercato.md        Marketing, positioning, content
@@ -221,8 +222,9 @@ automatically.
 1. **Software is built test-driven.** Red test first, evidence in the
    Rapporto. No test = no `approvato`. See `famiglia-codice`.
 2. **Visuals are drawn before they're built.** A mockup/design draft must be
-   approved by the Consigliere before implementation starts.
-   See `famiglia-disegno`.
+   approved by the **Don**, not the Consigliere — the Consigliere renders it
+   in-browser (`Artifact` tool) as the decision basis and waits for an
+   explicit yes before implementation starts. See `famiglia-disegno`.
 
 ## Model policy (short version)
 
@@ -232,6 +234,11 @@ automatically.
 | Revisori       | opus   | Quality gate, must find gaps, not just read |
 | Capi           | sonnet | Execution against a precise Contratto |
 | Occhio         | haiku  | Broad search, gathering, summarizing |
+
+Famiglia Codice adds one optional internal role: `ricercatore-codice`
+(sonnet), dispatched by Capo Codice during Research to vet third-party
+libraries — license, maintenance/currency, known CVEs — whenever the Don has
+allowed reusing existing code instead of building everything from scratch.
 
 Details and escalation rules: `skills/consigliere/references/models.md`
 

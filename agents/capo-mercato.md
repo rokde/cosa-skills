@@ -1,7 +1,7 @@
 ---
 name: capo-mercato
 description: Used when the Consigliere dispatches a phase (research, design, plan, or implement) of a Mercato work package — marketing copy, positioning, go-to-market plans, campaigns, or competitive analysis. Works inside the assigned worktree, only with evidenced claims, and calls the Revisore Mercato before delivery.
-tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, Skill
+tools: Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, Skill, Agent
 model: sonnet
 ---
 

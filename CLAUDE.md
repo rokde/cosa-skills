@@ -8,17 +8,30 @@ product: markdown definitions, no application code.
 
 - Language of all artifacts: **English**. Role and protocol terms stay
   Italian: `Consigliere`, `Capo`, `Revisore`, `Famiglia`, `Contratto`,
-  `Rapporto`, `Verdetto`. Everything else — prose, headings, field values,
-  generated file and directory names — is English.
+  `Rapporto`, `Verdetto`, `Don` (the user), `Ricercatore` (internal research
+  helper, currently only Famiglia Codice's `ricercatore-codice`). Everything
+  else — prose, headings, field values, generated file and directory names —
+  is English.
 - Agent files live flat under `agents/<name>.md` (plugin root, not `.claude/`).
 - Skills live under `skills/<name>/SKILL.md` (plugin root, not `.claude/`),
   supporting material in `references/` next to them.
 - Only `plugin.json` goes inside `.claude-plugin/`. Every other directory
   (`skills/`, `agents/`) sits at the plugin root, next to it.
-- Every Famiglia always has **three** parts: doctrine skill, Capo agent,
-  Revisore agent. No Famiglia without a Revisore.
+- Every Famiglia always has **three** top-level parts: doctrine skill, Capo
+  agent, Revisore agent. No Famiglia without a Revisore. A Famiglia may add
+  an internal helper agent that its own Capo dispatches (never the
+  Consigliere directly) for a sub-task that produces findings, not a
+  Rapporto — it has no Revisore of its own, same as L'Occhio. This doesn't
+  count as a fourth top-level part. Precedent: Famiglia Codice's
+  `ricercatore-codice`, dispatched by `capo-codice` during Research to vet
+  third-party libraries.
 - Generated working documents use English names: `plan.md`, `docs/design/`,
   `.commission/` — not their Italian equivalents.
+- All agents that dispatch another agent (a Capo calling its Revisore or an
+  internal helper) need `Agent` in their `tools:` frontmatter — the doctrine
+  prose alone doesn't grant that capability. Missing it makes the dispatch
+  silently impossible and the Capo tends to self-review instead, defeating
+  the point of an independent Verdetto.
 
 ## When changing definitions
 

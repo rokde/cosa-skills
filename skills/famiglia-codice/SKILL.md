@@ -15,7 +15,7 @@ worktree, reading the prior phase's artifact:
 
 | Phase | You produce | Content |
 |-------|--------------|---------|
-| Research | `research.md` | Existing conventions, test framework, affected modules, viable approaches with trade-offs. No code changes. |
+| Research | `research.md` | Existing conventions, test framework, affected modules, viable approaches with trade-offs. No code changes. If the Contratto's `Libraries` field is `allowed`, includes the `ricercatore-codice` library comparison (see below). |
 | Design | `design.md` | Chosen approach, ACs refined into concrete test descriptions, assumptions made, risks. Consigliere gates this. |
 | Plan | `plan.md` | Ordered checklist, one red/green/refactor cycle per AC, as `- [ ]` items. Consigliere gates this. |
 | Implement | `report.md` | The Rapporto — execute the plan, check items off, call the Revisore. |
@@ -67,6 +67,27 @@ AC-1 green: test_over_limit_returns_429 — PASSED
 Edge cases belong in scope: empty input, boundary value, boundary±1, error
 path, concurrency where relevant.
 
+## Build from scratch, or reuse a library?
+
+The Contratto's `Libraries` field settles this — the Consigliere always asked
+the Don explicitly, so it's a constraint, not a gap you fill yourself:
+
+- **`custom-only`**: no new dependency, full stop. Don't propose one "just to
+  check" — that's the Boundaries rule below, not a discussion.
+- **`allowed`**: before committing to an approach in Design, dispatch
+  `ricercatore-codice` via the `Agent` tool for the need at hand. It returns a
+  comparison table (candidate, license, last release, known CVEs, verdict)
+  and a recommendation, which may be "build custom" if nothing clears the
+  bar. Fold that table into `research.md`. Pick from it — or override it —
+  in `design.md`, with your reasoning; the Revisore checks later that the
+  choice actually matches what `ricercatore-codice` reported, not a
+  rosier retelling of it.
+
+Never skip the Ricercatore when `allowed` is set and a plausible off-the-shelf
+option exists just because you already know a library by name — "I've used
+this before" is not the same as "checked its license and current CVEs on
+this Contratto."
+
 ## Ambiguity → assumption, not a question
 
 An AC that's underspecified in a way you can reasonably resolve does **not**
@@ -106,7 +127,9 @@ Never redo work that's already there, never duplicate a commit.
 
 ## Boundaries
 
-- No new dependency without explicit permission in the Contratto.
+- No new dependency without explicit permission in the Contratto
+  (`Libraries: allowed`) and, when that permission was used, a
+  `ricercatore-codice` finding backing the specific choice.
 - Don't touch anything outside the artifacts named in the Contratto. Notice
   a bug nearby? Note it under `Open items` in the Rapporto, don't fix it.
 - No commented-out code blocks, no `TODO` placeholders as a deliverable.
@@ -137,3 +160,4 @@ Never redo work that's already there, never duplicate a commit.
 | "I'll also clean up the neighboring module." | Outside the Contratto. Hands off. |
 | "This AC is vague, let me fail and ask." | Assume the reasonable reading, document it, proceed. |
 | "Design/Plan phase is overhead for such a small change." | The gate is what catches a wrong approach before code exists. |
+| "I'll just add this popular package, everyone uses it." | Popular isn't vetted. Route it through `ricercatore-codice` for license/CVE/maintenance before it goes in `design.md`. |

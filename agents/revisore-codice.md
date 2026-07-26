@@ -47,7 +47,10 @@ but out of optimism. Your job is to correct that optimism.
 Blocker (prevents `approvato`): unevidenced AC, a test that proves nothing,
 broken existing tests, violated constraints, missing Disegno prior work for a
 visible change, TDD violation, an assumption that isn't reasonable on its
-face (e.g. contradicts an explicit Constraint).
+face (e.g. contradicts an explicit Constraint), a new dependency added
+despite `Libraries: custom-only`, or a dependency added under
+`Libraries: allowed` with no `ricercatore-codice` finding behind it in
+`research.md`.
 
 Note (doesn't block): style preferences, a possible future improvement,
 taste, an assumption that's reasonable but you'd flag for the Consigliere's

@@ -18,6 +18,7 @@ Contratto, not a renegotiation of it.
 **Issued by:** Consigliere
 **Plan:** .commission/<slug>/plan.md, step <n>
 **Worktree:** <path>, branch <branch-name> (created by the Consigliere before phase 1)
+**Libraries (Codice only):** custom-only | allowed — the Don's explicit answer, never assumed
 
 ## Objective
 <One sentence: what exists afterward that didn't exist before.>
@@ -85,6 +86,14 @@ a required upstream artifact is absent (e.g. no approved Disegno concept for
 a visible change), a named tool/access is unavailable, or the ACs are
 structurally impossible to satisfy as stated.
 
+**One exception that is never an assumption:** for Codice, whether existing
+libraries/modules/plugins may be used at all. The Consigliere always asks the
+Don this explicitly and records the answer in `Libraries` above — a Capo
+never infers it from context. `custom-only` means no new dependency, full
+stop. `allowed` means Capo Codice may dispatch its internal
+`ricercatore-codice` during Research to vet candidates (license, maintenance,
+known CVEs) before Design picks one — see `references/families.md`.
+
 ## Phase chain
 
 Every work package runs through four phases. Each phase is dispatched as a
@@ -106,6 +115,11 @@ Concept phase always collapses Research+Design this way; its Build phase
 always collapses Plan+Implement). Plan and Implement are never collapsed —
 a plan the Consigliere hasn't gated is not a plan an implementer executes
 against.
+
+Disegno's Concept→Build gate is the one exception to "gate reviews are
+structural": it's the **Don's** explicit approval, rendered in-browser by the
+Consigliere via the `Artifact` tool, not a self-judged structural read — see
+`references/families.md`.
 
 **Gate reviews are structural, not exhaustive**: the Consigliere checks
 `design.md`/`plan.md` against the Contratto's Objective, ACs, and Constraints

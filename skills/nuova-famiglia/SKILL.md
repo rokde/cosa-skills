@@ -16,6 +16,14 @@ agents/revisore-<name>.md         Reviewing agent
 
 Plus: an entry in `skills/consigliere/references/families.md`.
 
+A Famiglia may optionally add an internal helper agent that its own Capo
+dispatches for a bounded sub-task producing findings, not a Rapporto — it
+gets no Revisore of its own, same reasoning as L'Occhio. This doesn't count
+as a fourth top-level part. Precedent: Famiglia Codice's
+`ricercatore-codice`, called by `capo-codice` during Research to vet
+third-party libraries (license, maintenance, CVEs) when the Don has allowed
+their use.
+
 ## Step 1 — Scope the domain
 
 Answer before writing anything:
@@ -70,6 +78,10 @@ Contratto in one dispatch), working inside the assigned worktree, resuming
 instead of restarting if work is already there, and calling
 `revisore-<name>` only at the end of the Implement phase before delivering
 to the Consigliere. See `capo-codice.md` as a template.
+
+Include `Agent` in the Capo's `tools:` list — without it, dispatching the
+Revisore (or any internal helper) is silently impossible and the Capo tends
+to self-review instead, which defeats the point of an independent Verdetto.
 
 ## Step 4 — Revisore agent
 
