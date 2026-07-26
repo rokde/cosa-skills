@@ -17,8 +17,10 @@ Contratto, not a renegotiation of it.
 **Famiglia:** codice | disegno | mercato | <other>
 **Issued by:** Consigliere
 **Plan:** .commission/<slug>/plan.md, step <n>
-**Worktree:** <path>, branch <branch-name> (created by the Consigliere before phase 1)
+**Worktree:** <absolute path>, branch <branch-name> (created by the Consigliere before phase 1)
+**Work package:** <absolute path>/.commission/<slug>/<n>-<famiglia>/ (main checkout, not the worktree)
 **Libraries (Codice only):** custom-only | allowed — the Don's explicit answer, never assumed
+**Model escalation:** <omit unless escalating> opus — reason: <why>
 
 ## Objective
 <One sentence: what exists afterward that didn't exist before.>
@@ -57,6 +59,11 @@ For software, phrased so each AC can be written as a test.>
 Revisore: `<revisore-agent-name>`
 The Rapporto only reaches the Consigliere after `Verdetto: approvato`.
 ```
+
+`Model escalation` is present only when the Consigliere is upgrading the
+Capo's model above its default; the rules for when that's allowed live in the
+`cosa:consigliere` skill's `references/models.md`. Absent means: default
+model, no escalation — that's an assertion, not an omission.
 
 ## Quality rules for acceptance criteria
 

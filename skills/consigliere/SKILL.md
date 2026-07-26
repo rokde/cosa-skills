@@ -46,6 +46,8 @@ digraph consigliere {
     "Dispatch Research phase" [shape=box];
     "Dispatch Design phase" [shape=box];
     "Design gate" [shape=diamond];
+    "Disegno? Don approves" [shape=diamond];
+    "Escalate to requester" [shape=box];
     "Dispatch Plan phase" [shape=box];
     "Plan gate" [shape=diamond];
     "Dispatch Implement phase" [shape=box];
@@ -70,18 +72,23 @@ digraph consigliere {
     "Write Contratto + create worktree" -> "Dispatch Research phase";
     "Dispatch Research phase" -> "Dispatch Design phase";
     "Dispatch Design phase" -> "Design gate";
-    "Design gate" -> "Dispatch Design phase" [label="deviation found"];
-    "Design gate" -> "Dispatch Plan phase" [label="ok"];
+    "Design gate" -> "Escalate to requester" [label="deviates from the ask"];
+    "Escalate to requester" -> "Dispatch Design phase" [label="corrected"];
+    "Design gate" -> "Dispatch Design phase" [label="internal drift"];
+    "Design gate" -> "Disegno? Don approves" [label="ok"];
+    "Disegno? Don approves" -> "Dispatch Design phase" [label="Don wants changes"];
+    "Disegno? Don approves" -> "Dispatch Plan phase" [label="yes, or not Disegno"];
     "Dispatch Plan phase" -> "Plan gate";
-    "Plan gate" -> "Dispatch Plan phase" [label="deviation found"];
+    "Plan gate" -> "Escalate to requester" [label="deviates from the ask"];
+    "Plan gate" -> "Dispatch Plan phase" [label="internal drift"];
     "Plan gate" -> "Dispatch Implement phase" [label="ok"];
     "Dispatch Implement phase" -> "Revisore reviews";
     "Revisore reviews" -> "Verdetto?";
-    "Verdetto?" -> "Back to Capo" [label="respinto"];
+    "Verdetto?" -> "Back to Capo" [label="respinto, review round+1"];
     "Back to Capo" -> "Revisore reviews";
     "Verdetto?" -> "Accept against Contratto" [label="approvato"];
     "Accept against Contratto" -> "Rapporto covers AC?";
-    "Rapporto covers AC?" -> "Rework Contratto" [label="no"];
+    "Rapporto covers AC?" -> "Rework Contratto" [label="no, max 2"];
     "Rework Contratto" -> "Dispatch Implement phase";
     "Rapporto covers AC?" -> "Merge worktree, delete it" [label="yes"];
     "Merge worktree, delete it" -> "Next step / Done";
@@ -198,9 +205,15 @@ Every Contratto executes as four phases, each a **fresh** `Agent` dispatch
 1. **Research** → `research.md`. No gate — feeds straight into Design.
 2. **Design** → `design.md`. **You** gate this: read it against the
    Contratto's Objective/ACs/Constraints. Spot the drift, don't re-derive the
-   whole design. Deviation from the original ask → escalate to the
-   requester; otherwise → Plan.
-3. **Plan** → `plan.md`. **You** gate this the same way, then → Implement.
+   whole design. Three outcomes, not two:
+   - Matches the Contratto → on to Plan.
+   - Drifts from the **Contratto** but the Contratto itself still holds →
+     re-dispatch Design with the drift named. Your call, no escalation.
+   - Deviates from the **original ask** — the Contratto itself turns out to
+     be wrong or incomplete → escalate to the requester, then re-dispatch
+     Design against a corrected Contratto. Not your call to absorb.
+3. **Plan** → `plan.md`. **You** gate this the same way, same three
+   outcomes, then → Implement.
 4. **Implement** → `report.md` (the Rapporto). The Capo calls its own
    Revisore before this reaches you — see step 6.
 

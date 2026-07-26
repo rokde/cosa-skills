@@ -112,10 +112,17 @@ Revisore load that skill; neither restates the format in its own file.
 
 ## Step 5 — Update the register
 
-Add a row to the model table and a section analogous to the existing
-Famiglie in `skills/consigliere/references/families.md`.
-**Without this entry the Consigliere won't find the Famiglia** — it only
-knows what's listed there.
+Two files, both required:
+
+1. `skills/consigliere/references/families.md` — a section analogous to the
+   existing Famiglie, including its role/model table, its phase chain (and
+   any collapsing), what it handles and what it doesn't, plus a row in the
+   selection guide. **Without this entry the Consigliere won't find the
+   Famiglia** — it only knows what's listed there.
+2. `skills/consigliere/references/models.md` — one row per new agent in the
+   assignment table, with the rationale for the model chosen. A Famiglia
+   missing here has no documented basis for its model policy and will drift
+   on the next review.
 
 ## Don't forget
 
