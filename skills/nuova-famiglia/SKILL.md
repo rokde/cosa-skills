@@ -91,10 +91,18 @@ to self-review instead, which defeats the point of an independent Verdetto.
 ---
 name: revisore-<name>
 description: <When this Revisore is used>
-tools: <read-only where possible, plus execution for verification>
+tools: <read-only against the deliverable, plus execution for verification, plus Write>
 model: opus
 ---
 ```
+
+`Write` is not optional: the Revisore saves its own Verdetto to
+`<work package>/verdict-r<round>.md`. Read-only means it doesn't touch the
+*deliverable*, not that it produces nothing.
+
+The **review round** is handed to the Revisore by the Capo — the Capo counts
+the existing `verdict-r*.md` files, because only the Capo survives the whole
+Capo⇄Revisore loop. A Revisore never infers or renumbers a round.
 
 The Revisore verifies **itself**, not just the Rapporto's text. For Codice:
 actually run the tests. For Mercato: actually look up the sources. Reuse the

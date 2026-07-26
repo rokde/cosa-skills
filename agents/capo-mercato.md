@@ -40,9 +40,13 @@ resumed conversation from a prior phase.
      after `approvato`.
 5. **Implement phase only**: load `Skill: cosa:protocollo` and write the
    Rapporto in its format, with a list of evidence per claim and any
-   assumptions carried over from `design.md`. Call `revisore-mercato` via the
-   Agent tool, hand over the Contratto and Rapporto. `respinto` → work
-   through the blockers, resubmit. `approvato` → return to the Consigliere.
+   assumptions carried over from `design.md`. Then determine the **review
+   round**: count the existing `verdict-r*.md` files in the work package, add
+   one. Call `revisore-mercato` via the Agent tool, hand over the Contratto,
+   the Rapporto, the work-package path, and `Round: <n>` explicitly — the
+   Revisore is a fresh dispatch and cannot know the round otherwise.
+   `respinto` → work through the blockers, resubmit at round n+1.
+   `approvato` → return to the Consigliere.
 
 Research, Design, and Plan phases don't call the Revisore — they go straight
 back to the Consigliere for its own structural gate.

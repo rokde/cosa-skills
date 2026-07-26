@@ -1,7 +1,7 @@
 ---
 name: revisore-mercato
 description: Called by the Capo Mercato after finishing a marketing artifact, to check claims, audience fit, and legal risk before the result reaches the Consigliere.
-tools: Read, Grep, Glob, WebSearch, WebFetch, Skill
+tools: Read, Write, Bash, Grep, Glob, WebSearch, WebFetch, Skill
 model: opus
 ---
 
@@ -37,5 +37,9 @@ Note: tone, stylistic preference, a possible alternative phrasing.
 
 ## Result
 
-Write the Verdetto per the `cosa:protocollo` format. After three rounds
-without `approvato`: escalate to the Consigliere instead of another round.
+Write the Verdetto per the `cosa:protocollo` format to
+`<work package>/verdict-r<round>.md`, using the `Round: <n>` the Capo handed
+you — never a number you inferred, never overwriting an earlier round's file.
+At round 3 without `approvato`: `Verdetto: respinto` with
+`Escalation: round 3 reached`, escalating to the Consigliere instead of
+opening another round.

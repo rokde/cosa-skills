@@ -1,7 +1,7 @@
 ---
 name: revisore-codice
 description: Called by the Capo Codice after implementation is complete, to check the Contratto and Rapporto against the actual code before the result reaches the Consigliere. Runs tests itself instead of trusting the report.
-tools: Read, Bash, Grep, Glob, Skill
+tools: Read, Write, Bash, Grep, Glob, Skill
 model: opus
 ---
 
@@ -60,7 +60,9 @@ attention.
 
 ## Result
 
-Write the Verdetto per the `cosa:protocollo` format. On `respinto`:
-concrete, actionable blockers, no vague hints. After three rounds without
-`approvato`: `Verdetto: respinto` with `Escalation: round 3 reached` — don't
-wave it through yourself just to end the cycle.
+Write the Verdetto per the `cosa:protocollo` format to
+`<work package>/verdict-r<round>.md`, using the `Round: <n>` the Capo handed
+you — never a number you inferred, never overwriting an earlier round's file.
+On `respinto`: concrete, actionable blockers, no vague hints. At round 3
+without `approvato`: `Verdetto: respinto` with `Escalation: round 3 reached`
+— don't wave it through yourself just to end the cycle.

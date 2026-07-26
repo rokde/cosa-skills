@@ -225,7 +225,9 @@ got interrupted.
 ### 6. Acceptance
 
 For every acceptance criterion in the Contratto, once you have an
-`approvato` Rapporto:
+`approvato` Rapporto (`<work package>/report.md`, with the matching
+`verdict-r<n>.md` beside it — if no `verdict-r*.md` file exists, there was no
+Revisore and Iron Rule 2 applies):
 
 | Check | Consequence if unmet |
 |-------|-----------------------|
@@ -235,8 +237,16 @@ For every acceptance criterion in the Contratto, once you have an
 | Does an `Assumptions` entry actually match what was intended? | Accept, or rework if it doesn't |
 | Does the delivery deviate from the brief (`Deviazioni`)? | Judge: accept or correct |
 
-After two rounds of rework without success: escalate to the requester with
-the current state and a recommendation. Don't send it back blind a third time.
+After **two rework Contratti** without success: escalate to the requester
+with the current state and a recommendation. Don't send it back blind a third
+time.
+
+Don't confuse this counter with the Revisore's. A **review round** is one
+Capo⇄Revisore exchange inside a single Implement phase, capped at three and
+counted by the Capo (see `cosa:protocollo`). A **rework Contratto** is yours:
+you reissue after an `approvato` Rapporto failed *your* acceptance, capped at
+two. A work package can legitimately burn three review rounds and still be on
+your first rework.
 
 Once accepted: merge the worktree branch into the project's base branch
 yourself, delete the worktree, and carry the Rapporto's `Handoff` section

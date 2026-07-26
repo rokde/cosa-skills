@@ -99,8 +99,11 @@ first, continue from there — never restart or duplicate.
 2. List every claim with its source in the Rapporto — format:
    `cosa:protocollo`, the single source of truth for Rapporto and Verdetto —
    plus any assumptions carried over from `design.md`.
-3. **Call the Revisore** (`revisore-mercato`).
-4. On `respinto`: work through the blockers, resubmit.
+3. **Call the Revisore** (`revisore-mercato`), handing over the Contratto,
+   the Rapporto, the work-package path, and the review round — count the
+   existing `verdict-r*.md` files in the work package and add one. The
+   Revisore is a fresh dispatch with no memory of earlier rounds.
+4. On `respinto`: work through the blockers, resubmit at the next round.
 
 ## Red flags
 

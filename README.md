@@ -127,9 +127,11 @@ Request
                                   ┌──────────────┴──────────────┐
                                   │ respinto                    │ approvato
                                  ▼                              ▼
-                          back to IMPLEMENT      ┌──────────────────────┐
-                          (round+1, max 3        │ RAPPORTO + VERDETTO  │
-                          before escalation)     │ → Consigliere        │
+                          back to the CAPO       ┌──────────────────────┐
+                          (review round+1,       │ RAPPORTO + VERDETTO  │
+                          max 3; the Capo        │ → Consigliere        │
+                          counts them, not       │                      │
+                          the Revisore)          │                      │
                                                  └────────────┬─────────┘
                                                               ▼
                                        ┌─────────────────────────────────────────┐
@@ -154,6 +156,14 @@ Revisore rejection re-runs Implement only; a Consigliere gate finding
 drift re-runs the phase it gated, not the whole chain; acceptance failure
 re-runs Implement against a corrected Contratto, never a hand-fix by the
 Consigliere itself.
+
+Two loops, two counters, deliberately separate. A **review round** is one
+Capo⇄Revisore exchange inside a single Implement phase — capped at three,
+counted by the Capo (the Revisore is a fresh dispatch each time and remembers
+nothing; the count comes from the `verdict-r<n>.md` files on disk). A
+**rework Contratto** is the Consigliere reissuing after an `approvato`
+Rapporto failed its acceptance — capped at two, then it goes to the
+requester.
 
 ## Directory structure
 

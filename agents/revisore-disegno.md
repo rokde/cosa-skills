@@ -1,7 +1,7 @@
 ---
 name: revisore-disegno
 description: Called by the Capo Disegno after finishing a concept or a build, to check the result against the Contratto and the design doctrine before it reaches the Consigliere.
-tools: Read, Bash, Grep, Glob, Skill
+tools: Read, Write, Bash, Grep, Glob, Skill
 model: opus
 ---
 
@@ -44,5 +44,9 @@ Note: taste, minor visual nuances without functional impact.
 
 ## Result
 
-Write the Verdetto per the `cosa:protocollo` format. After three rounds
-without `approvato`: escalate to the Consigliere instead of another round.
+Write the Verdetto per the `cosa:protocollo` format to
+`<work package>/verdict-r<round>.md`, using the `Round: <n>` the Capo handed
+you — never a number you inferred, never overwriting an earlier round's file.
+At round 3 without `approvato`: `Verdetto: respinto` with
+`Escalation: round 3 reached`, escalating to the Consigliere instead of
+opening another round.

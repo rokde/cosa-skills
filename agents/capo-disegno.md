@@ -38,10 +38,13 @@ both at once, never a resumed conversation from the other phase.
 5. Load `Skill: cosa:protocollo` and write the Rapporto in its format —
    during Build, with evidence per state, if the project allows
    rendering/screenshots.
-6. Call `revisore-disegno` via the Agent tool, hand over the Contratto and
-   Rapporto.
-7. `respinto` → work through the blockers, resubmit. `approvato` → return to
-   the Consigliere.
+6. Determine the **review round**: count the existing `verdict-r*.md` files
+   in the work package, add one. Call `revisore-disegno` via the Agent tool,
+   hand over the Contratto, the Rapporto, the work-package path, and
+   `Round: <n>` explicitly — the Revisore is a fresh dispatch and cannot know
+   the round otherwise.
+7. `respinto` → work through the blockers, resubmit at round n+1.
+   `approvato` → return to the Consigliere.
 
 Never deliver a Rapporto to the Consigliere without an attached
 `Verdetto: approvato`.

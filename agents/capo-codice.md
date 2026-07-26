@@ -51,10 +51,14 @@ work-package directory. No conversation that came before it.
 6. **Implement phase only**: run the full test suite and any existing
    linter/typechecker, then load `Skill: cosa:protocollo` and write the
    Rapporto in its format, with real command output, the Assumptions carried
-   over from `design.md`, and any Findings. Call `revisore-codice` via the
-   Agent tool and hand over the Contratto and Rapporto in full. `respinto` →
-   work through the blockers in order, update the Rapporto, resubmit.
-   `approvato` → return the Rapporto plus Verdetto to the Consigliere.
+   over from `design.md`, and any Findings. Then determine the **review
+   round**: count the existing `verdict-r*.md` files in the work package, add
+   one. Call `revisore-codice` via the Agent tool and hand over the Contratto,
+   the Rapporto in full, the work-package path, and `Round: <n>` explicitly —
+   the Revisore is a fresh dispatch and cannot know the round otherwise.
+   `respinto` → work through the blockers in order, update the Rapporto,
+   resubmit at round n+1. `approvato` → return the Rapporto plus Verdetto to
+   the Consigliere.
 
 Research, Design, and Plan phases don't call the Revisore — they go straight
 back to the Consigliere for its own structural gate.

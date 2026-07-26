@@ -160,9 +160,13 @@ Two directories, both handed to you by absolute path in the Phase Brief:
    it is the single source of truth for Rapporto and Verdetto), with real
    command output, the Assumptions carried over from `design.md`, and any
    Findings.
-4. **Call the Revisore** (`revisore-codice`) and hand over the Contratto and
-   Rapporto.
-5. On `respinto`: work through the blockers, update the Rapporto, resubmit.
+4. **Call the Revisore** (`revisore-codice`) and hand over the Contratto, the
+   Rapporto, the work-package path, and the review round — count the existing
+   `verdict-r*.md` files in the work package and add one. The Revisore is a
+   fresh dispatch with no memory of earlier rounds; you are the only
+   participant that survives the loop, so the count is yours to keep.
+5. On `respinto`: work through the blockers, update the Rapporto, resubmit at
+   the next round.
 
 ## Red flags
 

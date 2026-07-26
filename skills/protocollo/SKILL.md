@@ -100,6 +100,10 @@ Not evidence: "was implemented", "was tested", "works as intended".
 
 ## Verdetto (Revisore)
 
+Written to `<work package>/verdict-r<round>.md` — one file per round, never
+overwritten. The round history is the escalation counter; keeping the files
+is what makes it countable.
+
 ```markdown
 # VERDETTO C-<n>
 
@@ -131,19 +135,42 @@ Not evidence: "was implemented", "was tested", "works as intended".
   not that it matches what you'd have picked. Whether it matches the
   requester's actual intent is the Consigliere's call, not yours.
 - On `respinto`, the work goes back to the Capo, not to the Consigliere.
-- After **three** rounds without `approvato`: escalate to the Consigliere with
-  `Verdetto: respinto` and the note `Escalation: round 3 reached`.
+- After **three** review rounds without `approvato`: escalate to the
+  Consigliere with `Verdetto: respinto` and the note
+  `Escalation: round 3 reached`.
+
+## Who counts the rounds
+
+Two different counters exist. They are not the same number and must not be
+conflated:
+
+| Counter | Owned by | Limit | Reset by |
+|---------|----------|-------|----------|
+| **Review round** — Capo ⇄ Revisore inside one Implement phase | the **Capo** | 3, then the Revisore escalates | a new Contratto |
+| **Rework Contratto** — Consigliere reissues after failed acceptance | the **Consigliere** | 2, then escalate to the requester | — |
+
+The Capo owns the review round because it is the only participant that
+survives the whole loop: a Revisore is a fresh dispatch each time and
+remembers nothing. Before calling the Revisore, the Capo determines the round
+by **counting existing `verdict-r*.md` files in the work package** and passes
+`Round: <n>` explicitly in the handover. File-based, so an interrupted and
+re-dispatched Implement phase still lands on the right number instead of
+silently restarting at 1.
+
+The Revisore writes the round it was given into the Verdetto and saves it as
+`verdict-r<n>.md`. It never infers the round from memory and never
+renumbers.
 
 ## The cycle
 
 ```
-Capo ──Rapporto──► Revisore ──respinto──► Capo (round+1)
-                       │
-                    approvato
-                       ▼
-                  Consigliere ──acceptance failed──► new Contratto
-                       │
-                  acceptance passed
-                       ▼
-              merge worktree, delete it, carry Handoff forward
+Capo ──Rapporto + Round: n──► Revisore ──respinto (verdict-r<n>.md)──► Capo (round n+1)
+                                  │
+                               approvato
+                                  ▼
+                             Consigliere ──acceptance failed──► rework Contratto (max 2)
+                                  │
+                             acceptance passed
+                                  ▼
+                         merge worktree, delete it, carry Handoff forward
 ```
