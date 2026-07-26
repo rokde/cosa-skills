@@ -233,7 +233,7 @@ For local development, point Claude Code straight at the checkout instead —
 no install step, no marketplace:
 
 ```
-claude --plugin-dir /path/to/cosa-claude
+claude --plugin-dir /path/to/cosa-skills
 ```
 
 ## Usage
