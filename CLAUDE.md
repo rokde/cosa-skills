@@ -1,35 +1,39 @@
-# Cosa Claude — Projektanweisungen
+# Cosa Claude — Project Instructions
 
-Dieses Repository definiert ein Orchestrierungssystem aus Claude-Code-Skills und
--Agents. Der Inhalt *ist* das Produkt: Markdown-Definitionen, kein Applikationscode.
+This repository defines an orchestration system of Claude Code skills and
+agents. The content *is* the product: markdown definitions, no application code.
 
-## Arbeitsweise in diesem Repo
+## Working conventions in this repo
 
-- Sprache aller Artefakte: **Deutsch**. Rollen- und Protokollbegriffe bleiben
-  italienisch (`Consigliere`, `Capo`, `Revisore`, `Contratto`, `Rapporto`, `Verdetto`).
-- Agent-Dateien liegen flach unter `.claude/agents/<name>.md`.
-- Skills liegen unter `.claude/skills/<name>/SKILL.md`, Zusatzmaterial in
-  `references/` daneben.
-- Jede Famiglia besteht immer aus **drei** Teilen: Doktrin-Skill, Capo-Agent,
-  Revisore-Agent. Keine Famiglia ohne Revisore.
+- Language of all artifacts: **English**. Role and protocol terms stay
+  Italian: `Consigliere`, `Capo`, `Revisore`, `Famiglia`, `Contratto`,
+  `Rapporto`, `Verdetto`. Everything else — prose, headings, field values,
+  generated file and directory names — is English.
+- Agent files live flat under `.claude/agents/<name>.md`.
+- Skills live under `.claude/skills/<name>/SKILL.md`, supporting material in
+  `references/` next to them.
+- Every Famiglia always has **three** parts: doctrine skill, Capo agent,
+  Revisore agent. No Famiglia without a Revisore.
+- Generated working documents use English names: `plan.md`, `docs/design/`,
+  `.commission/` — not their Italian equivalents.
 
-## Beim Ändern von Definitionen
+## When changing definitions
 
-1. Änderst du das Contratto- oder Rapporto-Format, aktualisiere **alle** Agents,
-   die es verwenden — das Protokoll ist der Vertrag zwischen ihnen.
-2. Neue Famiglia → Eintrag in
-   `.claude/skills/consigliere/references/famiglie.md` ist Pflicht, sonst findet
-   der Consigliere sie nicht.
-3. Modellzuweisung nur gemäß
-   `.claude/skills/consigliere/references/modelli.md` ändern.
+1. If you change the Contratto or Rapporto format, update **every** agent
+   that uses it — the protocol is the contract between them.
+2. New Famiglia → an entry in
+   `.claude/skills/consigliere/references/families.md` is mandatory,
+   otherwise the Consigliere won't find it.
+3. Only change model assignment per
+   `.claude/skills/consigliere/references/models.md`.
 
-## Frontmatter-Konventionen
+## Frontmatter conventions
 
 Agents:
 ```yaml
 ---
 name: kebab-case-name
-description: Wann dieser Agent eingesetzt wird (in dritter Person, auslösend)
+description: When this agent is used (third person, triggering condition)
 tools: Read, Grep, Glob, ...
 model: opus | sonnet | haiku | inherit
 ---
@@ -39,6 +43,6 @@ Skills:
 ```yaml
 ---
 name: kebab-case-name
-description: Use when ... (Auslösebedingung, keine Beschreibung des Inhalts)
+description: Use when ... (trigger condition, not a description of contents)
 ---
 ```

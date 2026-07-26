@@ -3,75 +3,74 @@ name: famiglia-mercato
 description: Use when producing marketing artifacts — positioning, messaging, go-to-market plans, landing page copy, campaigns, content plans, competitive analysis — under a Contratto. The doctrine of the Famiglia Mercato requires audience and claim evidence before any copy is written. Also read this before reviewing as Revisore Mercato.
 ---
 
-# Famiglia Mercato — Doktrin
+# Famiglia Mercato — Doctrine
 
-Kein Text ohne Zielgruppe. Keine Behauptung ohne Beleg. Ein Marketingtext, der
-niemandem konkret schadet, aber auch niemanden konkret überzeugt, ist Zeitverlust.
+No copy without an audience. No claim without evidence. Copy that hurts no
+one but also convinces no one concretely is wasted time.
 
 <EXTREMELY-IMPORTANT>
-Vor jedem Text steht ein **Briefing**. Fehlt dem Contratto die Zielgruppe oder
-das Kernversprechen, wird nicht getextet — Rückfrage an den Consigliere.
+Every piece of copy starts from a **brief**. If the Contratto lacks an
+audience or a core promise, don't write copy — ask the Consigliere first.
 </EXTREMELY-IMPORTANT>
 
-## Vor der Arbeit — das Briefing
+## Before starting work — the brief
 
-Aus dem Contratto muss hervorgehen, oder du leitest es explizit her und
-vermerkst es im Rapporto:
+The Contratto must make the following clear, or you derive it explicitly and
+note that in the Rapporto:
 
-| Frage | |
-|-------|---|
-| Wer genau liest das? | Rolle, Situation, Vorwissen — nicht „alle" |
-| Welches Problem hat diese Person gerade? | konkret, nicht generisch |
-| Welche eine Handlung soll folgen? | ein Call-to-Action, nicht mehrere |
-| Womit konkurriert die Aufmerksamkeit? | Wettbewerber oder Status quo |
-| Welcher Ton passt zur Marke? | vorhandene Beispiele sichten |
+| Question | |
+|----------|---|
+| Who exactly reads this? | role, situation, prior knowledge — not "everyone" |
+| What problem does this person have right now? | concrete, not generic |
+| What single action should follow? | one call-to-action, not several |
+| What is competing for their attention? | a competitor or the status quo |
+| What tone fits the brand? | look at existing examples |
 
-## Behauptungen brauchen Belege
+## Claims need evidence
 
-Jede Zahl, jeder Superlativ, jedes Leistungsversprechen im Text braucht eine
-Quelle — Contratto, bereitgestellte Daten, oder explizite Kennzeichnung als
-Platzhalter für den Auftraggeber.
+Every number, every superlative, every promise in the copy needs a source —
+the Contratto, provided data, or an explicit placeholder for the requester.
 
-Schlecht: „Die schnellste Lösung am Markt."
-Gut, mit Beleg: „40 % schnellere Ladezeit als Wettbewerber X (Messung: …)."
-Ohne Beleg verfügbar: „[BELEG BENÖTIGT: Vergleichszahl zu Wettbewerber X]" —
-explizit markiert, nie stillschweigend erfunden.
+Bad: "The fastest solution on the market."
+Good, with evidence: "40% faster load time than competitor X (measurement: …)."
+Available without evidence: "[EVIDENCE NEEDED: comparison figure vs.
+competitor X]" — explicitly flagged, never silently invented.
 
-## Struktur je Format
+## Structure per format
 
-**Landingpage-Text:** Nutzenversprechen zuerst, dann Beweis, dann ein
-Call-to-Action — nicht drei konkurrierende.
+**Landing page copy:** value proposition first, then proof, then one
+call-to-action — not three competing ones.
 
-**Go-to-Market-Plan:** Zielsegment, Positionierung, Kanäle mit Begründung,
-Erfolgsmetrik pro Kanal, Zeitplan.
+**Go-to-market plan:** target segment, positioning, channels with rationale,
+success metric per channel, timeline.
 
-**Kampagne:** Ein Leitgedanke, konsistent über alle Assets, nicht pro Kanal neu
-erfunden.
+**Campaign:** one guiding idea, consistent across all assets, not
+reinvented per channel.
 
-**Wettbewerbsanalyse:** Nur Tatsachen aus geprüften Quellen, klar getrennt von
-eigener Einschätzung.
+**Competitive analysis:** only facts from verified sources, clearly
+separated from your own assessment.
 
-## Grenzen
+## Boundaries
 
-- Keine Vergleiche mit nicht genannten oder unbelegten Wettbewerbern.
-- Keine Zusagen, die das Produkt laut Contratto nicht einlöst.
-- Rechtlich heikle Formulierungen (Heilversprechen, Finanzzusagen,
-  irreführende Statistik) werden nicht formuliert, sondern im Rapporto als
-  Risiko markiert.
+- No comparisons against unnamed or unevidenced competitors.
+- No promises the product, per the Contratto, doesn't actually deliver.
+- Legally sensitive phrasing (health claims, financial guarantees,
+  misleading statistics) is not written, but flagged as a risk in the
+  Rapporto.
 
-## Abschluss
+## Wrap-up
 
-1. Gegen das Briefing prüfen: trifft jeder Text die genannte Zielgruppe und
-   den genannten Call-to-Action?
-2. Alle Behauptungen auflisten mit ihrer Quelle im Rapporto.
-3. **Revisore rufen** (`revisore-mercato`).
-4. Bei `respinto`: Blocker abarbeiten, erneut vorlegen.
+1. Check against the brief: does every piece of copy hit the stated audience
+   and the stated call-to-action?
+2. List every claim with its source in the Rapporto.
+3. **Call the Revisore** (`revisore-mercato`).
+4. On `respinto`: work through the blockers, resubmit.
 
-## Rote Flaggen
+## Red flags
 
-| Gedanke | Wirklichkeit |
-|---------|--------------|
-| „Klingt gut, Beleg reiche ich nach." | Nicht ohne Beleg formulieren. Markieren. |
-| „Zielgruppe ist eigentlich jeder." | Dann trifft der Text niemanden. Eingrenzen. |
-| „Ein bisschen Übertreibung schadet nicht." | Unbelegte Superlative ⇒ `respinto`. |
-| „Drei Call-to-Actions geben mehr Chancen." | Verwässert alle drei. Einen wählen. |
+| Thought | Reality |
+|---------|---------|
+| "Sounds good, I'll add evidence later." | Don't write it without evidence. Flag it. |
+| "The audience is basically everyone." | Then it hits no one. Narrow it down. |
+| "A bit of exaggeration doesn't hurt." | Unevidenced superlatives ⇒ `respinto`. |
+| "Three CTAs give more chances to convert." | It dilutes all three. Pick one. |

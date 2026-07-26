@@ -3,96 +3,94 @@ name: nuova-famiglia
 description: Use when the user wants to add a new specialization to the Commissione — a new domain of work with its own Capo and Revisore, such as legal, data-analysis, or infrastructure. Walks through the required files so the Consigliere can find and dispatch to it.
 ---
 
-# Neue Famiglia gründen
+# Founding a new Famiglia
 
-Jede Famiglia besteht aus **genau drei Teilen**. Fehlt einer, ist sie
-unvollständig und wird vom Consigliere nicht genutzt.
+Every Famiglia consists of **exactly three parts**. Missing one makes it
+incomplete, and the Consigliere won't use it.
 
 ```
-.claude/skills/famiglia-<name>/SKILL.md   Doktrin — das WIE der Domäne
-.claude/agents/capo-<name>.md             Ausführender Agent
-.claude/agents/revisore-<name>.md         Prüfender Agent
+.claude/skills/famiglia-<name>/SKILL.md   Doctrine — the HOW of the domain
+.claude/agents/capo-<name>.md             Executing agent
+.claude/agents/revisore-<name>.md         Reviewing agent
 ```
 
-Plus: Eintrag in `.claude/skills/consigliere/references/famiglie.md`.
+Plus: an entry in `.claude/skills/consigliere/references/families.md`.
 
-## Schritt 1 — Domäne abgrenzen
+## Step 1 — Scope the domain
 
-Beantworten, bevor etwas geschrieben wird:
+Answer before writing anything:
 
-- Welches beobachtbare Artefakt liefert diese Famiglia? (nicht „Beratung",
-  sondern ein Dokument, ein Diff, ein Plan mit Datum)
-- Wodurch unterscheidet sich diese Domäne von den bestehenden Famiglie
-  (`codice`, `disegno`, `mercato`)? Überschneidung ⇒ eher bestehende Famiglia
-  erweitern als eine neue gründen.
-- Was sind die branchentypischen Qualitätsfallen dieser Domäne? (bei Codice:
-  ungetesteter Code; bei Legal: unbelegte Rechtsauffassung; usw.) — das wird
-  die Kernregel der Doktrin.
+- What observable artifact does this Famiglia deliver? (not "advice", but a
+  document, a diff, a dated plan)
+- How does this domain differ from the existing Famiglie (`codice`,
+  `disegno`, `mercato`)? Overlap ⇒ extend an existing Famiglia rather than
+  founding a new one.
+- What are the typical quality traps of this domain? (for Codice: untested
+  code; for Legal: unsupported legal opinion; etc.) — this becomes the core
+  rule of the doctrine.
 
-## Schritt 2 — Doktrin schreiben
+## Step 2 — Write the doctrine
 
-`famiglia-<name>/SKILL.md` folgt der Form der bestehenden Doktrinen:
+`famiglia-<name>/SKILL.md` follows the shape of the existing doctrines:
 
-1. Eine nicht verhandelbare Kernregel, die die typische Qualitätsfalle
-   verhindert (siehe `famiglia-codice`: TDD verhindert unbelegte
-   Funktionsbehauptungen).
-2. Konkreter Ablauf für die Ausführung.
-3. Grenzen: was diese Famiglia nicht anfasst.
-4. Abschlussschritt, der zwingend zum Revisore führt.
-5. Tabelle „Rote Flaggen" mit typischen Rationalisierungen dieser Domäne.
+1. One non-negotiable core rule that prevents the domain's typical quality
+   trap (see `famiglia-codice`: TDD prevents unevidenced claims of behavior).
+2. A concrete workflow for execution.
+3. Boundaries: what this Famiglia does not touch.
+4. A wrap-up step that always leads to the Revisore.
+5. A "Red flags" table with typical rationalizations for this domain.
 
-Frontmatter-`description` beginnt mit „Use when …" und benennt den Auslöser,
-nicht den Inhalt.
+Frontmatter `description` starts with "Use when …" and names the trigger,
+not the content.
 
-## Schritt 3 — Capo-Agent
+## Step 3 — Capo agent
 
 `agents/capo-<name>.md`:
 
 ```yaml
 ---
 name: capo-<name>
-description: <Wann dieser Capo eingesetzt wird, dritte Person, auslösend>
-tools: <minimal nötige Menge>
+description: <When this Capo is used, third person, triggering condition>
+tools: <minimal necessary set>
 model: sonnet
 ---
 ```
 
-Inhalt: kurz. Verweist auf die Doktrin (`Skill: famiglia-<name>`), beschreibt
-den Empfang eines Contratto, ruft am Ende immer `revisore-<name>` auf, bevor
-er an den Consigliere liefert. Siehe `capo-codice.md` als Vorlage.
+Content: brief. References the doctrine (`Skill: famiglia-<name>`), describes
+receiving a Contratto, always calls `revisore-<name>` at the end before
+delivering to the Consigliere. See `capo-codice.md` as a template.
 
-## Schritt 4 — Revisore-Agent
+## Step 4 — Revisore agent
 
 `agents/revisore-<name>.md`:
 
 ```yaml
 ---
 name: revisore-<name>
-description: <Wann dieser Revisore eingesetzt wird>
-tools: <read-only wo möglich, plus Ausführung zum Verifizieren>
+description: <When this Revisore is used>
+tools: <read-only where possible, plus execution for verification>
 model: opus
 ---
 ```
 
-Der Revisore prüft **selbst nach**, nicht nur den Text des Rapporto. Bei
-Codice: Tests wirklich ausführen. Bei Mercato: Belege wirklich nachschlagen.
-Übernimm das Verdetto-Format aus `references/rapporto.md` unverändert — es ist
-das Protokoll, das der Consigliere über alle Famiglie hinweg erwartet.
+The Revisore verifies **itself**, not just the Rapporto's text. For Codice:
+actually run the tests. For Mercato: actually look up the sources. Reuse the
+Verdetto format from `references/report.md` unchanged — it's the protocol the
+Consigliere expects across every Famiglia.
 
-## Schritt 5 — Register aktualisieren
+## Step 5 — Update the register
 
-In `.claude/skills/consigliere/references/famiglie.md` eine Zeile in der
-Modelltabelle und einen Abschnitt analog zu den bestehenden Famiglie ergänzen.
-**Ohne diesen Eintrag findet der Consigliere die Famiglia nicht** — er kennt
-nur, was dort gelistet ist.
+Add a row to the model table and a section analogous to the existing
+Famiglie in `.claude/skills/consigliere/references/families.md`.
+**Without this entry the Consigliere won't find the Famiglia** — it only
+knows what's listed there.
 
-## Nicht vergessen
+## Don't forget
 
-- Modellwahl folgt `references/modelli.md`: Capo sonnet, Revisore opus, es sei
-  denn die Doktrin selbst zwingt zu Reasoning-Arbeit auch beim Capo.
-- Contratto- und Rapporto-Format werden **nicht** neu erfunden — jede Famiglia
-  nutzt dieselben zwei Formate aus `references/`. Nur der Inhalt der
-  Akzeptanzkriterien ist domänenspezifisch.
-- Passt die neue Aufgabe eigentlich nur teilweise nicht zu einer bestehenden
-  Famiglia, ist meist eine Erweiterung der Doktrin die bessere Wahl als eine
-  neue Famiglia.
+- Model choice follows `references/models.md`: Capo sonnet, Revisore opus,
+  unless the doctrine itself forces reasoning-heavy work even for the Capo.
+- The Contratto and Rapporto formats are **not** reinvented — every Famiglia
+  uses the same two formats from `references/`. Only the content of the
+  acceptance criteria is domain-specific.
+- If the new task only partly doesn't fit an existing Famiglia, extending its
+  doctrine is usually the better call than founding a new Famiglia.

@@ -3,93 +3,93 @@ name: famiglia-codice
 description: Use when implementing, refactoring, or fixing software under a Contratto — the doctrine of the Famiglia Codice. Strictly test-driven: a failing test exists before any production line. Also read this before reviewing code as Revisore Codice.
 ---
 
-# Famiglia Codice — Doktrin
+# Famiglia Codice — Doctrine
 
-Wir bauen testgetrieben. Ausnahmslos. Nicht weil es eine Vorliebe ist, sondern
-weil der Test das einzige Artefakt ist, das eine Behauptung im Rapporto belegen kann.
+We build test-driven. No exceptions. Not out of preference, but because the
+test is the only artifact that can back a claim in the Rapporto.
 
-## Der Zyklus
+## The cycle
 
-Für **jedes** Akzeptanzkriterium des Contratto:
+For **every** acceptance criterion in the Contratto:
 
 ```
-ROSSO   → Test schreiben, der das AK prüft. Ausführen. Er MUSS fehlschlagen.
-          Fehlermeldung lesen: schlägt er aus dem richtigen Grund fehl?
-VERDE   → Minimale Produktionsänderung, bis der Test grün ist. Nichts darüber hinaus.
-RIFARE  → Aufräumen bei durchgehend grünen Tests. Kein neues Verhalten.
+RED     → Write a test that checks the AC. Run it. It MUST fail.
+          Read the failure message: does it fail for the right reason?
+GREEN   → Minimal production change until the test passes. Nothing beyond that.
+REFACTOR→ Clean up while everything stays green. No new behavior.
 ```
 
 <EXTREMELY-IMPORTANT>
-Kein Produktionscode ohne vorher fehlgeschlagenen Test.
-Hast du Code geschrieben, bevor der rote Test lief: Code zurücksetzen, Test
-zuerst. „Ich schreibe den Test gleich danach" ist der Bruch der Doktrin.
+No production code without a test that failed first.
+Wrote code before the red test ran? Revert it, write the test first. "I'll
+add the test right after" is breaking the doctrine.
 </EXTREMELY-IMPORTANT>
 
-### Warum Rot zuerst zwingend ist
+### Why red-first is non-negotiable
 
-Ein Test, den du nie hast fehlschlagen sehen, beweist nichts. Er kann
-tautologisch sein, die falsche Sache prüfen oder gar nicht ausgeführt werden.
-Der rote Lauf ist der Beweis, dass der Test das Verhalten wirklich beobachtet.
+A test you never watched fail proves nothing. It can be tautological, check
+the wrong thing, or never even run. The red run is proof that the test truly
+observes the behavior.
 
-Notiere pro AK den roten Lauf für den Rapporto:
+Record the red run per AC for the Rapporto:
 
 ```
-AK-1 rot:  test_over_limit_returns_429 — FAILED (AssertionError: 200 != 429)
-AK-1 grün: test_over_limit_returns_429 — PASSED
+AC-1 red:   test_over_limit_returns_429 — FAILED (AssertionError: 200 != 429)
+AC-1 green: test_over_limit_returns_429 — PASSED
 ```
 
-## Testqualität
+## Test quality
 
-| Regel | Bedeutung |
-|-------|-----------|
-| Verhalten testen, nicht Implementierung | Refactoring darf keinen Test brechen |
-| Ein Grund zu scheitern pro Test | Fehlermeldung zeigt sofort die Ursache |
-| Aussagekräftiger Name | `test_<situation>_<erwartung>` |
-| Echte Grenzen, keine Mocks des eigenen Codes | Mocke nur, was du nicht besitzt |
-| Deterministisch | Keine Zeit, kein Zufall, keine Netzwerkabhängigkeit ohne Kontrolle |
+| Rule | Meaning |
+|------|---------|
+| Test behavior, not implementation | Refactoring must not break a test |
+| One reason to fail per test | The failure message shows the cause instantly |
+| Meaningful name | `test_<situation>_<expectation>` |
+| Real boundaries, don't mock your own code | Only mock what you don't own |
+| Deterministic | No time, no randomness, no uncontrolled network dependency |
 
-Randfälle gehören dazu: leere Eingabe, Grenzwert, Grenzwert±1, Fehlerpfad,
-Nebenläufigkeit falls relevant.
+Edge cases belong in scope: empty input, boundary value, boundary±1, error
+path, concurrency where relevant.
 
-## Vor der Arbeit
+## Before starting work
 
-1. Contratto vollständig lesen. AK unklar oder nicht testbar? **Nicht raten** —
-   mit `Esito: fallito` und der konkreten Rückfrage an den Consigliere zurück.
-2. Bestand lesen: bestehende Konventionen, Testframework, Ordnerstruktur,
-   Namensgebung. Du fügst dich ein, du erfindest keinen neuen Stil.
-3. Prüfen, wie Tests in diesem Projekt laufen (`package.json`, `Makefile`,
-   `pyproject.toml`, CI-Konfiguration).
+1. Read the Contratto fully. AC unclear or not testable? **Don't guess** —
+   return `Outcome: failed` with the concrete question to the Consigliere.
+2. Read the existing codebase: conventions, test framework, folder structure,
+   naming. You conform to it, you don't invent a new style.
+3. Check how tests are run in this project (`package.json`, `Makefile`,
+   `pyproject.toml`, CI configuration).
 
-## Betrifft der Contratto Sichtbares?
+## Does the Contratto touch anything visible?
 
-Dann muss unter `Vorarbeit` ein freigegebenes Disegno-Artefakt stehen. Fehlt es:
-**nicht implementieren**. Zurück an den Consigliere mit dem Hinweis, dass ein
-Disegno-Contratto fehlt. Du erfindest keine Oberfläche.
+Then `Prior work` must contain an approved Disegno artifact. If it's missing:
+**don't implement**. Return it to the Consigliere noting the missing Disegno
+Contratto. You don't invent a UI.
 
-## Grenzen
+## Boundaries
 
-- Keine neue Abhängigkeit ohne ausdrückliche Erlaubnis im Contratto.
-- Nichts außerhalb der im Contratto genannten Artefakte anfassen. Fällt dir
-  daneben ein Fehler auf: in `Offene Punkte` des Rapporto vermerken, nicht beheben.
-- Keine auskommentierten Codeblöcke, keine `TODO`-Platzhalter als Ergebnis.
-- Kein Abschalten, Überspringen oder Aufweichen bestehender Tests, um grün zu
-  werden. Ein bestehender Test, der bricht, ist ein Befund — kein Hindernis.
+- No new dependency without explicit permission in the Contratto.
+- Don't touch anything outside the artifacts named in the Contratto. Notice
+  a bug nearby? Note it under `Open items` in the Rapporto, don't fix it.
+- No commented-out code blocks, no `TODO` placeholders as a deliverable.
+- Never disable, skip, or weaken an existing test to get green. A breaking
+  existing test is a finding — not an obstacle.
 
-## Abschluss
+## Wrap-up
 
-1. Vollständige Testsuite laufen lassen, nicht nur die neuen Tests.
-2. Linter/Typechecker des Projekts laufen lassen, falls vorhanden.
-3. Rapporto nach `references/rapporto.md`-Format verfassen, mit echten
-   Befehlsausgaben.
-4. **Revisore rufen** (`revisore-codice`) und ihm Contratto + Rapporto übergeben.
-5. Bei `respinto`: Blocker abarbeiten, Rapporto aktualisieren, erneut vorlegen.
+1. Run the full test suite, not just the new tests.
+2. Run the project's linter/typechecker, if any.
+3. Write the Rapporto per `references/report.md` format, with real command
+   output.
+4. **Call the Revisore** (`revisore-codice`) and hand over Contratto + Rapporto.
+5. On `respinto`: work through the blockers, update the Rapporto, resubmit.
 
-## Rote Flaggen
+## Red flags
 
-| Gedanke | Wirklichkeit |
-|---------|--------------|
-| „Zu einfach für einen Test." | Dann ist der Test in 30 Sekunden geschrieben. |
-| „Ich teste hinterher." | Bruch der Doktrin. Der Revisore weist es zurück. |
-| „Der Test ist umständlich, ich mocke das weg." | Umständlicher Test = Signal für schlechtes Design. |
-| „Der alte Test war sowieso kaputt." | Befund melden, nicht löschen. |
-| „Ich räume gleich noch das Nachbarmodul auf." | Außerhalb des Contratto. Finger weg. |
+| Thought | Reality |
+|---------|---------|
+| "Too trivial for a test." | Then the test takes 30 seconds to write. |
+| "I'll test it afterward." | Breaking the doctrine. The Revisore will reject it. |
+| "The test is awkward, I'll mock it away." | An awkward test is a design smell. |
+| "That old test was broken anyway." | Report the finding, don't delete it. |
+| "I'll also clean up the neighboring module." | Outside the Contratto. Hands off. |

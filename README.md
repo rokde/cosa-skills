@@ -1,94 +1,97 @@
 # Cosa Claude
 
-Ein Skill- und Agent-System für Claude Code nach dem Prinzip der *Commissione*:
-Ein **Consigliere** plant und orchestriert, spezialisierte **Famiglie** setzen um,
-und jede Famiglia hat ihren eigenen **Revisore**, der die Arbeit abnimmt, bevor
-sie zurück an den Consigliere geht.
+A skill and agent system for Claude Code built on the *Commissione* principle:
+a **Consigliere** plans and orchestrates, specialized **Famiglie** execute,
+and every Famiglia has its own **Revisore** who signs off on the work before
+it goes back to the Consigliere.
 
-## Prinzip
+## Principle
 
 ```
                        ┌──────────────────┐
-   Auftrag  ─────────► │   CONSIGLIERE    │  plant, delegiert, nimmt ab
-                       │   (Hauptskill)   │  schreibt NIEMALS Code
+   Request  ─────────► │   CONSIGLIERE    │  plans, delegates, accepts
+                       │   (main skill)   │  NEVER writes code
                        └────────┬─────────┘
                                 │ CONTRATTO
                 ┌───────────────┼───────────────┐
                 ▼               ▼               ▼
         ┌──────────────┐ ┌─────────────┐ ┌─────────────┐
-        │ Capo Codice  │ │Capo Disegno │ │ Capo Mercato│   setzt um
+        │ Capo Codice  │ │Capo Disegno │ │ Capo Mercato│   executes
         └──────┬───────┘ └──────┬──────┘ └──────┬──────┘
-               │ Werk           │               │
+               │ deliverable    │               │
                ▼                ▼               ▼
         ┌──────────────┐ ┌─────────────┐ ┌─────────────┐
-        │Revisore Cod. │ │Revisore Dis.│ │Revisore Mer.│   prüft, gibt frei
+        │Revisore Cod. │ │Revisore Dis.│ │Revisore Mer.│   checks, approves
         └──────┬───────┘ └──────┬──────┘ └──────┬──────┘
                └────────────────┼───────────────┘
-                                │ RAPPORTO (nur bei `approvato`)
+                                │ RAPPORTO (only when `approvato`)
                                 ▼
                        ┌──────────────────┐
-                       │   CONSIGLIERE    │  Abnahme gegen Contratto
+                       │   CONSIGLIERE    │  accepts against the Contratto
                        └──────────────────┘
 ```
 
-Kernregel: **Ein Rapporto erreicht den Consigliere erst, wenn der Revisore
-`approvato` vergeben hat.** Der Consigliere glaubt dem Rapporto nicht — er prüft
-die Belege gegen die Akzeptanzkriterien des eigenen Contratto.
+Core rule: **A Rapporto only reaches the Consigliere once its Revisore has
+issued `approvato`.** The Consigliere doesn't trust the Rapporto — it checks
+the evidence against its own Contratto's acceptance criteria.
 
-## Verzeichnisstruktur
+## Directory structure
 
 ```
 .claude/
-├── agents/                       Subagent-Definitionen (Ausführende)
-│   ├── capo-codice.md            Implementierung, strikt testgetrieben
-│   ├── revisore-codice.md        Code-Abnahme
-│   ├── capo-disegno.md           Visuelle Konzepte & UI-Implementierung
-│   ├── revisore-disegno.md       Design-Abnahme
-│   ├── capo-mercato.md           Marketing, Positionierung, Content
-│   ├── revisore-mercato.md       Marketing-Abnahme
-│   └── occhio.md                 Aufklärung, read-only Recherche
-└── skills/                       Doktrin (das WIE)
-    ├── consigliere/              Hauptskill — Orchestrierung
+├── agents/                       Subagent definitions (executors)
+│   ├── capo-codice.md            Implementation, strictly test-driven
+│   ├── revisore-codice.md        Code acceptance
+│   ├── capo-disegno.md           Visual concepts & UI implementation
+│   ├── revisore-disegno.md       Design acceptance
+│   ├── capo-mercato.md           Marketing, positioning, content
+│   ├── revisore-mercato.md       Marketing acceptance
+│   └── occhio.md                 Recon, read-only research
+└── skills/                       Doctrine (the HOW)
+    ├── consigliere/              Main skill — orchestration
     │   └── references/
-    │       ├── contratto.md      Format des Arbeitsauftrags
-    │       ├── rapporto.md       Format von Bericht & Verdikt
-    │       ├── famiglie.md       Register aller Famiglie
-    │       └── modelli.md        Modell-Policy
-    ├── famiglia-codice/          Doktrin Softwareentwicklung (TDD)
-    ├── famiglia-disegno/         Doktrin Visuelles (Konzept vor Code)
-    ├── famiglia-mercato/         Doktrin Marketing
-    └── nuova-famiglia/           Anleitung: neue Famiglia gründen
+    │       ├── contract.md       Work order format
+    │       ├── report.md         Report & verdict format
+    │       ├── families.md       Registry of all Famiglie
+    │       └── models.md         Model policy
+    ├── famiglia-codice/          Software development doctrine (TDD)
+    ├── famiglia-disegno/         Visual doctrine (concept before code)
+    ├── famiglia-mercato/         Marketing doctrine
+    └── nuova-famiglia/           Guide: founding a new Famiglia
 ```
 
-## Benutzung
+Generated working documents also use English names: `.commission/<slug>/plan.md`
+for plans, `docs/design/<slug>.md` for design concepts.
+
+## Usage
 
 ```
-/consigliere Baue mir einen Rate-Limiter für die API
+/consigliere Build me a rate limiter for the API
 ```
 
-Oder einfach eine Aufgabe stellen — der Consigliere-Skill greift bei
-mehrstufigen Aufgaben automatisch.
+Or just state a task — the Consigliere skill picks up multi-step work
+automatically.
 
-## Zwei nicht verhandelbare Doktrinen
+## Two non-negotiable doctrines
 
-1. **Software wird testgetrieben gebaut.** Roter Test zuerst, Beleg im Rapporto.
-   Kein Test = kein `approvato`. Siehe `famiglia-codice`.
-2. **Visuelles wird erst gezeichnet, dann gebaut.** Mockup/Designentwurf muss
-   vom Consigliere freigegeben sein, bevor Implementierung startet.
-   Siehe `famiglia-disegno`.
+1. **Software is built test-driven.** Red test first, evidence in the
+   Rapporto. No test = no `approvato`. See `famiglia-codice`.
+2. **Visuals are drawn before they're built.** A mockup/design draft must be
+   approved by the Consigliere before implementation starts.
+   See `famiglia-disegno`.
 
-## Modell-Policy (Kurzfassung)
+## Model policy (short version)
 
-| Rolle          | Modell | Warum |
-|----------------|--------|-------|
-| Consigliere    | opus   | Planung, Zerlegung, Abnahme — reines Reasoning |
-| Revisori       | opus   | Qualitäts-Gate, muss Lücken finden, nicht nur lesen |
-| Capi           | sonnet | Ausführung gegen einen präzisen Contratto |
-| Occhio         | haiku  | Breites Suchen, Sammeln, Zusammenfassen |
+| Role           | Model  | Why |
+|----------------|--------|-----|
+| Consigliere    | opus   | Planning, decomposition, acceptance — pure reasoning |
+| Revisori       | opus   | Quality gate, must find gaps, not just read |
+| Capi           | sonnet | Execution against a precise Contratto |
+| Occhio         | haiku  | Broad search, gathering, summarizing |
 
-Details und Eskalationsregeln: `.claude/skills/consigliere/references/modelli.md`
+Details and escalation rules: `.claude/skills/consigliere/references/models.md`
 
-## Erweitern
+## Extending
 
-Neue Spezialisierung nötig? `.claude/skills/nuova-famiglia/SKILL.md` beschreibt
-den Bauplan: Capo + Revisore + Doktrin-Skill + Eintrag im Register.
+Need a new specialization? `.claude/skills/nuova-famiglia/SKILL.md` describes
+the blueprint: Capo + Revisore + doctrine skill + registry entry.
