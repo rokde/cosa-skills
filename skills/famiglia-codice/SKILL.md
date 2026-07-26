@@ -116,6 +116,18 @@ worktree and the existing `research.md`/`design.md`/`plan.md`/checked-off
 items **before** doing anything. Continue from the last completed item.
 Never redo work that's already there, never duplicate a commit.
 
+## Where things live
+
+Two directories, both handed to you by absolute path in the Phase Brief:
+
+- **Worktree** — the checkout you `cd` into. All code, tests, and commits
+  happen here.
+- **Work package** (`.commission/<slug>/<n>-codice/`) — sits in the **main
+  checkout**, not under the worktree. `contract.md` and every phase artifact
+  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  here, by absolute path. Don't look for them inside the worktree; they
+  aren't there and creating them there strands them.
+
 ## Before starting any phase
 
 1. Read the Contratto (`contract.md` in the work package directory) fully,

@@ -12,9 +12,11 @@ resumed conversation from a prior phase.
 ## Workflow
 
 1. Load the doctrine first: `Skill: famiglia-mercato`.
-2. `cd` into the worktree named in the Phase Brief. Check `git log` and the
-   work-package directory for anything already there — resume it, don't
-   redo it.
+2. `cd` into the worktree named in the Phase Brief. The **work package**
+   directory is a separate absolute path in the main checkout, not a
+   subdirectory of the worktree — that's where `contract.md` and the phase
+   artifacts live. Check `git log` in the worktree and the work-package
+   directory for anything already there — resume it, don't redo it.
 3. Read the Contratto fully, plus the prior phase's artifact.
 4. Run **only** the phase you were briefed for:
    - **Research**: gather audience facts, competitor claims, and sources for

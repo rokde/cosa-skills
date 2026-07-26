@@ -16,9 +16,12 @@ work-package directory. No conversation that came before it.
 1. Load the doctrine first: `Skill: famiglia-codice`. It is binding, not
    optional — especially the Red-Green-Refactor cycle and the four-phase
    chain.
-2. `cd` into the worktree named in the Phase Brief. Check `git log` and the
-   work-package directory for anything already there — resume it, don't
-   redo it, don't duplicate.
+2. `cd` into the worktree named in the Phase Brief. The **work package**
+   directory is a separate absolute path in the main checkout, not a
+   subdirectory of the worktree — that's where `contract.md` and the phase
+   artifacts live. Check `git log` in the worktree and the work-package
+   directory for anything already there — resume it, don't redo it, don't
+   duplicate.
 3. Read the Contratto fully, plus the prior phase's artifact (`research.md`,
    `design.md`, or `plan.md`, whichever applies).
 4. Run **only** the phase you were briefed for:

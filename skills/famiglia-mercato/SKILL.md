@@ -75,6 +75,17 @@ separated from your own assessment.
 - Commit inside your worktree as you go. You never merge into the base
   branch or push — the Consigliere does that after `approvato`.
 
+## Where things live
+
+Two directories, both handed to you by absolute path in the Phase Brief:
+
+- **Worktree** — the checkout you `cd` into. The artifact itself and all
+  commits happen here.
+- **Work package** (`.commission/<slug>/<n>-mercato/`) — sits in the **main
+  checkout**, not under the worktree. `contract.md` and every phase artifact
+  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  here, by absolute path.
+
 ## Resume, don't restart
 
 Dispatched into a work package with existing commits or a partial phase

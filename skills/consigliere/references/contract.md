@@ -99,8 +99,18 @@ known CVEs) before Design picks one — see `references/families.md`.
 Every work package runs through four phases. Each phase is dispatched as a
 **fresh** agent call in the same worktree — never resume an agent into the
 next phase. Phases read the prior phase's artifact from the work-package
-directory (`.commission/<slug>/<n>-<famiglia>/`), never from conversation
-memory.
+directory, never from conversation memory.
+
+**Where things live.** The work-package directory sits in the **main
+checkout**, not in the worktree:
+`<repo-root>/.commission/<slug>/<n>-<famiglia>/`. A worktree is a fresh
+checkout of a branch, so anything written to `.commission/` before the
+worktree was created is not visible inside it. Every Phase Brief therefore
+names the work-package directory by **absolute** path, and phase agents read
+and write their artifacts there while `cd`-ed into the worktree for the
+actual work. Deliverables — source, tests, `docs/design/<slug>.md`, mockups
+— live in the worktree and are committed there; `.commission/` is gitignored
+and never merged.
 
 | Phase | Produces | Who reviews before continuing |
 |-------|----------|-------------------------------|
@@ -134,16 +144,23 @@ What the Consigliere hands to each phase's fresh agent — short, self-contained
 ```markdown
 # PHASE BRIEF: C-<n> — <research|design|plan|implement>
 
-**Worktree:** <path> (already checked out on <branch>)
-**Read first:** .commission/<slug>/<n>-<famiglia>/contract.md
+**Worktree:** <absolute path> (already checked out on <branch>) — do the work here
+**Work package:** <absolute path>/.commission/<slug>/<n>-<famiglia>/
+  — in the main checkout, NOT under the worktree. Read and write your phase
+  artifacts here, by absolute path.
+**Read first:** <work package>/contract.md
   <plus the prior phase's artifact, if any>
-**Produce:** .commission/<slug>/<n>-<famiglia>/<phase-artifact>.md
+**Produce:** <work package>/<phase-artifact>.md
 **Boundaries:** <what this phase must NOT do — e.g. "no code changes in
   research", "no implementation ahead of an approved plan">
 **Resume check:** if this work package's worktree already has commits or a
   partial artifact for this phase, verify what's done before adding anything
   — continue, don't restart, never duplicate.
 ```
+
+Both paths are absolute and both are given: the worktree is where the work
+happens and where commits land; the work package is where the phase
+artifacts are read and written. Never let a phase agent guess either one.
 
 No questions in a Phase Brief — ambiguities become assumptions per the rule
 above.

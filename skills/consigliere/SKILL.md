@@ -156,12 +156,33 @@ context a Capo has across all four phases — it does not see your
 conversation. Everything needed must be in it: paths, upstream Handoff
 notes, constraints, acceptance criteria.
 
-Before dispatching phase 1, create the worktree for this work package (see
-`using-git-worktrees` for the mechanics): one worktree per Contratto,
-covering all four phases and the Revisore's review, merged and deleted once
-— not one worktree per phase. Persist the Contratto text to
-`.commission/<slug>/<n>-<famiglia>/contract.md` so every phase agent can read
-it without it being re-pasted.
+Before dispatching phase 1, create the worktree for this work package: one
+worktree per Contratto, covering all four phases and the Revisore's review,
+merged and deleted once — not one worktree per phase. The mechanics are
+plain `git worktree add <path> -b <branch>` from the main checkout; if the
+`using-git-worktrees` skill is available in this session, follow it, but its
+absence is not a blocker.
+
+Persist the Contratto text to
+`<repo-root>/.commission/<slug>/<n>-<famiglia>/contract.md` so every phase
+agent can read it without it being re-pasted.
+
+<EXTREMELY-IMPORTANT>
+**The work-package directory lives in the main checkout, never inside the
+worktree.** A worktree is a fresh checkout of a branch — anything you wrote
+into `.commission/` before creating it simply isn't there, and a phase agent
+that `cd`s into the worktree would find no Contratto. So:
+
+- Working documents (`plan.md`, `contract.md`, `research.md`, `design.md`,
+  the phase `plan.md`, `report.md`, `verdict-r<n>.md`) live under
+  `<repo-root>/.commission/…` in the **main checkout**, and every Phase Brief
+  names that directory by **absolute** path.
+- Deliverables — source, tests, `docs/design/<slug>.md`, mockups — live in
+  the **worktree** and are committed there.
+- Add `.commission/` to the project's `.gitignore` if it isn't already there.
+  These are orchestration artifacts, not part of any deliverable, and they
+  must not ride along into the base branch on merge.
+</EXTREMELY-IMPORTANT>
 
 ### 5. Run the phase chain
 

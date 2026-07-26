@@ -187,9 +187,17 @@ clashing with other plugins. Locally, during development, `claude
 --plugin-dir .` loads it without installing anything.
 
 Generated working documents also use English names: `.commission/<slug>/plan.md`
-for the overall Plan, `docs/design/<slug>.md` for Disegno (design) concepts, and 
-per work package `.commission/<slug>/<n>-<famiglia>/{contract,research,design,
-plan,report}.md` for the phase chain's artifacts.
+for the overall Plan, and per work package
+`.commission/<slug>/<n>-<famiglia>/{contract,research,design,plan,report}.md`
+plus `verdict-r<n>.md` for the phase chain's artifacts.
+
+`.commission/` lives in the **main checkout** and is gitignored — a worktree
+is a fresh checkout of a branch, so orchestration artifacts written there
+before it exists would be invisible to the phase agents, and merging them
+back would drag working documents into the base branch. Deliverables go the
+other way: source, tests, and Disegno's `docs/design/<slug>.md` concept plus
+its `docs/design/<slug>/<variant>.html` mockups live in the worktree and are
+committed there. Phase Briefs carry both paths, absolute.
 
 ## Installation
 
