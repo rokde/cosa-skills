@@ -245,6 +245,26 @@ claude --plugin-dir /path/to/cosa-skills
 Or just state a task — the Consigliere skill picks up multi-step work
 automatically.
 
+## Troubleshooting
+
+**A Capo reports being blocked writing `report.md` (or a Revisore writing
+`verdict-r<n>.md`).** Some Claude Code environments run a permission
+classifier that treats Write calls to "report"-looking paths as sensitive
+and blocks them. This isn't something the plugin can fix centrally —
+plugin manifests can't ship permission rules or pre-approving hooks. Add an
+allow rule to your own `settings.json`:
+
+```json
+"permissions": {
+  "allow": ["Write(.commission/**/report.md)", "Write(.commission/**/verdict-r*.md)"]
+}
+```
+
+Agents are instructed to stop and ask rather than route around the denial
+via Bash (see `skills/protocollo/SKILL.md`) — if you see an agent silently
+switching tools to force the write through, that's a doctrine violation to
+report.
+
 ## Two non-negotiable doctrines
 
 1. **Software is built test-driven.** Red test first, evidence in the

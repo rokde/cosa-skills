@@ -21,6 +21,17 @@ domain-specific.
 The work package is the absolute path handed to you in the Phase Brief; it
 sits in the main checkout, not inside the worktree.
 
+### If the Write tool is denied for `report.md` or `verdict-r<n>.md`
+
+Some environments run a permission classifier that blocks the Write tool on
+paths that look like "report" files. If that happens: **stop and tell the
+Don**, don't fall back to Bash or any other tool to push the write through.
+Working around a permission denial silently defeats the point of the
+restriction, even when the file is legitimate. Report the denial, name the
+exact path you were trying to write, and ask the Don to grant it — a
+`permissions.allow` rule in their `settings.json` scoped to that path is
+the fix. Resume once they confirm.
+
 ## Rapporto (Capo → Revisore → Consigliere)
 
 ```markdown
