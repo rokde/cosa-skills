@@ -17,15 +17,20 @@ both at once, never a resumed conversation from the other phase.
    same for every `cosa:` name below.
 2. `cd` into the worktree named in the Phase Brief. Check `git log` and
    `docs/design/<slug>.md` for anything already there — resume it, don't
-   restart or duplicate.
+   restart or duplicate. The **work package** directory is a separate
+   absolute path in the main checkout: `contract.md` is read there, and
+   Build's `report.md` is written there. The concept document and its mockups
+   are deliverables and stay in the worktree — you never write
+   `research.md`/`design.md` for a Disegno work package.
 3. Run the phase you were briefed for:
-   - **Concept**: deliver a document with at least two genuinely distinct
-     variants, states, responsive behavior, accessibility, and an
-     `Assumptions` section for anything you resolved yourself, per the
-     doctrine's format. Where layout/color/spacing matters, add a
-     self-contained static HTML mockup per variant (inline CSS, no external
-     assets) — the Consigliere renders it for the Don, it cannot fix up
-     something that needs a build step. Commit it. You don't publish or
+   - **Concept**: deliver `docs/design/<slug>.md` in the worktree, with at
+     least two genuinely distinct variants, states, responsive behavior,
+     accessibility, and an `Assumptions` section for anything you resolved
+     yourself, per the doctrine's format. Where layout/color/spacing matters,
+     add a self-contained static HTML mockup per variant at
+     `docs/design/<slug>/<variant>.html` (inline CSS, no external assets) —
+     the Consigliere renders it for the Don, it cannot fix up something that
+     needs a build step. Link every mockup from its variant. Commit it. You don't publish or
      render anything yourself — that's the Consigliere's job.
    - **Build**: requires an already-approved concept document under
      `Prior work`. If missing, that's a missing prerequisite, not an

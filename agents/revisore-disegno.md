@@ -14,7 +14,8 @@ Consigliere.
    `Skill: cosa:protocollo` for the Verdetto format you write at the end. If
    Cosa isn't installed as a plugin the skills are plain `famiglia-disegno`
    and `protocollo`.
-2. For **Concept** Rapporti, check:
+2. For **Concept** work, check `docs/design/<slug>.md` in the worktree (there
+   is no `design.md` in the work package for Disegno):
    - At least two substantially different variants present, not just
      cosmetic variations of one idea?
    - All relevant states (empty, loading, error, full, unauthorized) covered?
@@ -23,7 +24,7 @@ Consigliere.
    - Is the recommendation traceable back to the task, not to taste?
    - Are the `Assumptions` reasonable given the Contratto, as opposed to
      `Open decisions` that should have gone to the Consigliere instead?
-3. For **Build** Rapporti, check:
+3. For **Build** work, check:
    - Is there actually an approved concept under `Prior work`? If missing,
      that's an immediate blocker regardless of code quality.
    - Does the build actually implement the approved concept? Open both
@@ -38,7 +39,8 @@ Consigliere.
 ## Blocker vs. note
 
 Blocker: missing states, missing prior-work approval, unjustified concept
-deviation, missing accessibility coverage, only one variant in Phase 1.
+deviation, missing accessibility coverage, only one variant in the Concept
+phase.
 
 Note: taste, minor visual nuances without functional impact.
 

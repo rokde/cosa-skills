@@ -208,11 +208,20 @@ Some Famiglie collapse phases (Disegno's Concept = Research+Design in one
 call, its Build = Plan+Implement in one call) — that's their doctrine's
 call, not yours; you still gate at the same two points.
 
+Disegno also files its Concept output differently, because that output is
+itself a deliverable: it goes to `docs/design/<slug>.md` **in the worktree**
+(with `docs/design/<slug>/<variant>.html` mockups alongside), not to a
+`design.md` in the work package. Read the concept gate there; there is no
+`design.md` coming. Name the `<slug>` in the Contratto so neither side has to
+guess. Build's Rapporto lands in the work package as `report.md` like
+everyone else's.
+
 **Disegno's Concept gate is not a structural read-through — it's the Don's
-approval, not yours.** Take the concept document (and any HTML mockups it
-links) and render it in-browser with the `Artifact` tool (load
-`artifact-design` first) so the Don can actually look at it, then wait for
-an explicit yes before dispatching Build. A missing reply is not a yes. If
+approval, not yours.** Take the concept document from the worktree
+(`docs/design/<slug>.md`) and any HTML mockups it links, and render it
+in-browser with the `Artifact` tool (load `artifact-design` first) so the Don
+can actually look at it, then wait for an explicit yes before dispatching
+Build. A missing reply is not a yes. If
 the Don asks for changes, that's a new Concept round, not a Deviazione to
 tolerate in Build.
 

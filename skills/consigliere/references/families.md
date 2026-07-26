@@ -40,6 +40,11 @@ own (same reasoning as L'Occhio below).
 a Consigliere structural read — the Consigliere renders the concept (and any
 HTML mockups) via the `Artifact` tool so the Don can view it in-browser
 before Build is dispatched.
+**Artifact paths:** Concept output is a deliverable, so it lives in the
+worktree at `docs/design/<slug>.md` (+ `docs/design/<slug>/<variant>.html`)
+and is committed — not as `research.md`/`design.md` in the work package.
+Build's Rapporto goes to the work package as `report.md`, like every other
+Famiglia's.
 **Handles:** mockups, wireframes, design concepts, UI specifications, layout,
 interaction design, design tokens, accessibility, plus implementing an
 approved concept into markup/styles.

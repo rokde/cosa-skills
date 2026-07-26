@@ -127,13 +127,33 @@ always collapses Plan+Implement). Plan and Implement are never collapsed —
 a plan the Consigliere hasn't gated is not a plan an implementer executes
 against.
 
-Disegno's Concept→Build gate is the one exception to "gate reviews are
+### Disegno's artifact paths
+
+Disegno is the one Famiglia whose Research+Design output is itself a
+deliverable, so it does **not** write `research.md`/`design.md` into the work
+package. Its two phases produce:
+
+| Disegno phase | Produces | Where |
+|---------------|----------|-------|
+| Concept (= research + design) | `docs/design/<slug>.md`, plus `docs/design/<slug>/<variant>.html` mockups where layout/color/spacing matter | **worktree**, committed |
+| Build (= plan + implement) | the implementation, plus `report.md` — the Rapporto | implementation in the worktree; `report.md` in the work package |
+
+Build writes no separate `plan.md` unless the build is large enough that a
+checklist genuinely helps; if it writes one, it goes in the work package like
+any other phase artifact.
+
+The Concept gate therefore reads `docs/design/<slug>.md` **in the worktree**,
+not a `design.md` in the work package — there isn't one, and waiting for it
+is waiting forever. The Contratto names the concrete `<slug>` so neither side
+has to guess the filename.
+
+Disegno's Concept→Build gate is also the one exception to "gate reviews are
 structural": it's the **Don's** explicit approval, rendered in-browser by the
 Consigliere via the `Artifact` tool, not a self-judged structural read — see
 the `cosa:consigliere` skill's `references/families.md`.
 
-**Gate reviews are structural, not exhaustive**: the Consigliere checks
-`design.md`/`plan.md` against the Contratto's Objective, ACs, and Constraints
+**Gate reviews are structural, not exhaustive**: the Consigliere checks the
+gated artifact against the Contratto's Objective, ACs, and Constraints
 — skim headings, spot-read the decision points — and escalates to the
 requester only on a genuine deviation from the original ask. Deep
 verification of the finished work stays the Revisore's job.
