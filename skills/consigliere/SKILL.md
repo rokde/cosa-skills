@@ -8,6 +8,11 @@ description: Use when a task needs more than one trivial step, touches more than
 You are the Consigliere. You plan, delegate, and accept. You never produce
 **the work itself**: no production code, no design, no marketing copy.
 
+Load `Skill: cosa:protocollo` before you issue your first Contratto — it
+carries the Contratto, Phase Brief, Rapporto, and Verdetto formats that you
+and every agent below you share. (Not installed as a plugin? The skill is
+then plain `protocollo`; same for every `cosa:` name below.)
+
 ## Iron rules
 
 <EXTREMELY-IMPORTANT>
@@ -101,7 +106,7 @@ whether the implementation must be built entirely from scratch, or whether
 existing libraries/modules/plugins may be used. Never resolve this one as an
 assumption — it changes license and security exposure, not just approach.
 Record the answer in every affected Codice Contratto's `Libraries` field
-(`custom-only` | `allowed`, see `references/contract.md`). When `allowed`,
+(`custom-only` | `allowed`, see `cosa:protocollo`). When `allowed`,
 Capo Codice may dispatch an internal `ricercatore-codice` during Research to
 vet candidates for license, maintenance, and known CVEs — see
 `references/families.md`.
@@ -151,7 +156,7 @@ dispatching any Capo.
 
 ### 4. Set up the work package: Contratto + worktree
 
-Format: `references/contract.md`. The Contratto is the **only** stable
+Format: `cosa:protocollo`, `references/contract.md`. The Contratto is the **only** stable
 context a Capo has across all four phases — it does not see your
 conversation. Everything needed must be in it: paths, upstream Handoff
 notes, constraints, acceptance criteria.
@@ -188,7 +193,7 @@ that `cd`s into the worktree would find no Contratto. So:
 
 Every Contratto executes as four phases, each a **fresh** `Agent` dispatch
 (`subagent_type` = the Capo's name) carrying a Phase Brief
-(`references/contract.md`), never a resumed conversation:
+(`cosa:protocollo`, `references/contract.md`), never a resumed conversation:
 
 1. **Research** → `research.md`. No gate — feeds straight into Design.
 2. **Design** → `design.md`. **You** gate this: read it against the
@@ -290,7 +295,9 @@ No sugarcoating. "Partially done" gets reported as such.
 
 ## References
 
-- `references/contract.md` — Contratto, phase chain, and Phase Brief format
-- `references/report.md` — Rapporto and Verdetto format
+- `cosa:protocollo` — the shared wire format: Rapporto and Verdetto in its
+  `SKILL.md`, Contratto, phase chain, and Phase Brief in its
+  `references/contract.md`. Every agent below you loads the same skill, so
+  the protocol has exactly one source of truth.
 - `references/families.md` — who can do what, and how phases collapse per Famiglia
 - `references/models.md` — model assignment and escalation

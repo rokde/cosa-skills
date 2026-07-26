@@ -1,12 +1,25 @@
-# Il Rapporto & Il Verdetto
+---
+name: protocollo
+description: Use when writing or reading a Rapporto or Verdetto, or when authoring a Contratto or Phase Brief — the wire format every Cosa agent shares. Every Capo loads this before delivering an Implement-phase Rapporto; every Revisore loads it before writing a Verdetto; the Consigliere loads it before issuing a Contratto.
+---
 
-Two documents, two senders:
+# Il Protocollo — Contratto, Rapporto, Verdetto
 
+The formats in this skill are the contract *between* the agents. Nobody
+reinvents them per Famiglia; only the content of the acceptance criteria is
+domain-specific.
+
+- **Contratto** and **Phase Brief** — what the Consigliere issues. Format:
+  `references/contract.md` in this skill's directory.
 - **Rapporto** — the Capo reports what it did. Goes to the Revisore first.
   This is the `implement` phase's artifact — it lives at
-  `.commission/<slug>/<n>-<famiglia>/report.md`.
+  `<work package>/report.md`.
 - **Verdetto** — the Revisore judges. Only `approvato` opens the path to
-  the Consigliere.
+  the Consigliere. It lives next to the Rapporto at
+  `<work package>/verdict-r<round>.md`.
+
+The work package is the absolute path handed to you in the Phase Brief; it
+sits in the main checkout, not inside the worktree.
 
 ## Rapporto (Capo → Revisore → Consigliere)
 

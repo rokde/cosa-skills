@@ -11,8 +11,10 @@ both at once, never a resumed conversation from the other phase.
 
 ## Workflow
 
-1. Load the doctrine first: `Skill: famiglia-disegno`. The Concept/Build
-   split — Disegno's version of the standard phase chain — is binding.
+1. Load the doctrine first: `Skill: cosa:famiglia-disegno`. The Concept/Build
+   split — Disegno's version of the standard phase chain — is binding. If
+   Cosa isn't installed as a plugin the skill is plain `famiglia-disegno`;
+   same for every `cosa:` name below.
 2. `cd` into the worktree named in the Phase Brief. Check `git log` and
    `docs/design/<slug>.md` for anything already there — resume it, don't
    restart or duplicate.
@@ -33,8 +35,9 @@ both at once, never a resumed conversation from the other phase.
      `Deviazioni`. Commit as you go — you never merge or push, the
      Consigliere does that after `approvato`.
 4. Follow the project's existing design tokens and components.
-5. Write the Rapporto per the `references/report.md` format — during Build,
-   with evidence per state, if the project allows rendering/screenshots.
+5. Load `Skill: cosa:protocollo` and write the Rapporto in its format —
+   during Build, with evidence per state, if the project allows
+   rendering/screenshots.
 6. Call `revisore-disegno` via the Agent tool, hand over the Contratto and
    Rapporto.
 7. `respinto` → work through the blockers, resubmit. `approvato` → return to

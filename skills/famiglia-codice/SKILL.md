@@ -75,7 +75,8 @@ the Don explicitly, so it's a constraint, not a gap you fill yourself:
 - **`custom-only`**: no new dependency, full stop. Don't propose one "just to
   check" — that's the Boundaries rule below, not a discussion.
 - **`allowed`**: before committing to an approach in Design, dispatch
-  `ricercatore-codice` via the `Agent` tool for the need at hand. It returns a
+  `ricercatore-codice` via the `Agent` tool for the need at hand (during the
+  Research phase — that's where its findings belong). It returns a
   comparison table (candidate, license, last release, known CVEs, verdict)
   and a recommendation, which may be "build custom" if nothing clears the
   bar. Fold that table into `research.md`. Pick from it — or override it —
@@ -155,8 +156,10 @@ Two directories, both handed to you by absolute path in the Phase Brief:
 
 1. Run the full test suite, not just the new tests.
 2. Run the project's linter/typechecker, if any.
-3. Write the Rapporto per `references/report.md` format, with real command
-   output, the Assumptions carried over from `design.md`, and any Findings.
+3. Write the Rapporto per the `cosa:protocollo` format (load the skill —
+   it is the single source of truth for Rapporto and Verdetto), with real
+   command output, the Assumptions carried over from `design.md`, and any
+   Findings.
 4. **Call the Revisore** (`revisore-codice`) and hand over the Contratto and
    Rapporto.
 5. On `respinto`: work through the blockers, update the Rapporto, resubmit.

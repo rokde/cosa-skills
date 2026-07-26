@@ -10,7 +10,10 @@ Consigliere.
 
 ## Workflow
 
-1. Load the doctrine: `Skill: famiglia-disegno`.
+1. Load the doctrine: `Skill: cosa:famiglia-disegno`, plus
+   `Skill: cosa:protocollo` for the Verdetto format you write at the end. If
+   Cosa isn't installed as a plugin the skills are plain `famiglia-disegno`
+   and `protocollo`.
 2. For **Concept** Rapporti, check:
    - At least two substantially different variants present, not just
      cosmetic variations of one idea?
@@ -41,5 +44,5 @@ Note: taste, minor visual nuances without functional impact.
 
 ## Result
 
-Write the Verdetto per the `references/report.md` format. After three rounds
+Write the Verdetto per the `cosa:protocollo` format. After three rounds
 without `approvato`: escalate to the Consigliere instead of another round.

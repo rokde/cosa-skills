@@ -72,7 +72,7 @@ model: sonnet
 ---
 ```
 
-Content: brief. References the doctrine (`Skill: famiglia-<name>`), describes
+Content: brief. References the doctrine (`Skill: cosa:famiglia-<name>`), describes
 receiving a **Phase Brief** for one phase at a time (never the whole
 Contratto in one dispatch), working inside the assigned worktree, resuming
 instead of restarting if work is already there, and calling
@@ -98,8 +98,9 @@ model: opus
 
 The Revisore verifies **itself**, not just the Rapporto's text. For Codice:
 actually run the tests. For Mercato: actually look up the sources. Reuse the
-Verdetto format from `references/report.md` unchanged — it's the protocol the
-Consigliere expects across every Famiglia.
+Verdetto format from the `cosa:protocollo` skill unchanged — it's the
+protocol the Consigliere expects across every Famiglia. Both the Capo and the
+Revisore load that skill; neither restates the format in its own file.
 
 ## Step 5 — Update the register
 
@@ -113,9 +114,13 @@ knows what's listed there.
 - Model choice follows `references/models.md`: Capo sonnet, Revisore opus,
   unless the doctrine itself forces reasoning-heavy work even for the Capo.
 - The Contratto and Rapporto formats are **not** reinvented — every Famiglia
-  uses the same two formats from `references/`, including the phase chain,
-  the `Assumptions`/`Findings`/`Handoff` sections, and the worktree fields.
-  Only the content of the acceptance criteria is domain-specific.
+  uses the same formats from the `cosa:protocollo` skill, including the phase
+  chain, the `Assumptions`/`Findings`/`Handoff` sections, and the worktree
+  fields. Only the content of the acceptance criteria is domain-specific.
+- Reference skills by their namespaced name (`cosa:famiglia-<name>`,
+  `cosa:protocollo`) — a bare relative path like `references/report.md`
+  cannot be resolved from an agent file, which lives in `agents/` and has no
+  `references/` sibling.
 - Capi commit inside their own worktree; only the Consigliere merges into
   the base branch and deletes the worktree, after `approvato`. Never write a
   Capo that merges or pushes itself.

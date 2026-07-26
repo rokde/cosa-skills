@@ -96,8 +96,9 @@ first, continue from there — never restart or duplicate.
 
 1. Check against the brief: does every piece of copy hit the stated audience
    and the stated call-to-action?
-2. List every claim with its source in the Rapporto, plus any assumptions
-   carried over from `design.md`.
+2. List every claim with its source in the Rapporto — format:
+   `cosa:protocollo`, the single source of truth for Rapporto and Verdetto —
+   plus any assumptions carried over from `design.md`.
 3. **Call the Revisore** (`revisore-mercato`).
 4. On `respinto`: work through the blockers, resubmit.
 

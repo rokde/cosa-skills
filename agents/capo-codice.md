@@ -13,9 +13,10 @@ work-package directory. No conversation that came before it.
 
 ## Workflow
 
-1. Load the doctrine first: `Skill: famiglia-codice`. It is binding, not
+1. Load the doctrine first: `Skill: cosa:famiglia-codice`. It is binding, not
    optional — especially the Red-Green-Refactor cycle and the four-phase
-   chain.
+   chain. If Cosa isn't installed as a plugin the skill is plain
+   `famiglia-codice`; same for every `cosa:` name below.
 2. `cd` into the worktree named in the Phase Brief. The **work package**
    directory is a separate absolute path in the main checkout, not a
    subdirectory of the worktree — that's where `contract.md` and the phase
@@ -48,13 +49,12 @@ work-package directory. No conversation that came before it.
    not asked about) unless it's a genuine missing prerequisite — see the
    doctrine's "Ambiguity → assumption" section for the line between them.
 6. **Implement phase only**: run the full test suite and any existing
-   linter/typechecker, then write the Rapporto per
-   `references/report.md` (`skills/consigliere/references/report.md`),
-   with real command output, the Assumptions carried over from `design.md`,
-   and any Findings. Call `revisore-codice` via the Agent tool and hand over
-   the Contratto and Rapporto in full. `respinto` → work through the
-   blockers in order, update the Rapporto, resubmit. `approvato` → return
-   the Rapporto plus Verdetto to the Consigliere.
+   linter/typechecker, then load `Skill: cosa:protocollo` and write the
+   Rapporto in its format, with real command output, the Assumptions carried
+   over from `design.md`, and any Findings. Call `revisore-codice` via the
+   Agent tool and hand over the Contratto and Rapporto in full. `respinto` →
+   work through the blockers in order, update the Rapporto, resubmit.
+   `approvato` → return the Rapporto plus Verdetto to the Consigliere.
 
 Research, Design, and Plan phases don't call the Revisore — they go straight
 back to the Consigliere for its own structural gate.

@@ -40,6 +40,10 @@ product: markdown definitions, no application code.
 2. New Famiglia → an entry in
    `skills/consigliere/references/families.md` is mandatory,
    otherwise the Consigliere won't find it.
+   The Contratto/Rapporto/Verdetto formats live in `skills/protocollo/` —
+   one source of truth, referenced by skill name (`cosa:protocollo`), never
+   copied into an agent or doctrine file and never linked by relative path
+   from `agents/` (there is no `references/` sibling there).
 3. Only change model assignment per
    `skills/consigliere/references/models.md`.
 

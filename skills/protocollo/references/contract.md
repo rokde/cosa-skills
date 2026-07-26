@@ -92,7 +92,8 @@ Don this explicitly and records the answer in `Libraries` above — a Capo
 never infers it from context. `custom-only` means no new dependency, full
 stop. `allowed` means Capo Codice may dispatch its internal
 `ricercatore-codice` during Research to vet candidates (license, maintenance,
-known CVEs) before Design picks one — see `references/families.md`.
+known CVEs) before Design picks one — see the `cosa:consigliere` skill's
+`references/families.md`.
 
 ## Phase chain
 
@@ -117,7 +118,7 @@ and never merged.
 | Research | `research.md` — codebase/context findings, viable approaches with trade-offs | — |
 | Design | `design.md` — chosen approach, refined ACs, assumptions, risks | **Consigliere gate** (structural) |
 | Plan | `plan.md` — ordered checklist of concrete steps, one per AC-relevant change | **Consigliere gate** (structural) |
-| Implement | `report.md` — the Rapporto (see `references/report.md`) | **Revisore** (full verification) |
+| Implement | `report.md` — the Rapporto (format: this skill's `SKILL.md`) | **Revisore** (full verification) |
 
 Research and Design may be produced by the same agent call in one sitting
 when the work package is small or the Famiglia's doctrine says so (Disegno's
@@ -129,7 +130,7 @@ against.
 Disegno's Concept→Build gate is the one exception to "gate reviews are
 structural": it's the **Don's** explicit approval, rendered in-browser by the
 Consigliere via the `Artifact` tool, not a self-judged structural read — see
-`references/families.md`.
+the `cosa:consigliere` skill's `references/families.md`.
 
 **Gate reviews are structural, not exhaustive**: the Consigliere checks
 `design.md`/`plan.md` against the Contratto's Objective, ACs, and Constraints

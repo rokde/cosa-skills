@@ -172,10 +172,12 @@ agents/                        Subagent definitions (executors)
 └── skills/                    Doctrine (the HOW)
     ├── consigliere/           Main skill — orchestration
     │   └── references/
-    │       ├── contract.md    Work order format
-    │       ├── report.md      Report & verdict format
     │       ├── families.md    Registry of all Famiglie
     │       └── models.md      Model policy
+    ├── protocollo/            Shared wire format, loaded by every agent
+    │   ├── SKILL.md           Rapporto & Verdetto
+    │   └── references/
+    │       └── contract.md    Contratto, phase chain, Phase Brief
     ├── famiglia-codice/       Software development doctrine (TDD)
     ├── famiglia-disegno/      Visual doctrine (concept before code)
     ├── famiglia-mercato/      Marketing doctrine
@@ -183,8 +185,16 @@ agents/                        Subagent definitions (executors)
 ```
 
 Installed as a plugin, skills are namespaced (`/cosa:consigliere`) to avoid
-clashing with other plugins. Locally, during development, `claude
---plugin-dir .` loads it without installing anything.
+clashing with other plugins — which is why agents reference each other's
+doctrine as `cosa:famiglia-codice` rather than by relative path: an agent
+file lives in `agents/` and has no `references/` sibling to point at.
+Locally, during development, `claude --plugin-dir .` loads it without
+installing anything.
+
+The protocol formats deliberately sit in their own `protocollo` skill rather
+than under `consigliere/references/`: Capi and Revisori need them but must
+not load the Consigliere's orchestration doctrine, and a skill name resolves
+from anywhere while a relative path does not.
 
 Generated working documents also use English names: `.commission/<slug>/plan.md`
 for the overall Plan, and per work package

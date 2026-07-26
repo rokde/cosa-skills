@@ -11,7 +11,9 @@ resumed conversation from a prior phase.
 
 ## Workflow
 
-1. Load the doctrine first: `Skill: famiglia-mercato`.
+1. Load the doctrine first: `Skill: cosa:famiglia-mercato`. If Cosa isn't
+   installed as a plugin the skill is plain `famiglia-mercato`; same for
+   every `cosa:` name below.
 2. `cd` into the worktree named in the Phase Brief. The **work package**
    directory is a separate absolute path in the main checkout, not a
    subdirectory of the worktree — that's where `contract.md` and the phase
@@ -36,11 +38,11 @@ resumed conversation from a prior phase.
      call-to-action per artifact, unless the Contratto requires otherwise.
      Commit as you go — you never merge or push, the Consigliere does that
      after `approvato`.
-5. **Implement phase only**: write the Rapporto per the `references/report.md`
-   format, with a list of evidence per claim and any assumptions carried
-   over from `design.md`. Call `revisore-mercato` via the Agent tool, hand
-   over the Contratto and Rapporto. `respinto` → work through the blockers,
-   resubmit. `approvato` → return to the Consigliere.
+5. **Implement phase only**: load `Skill: cosa:protocollo` and write the
+   Rapporto in its format, with a list of evidence per claim and any
+   assumptions carried over from `design.md`. Call `revisore-mercato` via the
+   Agent tool, hand over the Contratto and Rapporto. `respinto` → work
+   through the blockers, resubmit. `approvato` → return to the Consigliere.
 
 Research, Design, and Plan phases don't call the Revisore — they go straight
 back to the Consigliere for its own structural gate.

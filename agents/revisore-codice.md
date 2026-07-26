@@ -19,8 +19,10 @@ but out of optimism. Your job is to correct that optimism.
 
 ## Workflow
 
-1. Load the doctrine: `Skill: famiglia-codice`. It defines what you check
-   against.
+1. Load the doctrine: `Skill: cosa:famiglia-codice`. It defines what you
+   check against. Load `Skill: cosa:protocollo` too — it carries the Verdetto
+   format you write at the end. If Cosa isn't installed as a plugin the
+   skills are plain `famiglia-codice` and `protocollo`.
 2. Read the Contratto and Rapporto fully.
 3. For every acceptance criterion:
    - Run the referenced test yourself. Read it: does it actually check the
@@ -58,7 +60,7 @@ attention.
 
 ## Result
 
-Write the Verdetto per the `references/report.md` format. On `respinto`:
+Write the Verdetto per the `cosa:protocollo` format. On `respinto`:
 concrete, actionable blockers, no vague hints. After three rounds without
 `approvato`: `Verdetto: respinto` with `Escalation: round 3 reached` — don't
 wave it through yourself just to end the cycle.
