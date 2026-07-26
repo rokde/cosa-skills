@@ -158,37 +158,59 @@ Consigliere itself.
 ## Directory structure
 
 ```
-.claude/
-├── agents/                       Subagent definitions (executors)
-│   ├── capo-codice.md            Implementation, strictly test-driven
-│   ├── revisore-codice.md        Code acceptance
-│   ├── capo-disegno.md           Visual concepts & UI implementation
-│   ├── revisore-disegno.md       Design acceptance
-│   ├── capo-mercato.md           Marketing, positioning, content
-│   ├── revisore-mercato.md       Marketing acceptance
-│   └── occhio.md                 Recon, read-only research
-└── skills/                       Doctrine (the HOW)
-    ├── consigliere/              Main skill — orchestration
+.claude-plugin/
+│   └── plugin.json            Plugin manifest (name, version, ...)
+agents/                        Subagent definitions (executors)
+│   ├── capo-codice.md         Implementation, strictly test-driven
+│   ├── revisore-codice.md     Code acceptance
+│   ├── capo-disegno.md        Visual concepts & UI implementation
+│   ├── revisore-disegno.md    Design acceptance
+│   ├── capo-mercato.md        Marketing, positioning, content
+│   ├── revisore-mercato.md    Marketing acceptance
+│   └── occhio.md              Recon, read-only research
+└── skills/                    Doctrine (the HOW)
+    ├── consigliere/           Main skill — orchestration
     │   └── references/
-    │       ├── contract.md       Work order format
-    │       ├── report.md         Report & verdict format
-    │       ├── families.md       Registry of all Famiglie
-    │       └── models.md         Model policy
-    ├── famiglia-codice/          Software development doctrine (TDD)
-    ├── famiglia-disegno/         Visual doctrine (concept before code)
-    ├── famiglia-mercato/         Marketing doctrine
-    └── nuova-famiglia/           Guide: founding a new Famiglia
+    │       ├── contract.md    Work order format
+    │       ├── report.md      Report & verdict format
+    │       ├── families.md    Registry of all Famiglie
+    │       └── models.md      Model policy
+    ├── famiglia-codice/       Software development doctrine (TDD)
+    ├── famiglia-disegno/      Visual doctrine (concept before code)
+    ├── famiglia-mercato/      Marketing doctrine
+    └── nuova-famiglia/        Guide: founding a new Famiglia
 ```
+
+Installed as a plugin, skills are namespaced (`/cosa:consigliere`) to avoid
+clashing with other plugins. Locally, during development, `claude
+--plugin-dir .` loads it without installing anything.
 
 Generated working documents also use English names: `.commission/<slug>/plan.md`
 for the overall Plan, `docs/design/<slug>.md` for Disegno (design) concepts, and 
 per work package `.commission/<slug>/<n>-<famiglia>/{contract,research,design,
 plan,report}.md` for the phase chain's artifacts.
 
+## Installation
+
+This repo doubles as its own single-plugin marketplace
+(`.claude-plugin/marketplace.json`):
+
+```
+claude plugin marketplace add rokde/cosa-claude
+claude plugin install cosa@cosa-claude
+```
+
+For local development, point Claude Code straight at the checkout instead —
+no install step, no marketplace:
+
+```
+claude --plugin-dir /path/to/cosa-claude
+```
+
 ## Usage
 
 ```
-/consigliere Build me a rate limiter for the API
+/cosa:consigliere Build me a rate limiter for the API
 ```
 
 Or just state a task — the Consigliere skill picks up multi-step work
@@ -211,9 +233,9 @@ automatically.
 | Capi           | sonnet | Execution against a precise Contratto |
 | Occhio         | haiku  | Broad search, gathering, summarizing |
 
-Details and escalation rules: `.claude/skills/consigliere/references/models.md`
+Details and escalation rules: `skills/consigliere/references/models.md`
 
 ## Extending
 
-Need a new specialization? `.claude/skills/nuova-famiglia/SKILL.md` describes
+Need a new specialization? `skills/nuova-famiglia/SKILL.md` describes
 the blueprint: Capo + Revisore + doctrine skill + registry entry.

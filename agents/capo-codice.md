@@ -43,7 +43,7 @@ work-package directory. No conversation that came before it.
    doctrine's "Ambiguity → assumption" section for the line between them.
 6. **Implement phase only**: run the full test suite and any existing
    linter/typechecker, then write the Rapporto per
-   `references/report.md` (`.claude/skills/consigliere/references/report.md`),
+   `references/report.md` (`skills/consigliere/references/report.md`),
    with real command output, the Assumptions carried over from `design.md`,
    and any Findings. Call `revisore-codice` via the Agent tool and hand over
    the Contratto and Rapporto in full. `respinto` → work through the

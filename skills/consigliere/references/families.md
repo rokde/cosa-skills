@@ -1,7 +1,7 @@
 # Le Famiglie — Register
 
 Authoritative registry. The Consigliere only delegates to Famiglie listed
-here. New Famiglia → `.claude/skills/nuova-famiglia/SKILL.md`.
+here. New Famiglia → `skills/nuova-famiglia/SKILL.md`.
 
 ## Famiglia Codice — Software
 

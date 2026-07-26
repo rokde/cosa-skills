@@ -1,0 +1,10 @@
+{
+  "name": "cosa",
+  "description": "Consigliere-orchestrated Famiglie (Codice, Disegno, Mercato) with Capo/Revisore agents, TDD and design-first doctrine, and a research/design/plan/implement phase chain.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robert Kummer"
+  },
+  "homepage": "https://github.com/rokde/cosa-claude",
+  "repository": "https://github.com/rokde/cosa-claude"
+}

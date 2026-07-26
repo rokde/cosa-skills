@@ -9,12 +9,12 @@ Every Famiglia consists of **exactly three parts**. Missing one makes it
 incomplete, and the Consigliere won't use it.
 
 ```
-.claude/skills/famiglia-<name>/SKILL.md   Doctrine — the HOW of the domain
-.claude/agents/capo-<name>.md             Executing agent
-.claude/agents/revisore-<name>.md         Reviewing agent
+skills/famiglia-<name>/SKILL.md   Doctrine — the HOW of the domain
+agents/capo-<name>.md             Executing agent
+agents/revisore-<name>.md         Reviewing agent
 ```
 
-Plus: an entry in `.claude/skills/consigliere/references/families.md`.
+Plus: an entry in `skills/consigliere/references/families.md`.
 
 ## Step 1 — Scope the domain
 
@@ -92,7 +92,7 @@ Consigliere expects across every Famiglia.
 ## Step 5 — Update the register
 
 Add a row to the model table and a section analogous to the existing
-Famiglie in `.claude/skills/consigliere/references/families.md`.
+Famiglie in `skills/consigliere/references/families.md`.
 **Without this entry the Consigliere won't find the Famiglia** — it only
 knows what's listed there.
 

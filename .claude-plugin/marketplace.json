@@ -1,0 +1,14 @@
+{
+  "name": "cosa-claude",
+  "owner": {
+    "name": "Robert Kummer"
+  },
+  "description": "Single-plugin marketplace for the Cosa Consigliere/Famiglie orchestration system.",
+  "plugins": [
+    {
+      "name": "cosa",
+      "source": "./",
+      "description": "Consigliere-orchestrated Famiglie (Codice, Disegno, Mercato) with Capo/Revisore agents, TDD and design-first doctrine, and a research/design/plan/implement phase chain."
+    }
+  ]
+}
