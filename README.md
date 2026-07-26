@@ -197,8 +197,8 @@ This repo doubles as its own single-plugin marketplace
 (`.claude-plugin/marketplace.json`):
 
 ```
-claude plugin marketplace add rokde/cosa-claude
-claude plugin install cosa@cosa-claude
+claude plugin marketplace add rokde/cosa-skills
+claude plugin install cosa@cosa-skills
 ```
 
 For local development, point Claude Code straight at the checkout instead —

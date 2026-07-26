@@ -1,5 +1,5 @@
 {
-  "name": "cosa-skills",
+  "name": "cosa",
   "description": "Consigliere-orchestrated Famiglie (Codice, Disegno, Mercato) with Capo/Revisore agents, TDD and design-first doctrine, and a research/design/plan/implement phase chain.",
   "version": "1.0.0",
   "author": {
