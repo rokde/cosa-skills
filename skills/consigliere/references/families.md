@@ -16,6 +16,12 @@ here. New Famiglia → `skills/nuova-famiglia/SKILL.md`.
 implement — no collapsing.
 **Handles:** implementation, refactoring, bug fixes, tests, migrations,
 build and CI configuration.
+**Tooling baseline:** Codice always uses the project's existing test, lint,
+and static-analysis tools, and sets up the missing ones as part of the work
+package (PHP: Pest/PHPUnit, PHPStan, Rector — JS/TS: Vitest,
+ESLint+Prettier). Don't scope that out of a Contratto and don't ask the Don
+about it — it's doctrine, and dev tooling is exempt from
+`Libraries: custom-only`.
 **Does not handle:** visual concepts (→ Disegno). UI code is implemented by
 Codice, but only after an approved Disegno artifact.
 **Library research:** when the Contratto's `Libraries` field is `allowed`,

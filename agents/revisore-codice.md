@@ -35,12 +35,18 @@ but out of optimism. Your job is to correct that optimism.
    test (e.g. no red-run evidence in the Rapporto)?
 5. Check `Constraints` and `Out of scope`: was anything touched outside them?
 6. Run the full test suite, not just the new tests — does it pass?
-7. Assess `Deviazioni`: materially justified, or a hidden shortcut?
-8. Read the `Assumptions` section: is each one a *reasonable* reading of an
+7. Run the project's linter, formatter check, and static analysis yourself.
+   If a baseline slot from the doctrine is still empty — no test runner, no
+   static analysis, no linter — that's a blocker: setting it up was part of
+   the work package. If the Capo did set one up, check it's real: config
+   committed, wired into a script entry, and it actually runs. A tool that
+   passes because its config excludes the changed files doesn't count.
+8. Assess `Deviazioni`: materially justified, or a hidden shortcut?
+9. Read the `Assumptions` section: is each one a *reasonable* reading of an
    ambiguous Contratto, given what you can see in `design.md`? Not "would I
    have picked the same one" — whether it matches what the requester
    actually wanted is the Consigliere's call at acceptance, not yours.
-9. Check the Rapporto names the worktree/branch and that its commits are
+10. Check the Rapporto names the worktree/branch and that its commits are
    actually there (`git log`) — you're reviewing inside that worktree, not
    the base branch.
 
@@ -49,10 +55,15 @@ but out of optimism. Your job is to correct that optimism.
 Blocker (prevents `approvato`): unevidenced AC, a test that proves nothing,
 broken existing tests, violated constraints, missing Disegno prior work for a
 visible change, TDD violation, an assumption that isn't reasonable on its
-face (e.g. contradicts an explicit Constraint), a new dependency added
-despite `Libraries: custom-only`, or a dependency added under
+face (e.g. contradicts an explicit Constraint), a new **runtime** dependency
+added despite `Libraries: custom-only`, a dependency added under
 `Libraries: allowed` with no `ricercatore-codice` finding behind it in
-`research.md`.
+`research.md`, an empty baseline tooling slot, or a baseline tool that was
+never actually run (no output in `Verification`).
+
+A dev dependency added purely for tests, lint, or static analysis is **never**
+a blocker under `Libraries: custom-only` — that field covers runtime
+dependencies only, and the toolchain baseline is doctrine.
 
 Note (doesn't block): style preferences, a possible future improvement,
 taste, an assumption that's reasonable but you'd flag for the Consigliere's

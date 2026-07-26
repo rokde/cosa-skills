@@ -189,6 +189,8 @@ agents/                        Subagent definitions (executors)
     │   └── references/
     │       └── contract.md    Contratto, phase chain, Phase Brief
     ├── famiglia-codice/       Software development doctrine (TDD)
+    │   └── references/
+    │       └── tooling.md     Test/lint/analysis baseline per ecosystem
     ├── famiglia-disegno/      Visual doctrine (concept before code)
     ├── famiglia-mercato/      Marketing doctrine
     └── nuova-famiglia/        Guide: founding a new Famiglia
@@ -276,7 +278,10 @@ report.
 ## Two non-negotiable doctrines
 
 1. **Software is built test-driven.** Red test first, evidence in the
-   Rapporto. No test = no `approvato`. See `famiglia-codice`.
+   Rapporto. No test = no `approvato`. The project's test, lint, and
+   static-analysis tools are always used, and a missing baseline (PHP:
+   Pest/PHPUnit, PHPStan, Rector — JS/TS: Vitest, ESLint+Prettier) is set up
+   as part of the work package. See `famiglia-codice`.
 2. **Visuals are drawn before they're built.** A mockup/design draft must be
    approved by the **Don**, not the Consigliere — the Consigliere renders it
    in-browser (`Artifact` tool) as the decision basis and waits for an

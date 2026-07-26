@@ -102,6 +102,12 @@ stop. `allowed` means Capo Codice may dispatch its internal
 known CVEs) before Design picks one — see the `cosa:consigliere` skill's
 `references/families.md`.
 
+`Libraries` governs **runtime** dependencies only. Dev tooling that merely
+runs tests, lint, formatting, or static analysis is outside it: Codice's
+doctrine requires that baseline and sets up whatever the project lacks, under
+`custom-only` too. Neither the `Libraries` field nor the "No new dependencies
+without asking first" constraint blocks it.
+
 ## Phase chain
 
 Every work package runs through four phases. Each phase is dispatched as a
