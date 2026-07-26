@@ -302,3 +302,14 @@ Details and escalation rules: `skills/consigliere/references/models.md`
 
 Need a new specialization? `skills/nuova-famiglia/SKILL.md` describes
 the blueprint: Capo + Revisore + doctrine skill + registry entry.
+
+## Releasing
+
+Run the `Release` workflow from the Actions tab with the target version
+(`1.0.0`, no leading `v`). It writes the version into
+`.claude-plugin/plugin.json`, commits that to `main`, tags **that** commit
+`v<version>` and publishes a GitHub release with generated notes — in that
+order, so the tagged tree always states the version it is named after.
+
+Installed plugins track the default branch, so the bump on `main` is what
+reaches users; the tag is the record of what changed when.
