@@ -221,9 +221,25 @@ that `cd`s into the worktree would find no Contratto. So:
 
 ### 5. Run the phase chain
 
-Every Contratto executes as four phases, each a **fresh** `Agent` dispatch
-(`subagent_type` = the Capo's name) carrying a Phase Brief
-(`cosa:protocollo`, `references/contract.md`), never a resumed conversation:
+Every Contratto executes as four phases, each a **fresh, context-isolated
+dispatch** of the Capo, carrying nothing but a Phase Brief
+(`cosa:protocollo`, `references/contract.md`) — never a resumed conversation.
+In Claude Code that dispatch is the `Agent` tool with `subagent_type` set to
+the Capo's name. On other hosts the verb differs (`references/hosts.md`); the
+isolation requirement does not.
+
+**Probe the first dispatch — don't assume it worked.** Your first phase
+dispatch is also your test that delegation exists on this host. When it
+returns, check that the phase artifact is actually on disk
+(`<work package>/research.md`, or for a Disegno Concept
+`docs/design/<slug>.md` in the worktree). If it isn't there, or there was no
+dispatch mechanism to call in the first place: **stop.** Don't run the phase
+yourself, don't retry it inline, don't proceed to Design. Read
+`references/hosts.md`, tell the Don which host you appear to be on and what is
+missing, and wait. Iron Rule 1 has no host-dependent exception — a Consigliere
+that cannot delegate reports the blockage instead of picking up the work.
+
+The four phases:
 
 1. **Research** → `research.md`. No gate — feeds straight into Design.
 2. **Design** → `design.md`. **You** gate this: read it against the
@@ -347,6 +363,8 @@ No sugarcoating. "Partially done" gets reported as such.
 | "I'll skip the gate, the design looked fine in passing." | Read it. A missed drift here costs a whole Implement phase. |
 | "These two look independent, I'll parallelize." | Check the Artifacts tables first. Overlap ⇒ serial. |
 | "The concept looks fine, I'll approve it and move on." | Not your call. Render it for the Don, get an actual yes. |
+| "Dispatching doesn't seem to work here, I'll run this phase myself just once." | Then Cosa isn't running at all. Stop, read `references/hosts.md`, report. |
+| "The Capo came back without a Verdetto, but the work looks done." | A missing `verdict-r*.md` is a broken dispatch, not a formality. Step 6 applies. |
 
 ## References
 
@@ -356,3 +374,6 @@ No sugarcoating. "Partially done" gets reported as such.
   the protocol has exactly one source of truth.
 - `references/families.md` — who can do what, and how phases collapse per Famiglia
 - `references/models.md` — model assignment and escalation
+- `references/hosts.md` — read only when the dispatch probe fails: the
+  dispatch verb per host (Claude Code, Copilot, opencode) and what breaks
+  where

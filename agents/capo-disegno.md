@@ -44,7 +44,7 @@ both at once, never a resumed conversation from the other phase.
    during Build, with evidence per state, if the project allows
    rendering/screenshots.
 6. Determine the **review round**: count the existing `verdict-r*.md` files
-   in the work package, add one. Call `revisore-disegno` via the Agent tool,
+   in the work package, add one. Dispatch `revisore-disegno` as a subagent,
    hand over the Contratto, the Rapporto, the work-package path, and
    `Round: <n>` explicitly — the Revisore is a fresh dispatch and cannot know
    the round otherwise.

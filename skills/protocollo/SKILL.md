@@ -32,6 +32,28 @@ exact path you were trying to write, and ask the Don to grant it — a
 `permissions.allow` rule in their `settings.json` scoped to that path is
 the fix. Resume once they confirm.
 
+### If you cannot dispatch your Revisore
+
+Not every host provides the same delegation mechanism, and some allow a
+dispatch from the main session but not from inside a subagent. When your
+attempt to call your Revisore fails — the tool isn't there, the agent name
+isn't known, or the call returns without a `verdict-r<n>.md` on disk — then:
+
+- **You do not review yourself.** Reading your own work back and declaring it
+  sound is not a Verdetto; it's the exact failure the Revisore exists to
+  prevent. Don't write a `verdict-r<n>.md` either — a Verdetto file with your
+  name in it is worse than a missing one, because the Consigliere counts
+  those files.
+- Keep the Rapporto as it stands, record the failed dispatch under
+  `Findings` (what you tried to call, what came back), and say plainly in
+  your hand-back that no Verdetto was obtained.
+- Hand it back anyway. The Consigliere checks for `verdict-r*.md` at
+  acceptance and applies Iron Rule 2; your job is to make the reason visible,
+  not to compensate for it.
+
+The Consigliere resolves this — it has the host reference and can tell the Don
+what is missing. Don't try to fix the environment from inside a phase.
+
 ## Rapporto (Capo → Revisore → Consigliere)
 
 ```markdown

@@ -129,7 +129,7 @@ the Don explicitly, so it's a constraint, not a gap you fill yourself:
 - **`custom-only`**: no new dependency, full stop. Don't propose one "just to
   check" — that's the Boundaries rule below, not a discussion.
 - **`allowed`**: before committing to an approach in Design, dispatch
-  `ricercatore-codice` via the `Agent` tool for the need at hand (during the
+  `ricercatore-codice` as a subagent for the need at hand (during the
   Research phase — that's where its findings belong). It returns a
   comparison table (candidate, license, last release, known CVEs, verdict)
   and a recommendation, which may be "build custom" if nothing clears the

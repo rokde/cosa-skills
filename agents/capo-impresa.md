@@ -58,7 +58,7 @@ can act on, which means an honest `drop` is worth more than a polite `pursue`.
    recommendation, the Assumptions carried over from `design.md`, and any
    Findings. Then determine the **review round**: count the existing
    `verdict-r*.md` files in the work package, add one. Call
-   `revisore-impresa` via the Agent tool and hand over the Contratto, the
+   `revisore-impresa` as a subagent and hand over the Contratto, the
    Rapporto in full, the work-package path, and `Round: <n>` explicitly — the
    Revisore is a fresh dispatch and cannot know the round otherwise.
    `respinto` → work through the blockers in order, update the assessment and

@@ -32,7 +32,8 @@ work-package directory. No conversation that came before it.
      the project leaves empty; filling them is part of this work package,
      not a prerequisite you fail on. No code
      changes. If the Contratto's `Libraries` field is `allowed`, dispatch
-     `ricercatore-codice` via the `Agent` tool for candidate
+     `ricercatore-codice` via subagent dispatch — the `Agent` tool in
+     Claude Code, its equivalent elsewhere — for candidate
      libraries/modules (license, maintenance, known CVEs) and fold its
      comparison table into this file. Write `research.md`.
    - **Design**: pick an approach, refine every AC into a concrete test
@@ -62,7 +63,7 @@ work-package directory. No conversation that came before it.
    Rapporto in its format, with real command output, the Assumptions carried
    over from `design.md`, and any Findings. Then determine the **review
    round**: count the existing `verdict-r*.md` files in the work package, add
-   one. Call `revisore-codice` via the Agent tool and hand over the Contratto,
+   one. Dispatch `revisore-codice` as a subagent and hand over the Contratto,
    the Rapporto in full, the work-package path, and `Round: <n>` explicitly —
    the Revisore is a fresh dispatch and cannot know the round otherwise.
    `respinto` → work through the blockers in order, update the Rapporto,

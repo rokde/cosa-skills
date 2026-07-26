@@ -82,6 +82,10 @@ to the Consigliere. See `capo-codice.md` as a template.
 Include `Agent` in the Capo's `tools:` list — without it, dispatching the
 Revisore (or any internal helper) is silently impossible and the Capo tends
 to self-review instead, which defeats the point of an independent Verdetto.
+The same hazard exists per host under a different name (see
+`skills/consigliere/references/hosts.md`), which is why the fallback rule
+lives in `cosa:protocollo`: a Capo that can't reach its Revisore reports
+that, it never reviews itself.
 
 ## Step 4 — Revisore agent
 
