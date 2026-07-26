@@ -17,8 +17,10 @@ Contratto, not a renegotiation of it.
 **Famiglia:** codice | disegno | mercato | <other>
 **Issued by:** Consigliere
 **Plan:** .commission/<slug>/plan.md, step <n>
-**Worktree:** <path>, branch <branch-name> (created by the Consigliere before phase 1)
+**Worktree:** <absolute path>, branch <branch-name> (created by the Consigliere before phase 1)
+**Work package:** <absolute path>/.commission/<slug>/<n>-<famiglia>/ (main checkout, not the worktree)
 **Libraries (Codice only):** custom-only | allowed — the Don's explicit answer, never assumed
+**Model escalation:** <omit unless escalating> opus — reason: <why>
 
 ## Objective
 <One sentence: what exists afterward that didn't exist before.>
@@ -58,6 +60,11 @@ Revisore: `<revisore-agent-name>`
 The Rapporto only reaches the Consigliere after `Verdetto: approvato`.
 ```
 
+`Model escalation` is present only when the Consigliere is upgrading the
+Capo's model above its default; the rules for when that's allowed live in the
+`cosa:consigliere` skill's `references/models.md`. Absent means: default
+model, no escalation — that's an assertion, not an omission.
+
 ## Quality rules for acceptance criteria
 
 Bad (not verifiable):
@@ -92,22 +99,33 @@ Don this explicitly and records the answer in `Libraries` above — a Capo
 never infers it from context. `custom-only` means no new dependency, full
 stop. `allowed` means Capo Codice may dispatch its internal
 `ricercatore-codice` during Research to vet candidates (license, maintenance,
-known CVEs) before Design picks one — see `references/families.md`.
+known CVEs) before Design picks one — see the `cosa:consigliere` skill's
+`references/families.md`.
 
 ## Phase chain
 
 Every work package runs through four phases. Each phase is dispatched as a
 **fresh** agent call in the same worktree — never resume an agent into the
 next phase. Phases read the prior phase's artifact from the work-package
-directory (`.commission/<slug>/<n>-<famiglia>/`), never from conversation
-memory.
+directory, never from conversation memory.
+
+**Where things live.** The work-package directory sits in the **main
+checkout**, not in the worktree:
+`<repo-root>/.commission/<slug>/<n>-<famiglia>/`. A worktree is a fresh
+checkout of a branch, so anything written to `.commission/` before the
+worktree was created is not visible inside it. Every Phase Brief therefore
+names the work-package directory by **absolute** path, and phase agents read
+and write their artifacts there while `cd`-ed into the worktree for the
+actual work. Deliverables — source, tests, `docs/design/<slug>.md`, mockups
+— live in the worktree and are committed there; `.commission/` is gitignored
+and never merged.
 
 | Phase | Produces | Who reviews before continuing |
 |-------|----------|-------------------------------|
 | Research | `research.md` — codebase/context findings, viable approaches with trade-offs | — |
 | Design | `design.md` — chosen approach, refined ACs, assumptions, risks | **Consigliere gate** (structural) |
 | Plan | `plan.md` — ordered checklist of concrete steps, one per AC-relevant change | **Consigliere gate** (structural) |
-| Implement | `report.md` — the Rapporto (see `references/report.md`) | **Revisore** (full verification) |
+| Implement | `report.md` — the Rapporto (format: this skill's `SKILL.md`) | **Revisore** (full verification) |
 
 Research and Design may be produced by the same agent call in one sitting
 when the work package is small or the Famiglia's doctrine says so (Disegno's
@@ -116,13 +134,33 @@ always collapses Plan+Implement). Plan and Implement are never collapsed —
 a plan the Consigliere hasn't gated is not a plan an implementer executes
 against.
 
-Disegno's Concept→Build gate is the one exception to "gate reviews are
+### Disegno's artifact paths
+
+Disegno is the one Famiglia whose Research+Design output is itself a
+deliverable, so it does **not** write `research.md`/`design.md` into the work
+package. Its two phases produce:
+
+| Disegno phase | Produces | Where |
+|---------------|----------|-------|
+| Concept (= research + design) | `docs/design/<slug>.md`, plus `docs/design/<slug>/<variant>.html` mockups where layout/color/spacing matter | **worktree**, committed |
+| Build (= plan + implement) | the implementation, plus `report.md` — the Rapporto | implementation in the worktree; `report.md` in the work package |
+
+Build writes no separate `plan.md` unless the build is large enough that a
+checklist genuinely helps; if it writes one, it goes in the work package like
+any other phase artifact.
+
+The Concept gate therefore reads `docs/design/<slug>.md` **in the worktree**,
+not a `design.md` in the work package — there isn't one, and waiting for it
+is waiting forever. The Contratto names the concrete `<slug>` so neither side
+has to guess the filename.
+
+Disegno's Concept→Build gate is also the one exception to "gate reviews are
 structural": it's the **Don's** explicit approval, rendered in-browser by the
 Consigliere via the `Artifact` tool, not a self-judged structural read — see
-`references/families.md`.
+the `cosa:consigliere` skill's `references/families.md`.
 
-**Gate reviews are structural, not exhaustive**: the Consigliere checks
-`design.md`/`plan.md` against the Contratto's Objective, ACs, and Constraints
+**Gate reviews are structural, not exhaustive**: the Consigliere checks the
+gated artifact against the Contratto's Objective, ACs, and Constraints
 — skim headings, spot-read the decision points — and escalates to the
 requester only on a genuine deviation from the original ask. Deep
 verification of the finished work stays the Revisore's job.
@@ -134,16 +172,23 @@ What the Consigliere hands to each phase's fresh agent — short, self-contained
 ```markdown
 # PHASE BRIEF: C-<n> — <research|design|plan|implement>
 
-**Worktree:** <path> (already checked out on <branch>)
-**Read first:** .commission/<slug>/<n>-<famiglia>/contract.md
+**Worktree:** <absolute path> (already checked out on <branch>) — do the work here
+**Work package:** <absolute path>/.commission/<slug>/<n>-<famiglia>/
+  — in the main checkout, NOT under the worktree. Read and write your phase
+  artifacts here, by absolute path.
+**Read first:** <work package>/contract.md
   <plus the prior phase's artifact, if any>
-**Produce:** .commission/<slug>/<n>-<famiglia>/<phase-artifact>.md
+**Produce:** <work package>/<phase-artifact>.md
 **Boundaries:** <what this phase must NOT do — e.g. "no code changes in
   research", "no implementation ahead of an approved plan">
 **Resume check:** if this work package's worktree already has commits or a
   partial artifact for this phase, verify what's done before adding anything
   — continue, don't restart, never duplicate.
 ```
+
+Both paths are absolute and both are given: the worktree is where the work
+happens and where commits land; the work package is where the phase
+artifacts are read and written. Never let a phase agent guess either one.
 
 No questions in a Phase Brief — ambiguities become assumptions per the rule
 above.

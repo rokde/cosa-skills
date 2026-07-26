@@ -44,7 +44,10 @@ license posture of the project if stated), and the worktree's existing
 
 - Read-only against the codebase: you inspect the manifest, you don't edit
   it. Adding the dependency is the Capo's job in Design/Implement, after the
-  Design gate.
+  Design gate. You have `Bash` for **audit commands only** — `npm audit`,
+  `pip-audit`, `osv-scanner`, `git log` and the like. Nothing that installs,
+  writes, or mutates: no `npm install`, no `pip install`, no lockfile
+  regeneration, not even "just to see if it resolves".
 - Don't assert a license or CVE status you haven't actually checked against
   a source — cite what you checked (URL, command output), not recollection.
 - No production code. Your output is a section the Capo folds into

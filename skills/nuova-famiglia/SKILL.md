@@ -72,7 +72,7 @@ model: sonnet
 ---
 ```
 
-Content: brief. References the doctrine (`Skill: famiglia-<name>`), describes
+Content: brief. References the doctrine (`Skill: cosa:famiglia-<name>`), describes
 receiving a **Phase Brief** for one phase at a time (never the whole
 Contratto in one dispatch), working inside the assigned worktree, resuming
 instead of restarting if work is already there, and calling
@@ -91,31 +91,51 @@ to self-review instead, which defeats the point of an independent Verdetto.
 ---
 name: revisore-<name>
 description: <When this Revisore is used>
-tools: <read-only where possible, plus execution for verification>
+tools: <read-only against the deliverable, plus execution for verification, plus Write>
 model: opus
 ---
 ```
 
+`Write` is not optional: the Revisore saves its own Verdetto to
+`<work package>/verdict-r<round>.md`. Read-only means it doesn't touch the
+*deliverable*, not that it produces nothing.
+
+The **review round** is handed to the Revisore by the Capo — the Capo counts
+the existing `verdict-r*.md` files, because only the Capo survives the whole
+Capo⇄Revisore loop. A Revisore never infers or renumbers a round.
+
 The Revisore verifies **itself**, not just the Rapporto's text. For Codice:
 actually run the tests. For Mercato: actually look up the sources. Reuse the
-Verdetto format from `references/report.md` unchanged — it's the protocol the
-Consigliere expects across every Famiglia.
+Verdetto format from the `cosa:protocollo` skill unchanged — it's the
+protocol the Consigliere expects across every Famiglia. Both the Capo and the
+Revisore load that skill; neither restates the format in its own file.
 
 ## Step 5 — Update the register
 
-Add a row to the model table and a section analogous to the existing
-Famiglie in `skills/consigliere/references/families.md`.
-**Without this entry the Consigliere won't find the Famiglia** — it only
-knows what's listed there.
+Two files, both required:
+
+1. `skills/consigliere/references/families.md` — a section analogous to the
+   existing Famiglie, including its role/model table, its phase chain (and
+   any collapsing), what it handles and what it doesn't, plus a row in the
+   selection guide. **Without this entry the Consigliere won't find the
+   Famiglia** — it only knows what's listed there.
+2. `skills/consigliere/references/models.md` — one row per new agent in the
+   assignment table, with the rationale for the model chosen. A Famiglia
+   missing here has no documented basis for its model policy and will drift
+   on the next review.
 
 ## Don't forget
 
 - Model choice follows `references/models.md`: Capo sonnet, Revisore opus,
   unless the doctrine itself forces reasoning-heavy work even for the Capo.
 - The Contratto and Rapporto formats are **not** reinvented — every Famiglia
-  uses the same two formats from `references/`, including the phase chain,
-  the `Assumptions`/`Findings`/`Handoff` sections, and the worktree fields.
-  Only the content of the acceptance criteria is domain-specific.
+  uses the same formats from the `cosa:protocollo` skill, including the phase
+  chain, the `Assumptions`/`Findings`/`Handoff` sections, and the worktree
+  fields. Only the content of the acceptance criteria is domain-specific.
+- Reference skills by their namespaced name (`cosa:famiglia-<name>`,
+  `cosa:protocollo`) — a bare relative path like `references/report.md`
+  cannot be resolved from an agent file, which lives in `agents/` and has no
+  `references/` sibling.
 - Capi commit inside their own worktree; only the Consigliere merges into
   the base branch and deletes the worktree, after `approvato`. Never write a
   Capo that merges or pushes itself.

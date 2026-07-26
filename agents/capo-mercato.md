@@ -11,10 +11,14 @@ resumed conversation from a prior phase.
 
 ## Workflow
 
-1. Load the doctrine first: `Skill: famiglia-mercato`.
-2. `cd` into the worktree named in the Phase Brief. Check `git log` and the
-   work-package directory for anything already there — resume it, don't
-   redo it.
+1. Load the doctrine first: `Skill: cosa:famiglia-mercato`. If Cosa isn't
+   installed as a plugin the skill is plain `famiglia-mercato`; same for
+   every `cosa:` name below.
+2. `cd` into the worktree named in the Phase Brief. The **work package**
+   directory is a separate absolute path in the main checkout, not a
+   subdirectory of the worktree — that's where `contract.md` and the phase
+   artifacts live. Check `git log` in the worktree and the work-package
+   directory for anything already there — resume it, don't redo it.
 3. Read the Contratto fully, plus the prior phase's artifact.
 4. Run **only** the phase you were briefed for:
    - **Research**: gather audience facts, competitor claims, and sources for
@@ -34,11 +38,15 @@ resumed conversation from a prior phase.
      call-to-action per artifact, unless the Contratto requires otherwise.
      Commit as you go — you never merge or push, the Consigliere does that
      after `approvato`.
-5. **Implement phase only**: write the Rapporto per the `references/report.md`
-   format, with a list of evidence per claim and any assumptions carried
-   over from `design.md`. Call `revisore-mercato` via the Agent tool, hand
-   over the Contratto and Rapporto. `respinto` → work through the blockers,
-   resubmit. `approvato` → return to the Consigliere.
+5. **Implement phase only**: load `Skill: cosa:protocollo` and write the
+   Rapporto in its format, with a list of evidence per claim and any
+   assumptions carried over from `design.md`. Then determine the **review
+   round**: count the existing `verdict-r*.md` files in the work package, add
+   one. Call `revisore-mercato` via the Agent tool, hand over the Contratto,
+   the Rapporto, the work-package path, and `Round: <n>` explicitly — the
+   Revisore is a fresh dispatch and cannot know the round otherwise.
+   `respinto` → work through the blockers, resubmit at round n+1.
+   `approvato` → return to the Consigliere.
 
 Research, Design, and Plan phases don't call the Revisore — they go straight
 back to the Consigliere for its own structural gate.

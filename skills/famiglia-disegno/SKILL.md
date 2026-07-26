@@ -40,9 +40,17 @@ your way past.
 
 ## Phase 1 — Concept
 
-Deliverable: a document at `docs/design/<slug>.md` — this doubles as both
-`research.md` and `design.md` for the work package; no need to write them
-separately.
+Deliverable: a document at `docs/design/<slug>.md` **in the worktree**,
+committed there. It replaces `research.md` and `design.md` outright — you
+write neither, and nothing of the Concept phase goes into the work-package
+directory. The Consigliere's gate reads this file at this path; the Contratto
+names the `<slug>` so there's nothing to guess.
+
+That's the exception, not a second convention: everything else follows the
+normal split — deliverables in the worktree, orchestration artifacts in the
+work package (absolute path, main checkout). Build's Rapporto is an
+orchestration artifact and goes to `<work package>/report.md` like every
+other Famiglia's.
 
 ### 1. Understand before drawing
 
@@ -135,7 +143,8 @@ wording) is an assumption — decide it, document it, move on.
 
 Only after approval. This collapses Plan+Implement: work directly from the
 approved concept, no separate `plan.md` needed unless the build is large
-enough that a checklist genuinely helps.
+enough that a checklist genuinely helps — and if you write one, it goes in
+the work package, not the worktree.
 
 - **The concept is binding.** Deviation only noted under `Deviazioni` in the
   Rapporto, and only for a material reason (technically impossible,
@@ -157,6 +166,16 @@ Contratto — Codice then works against your approved concept.
 Dispatched into a work package that already has commits or a partial
 concept/build artifact? Check `git log` in the worktree and the existing
 document first. Continue from what's there — never restart or duplicate.
+
+## Where things live
+
+Two directories, both handed to you by absolute path in the Phase Brief:
+
+- **Worktree** — the checkout you `cd` into. `docs/design/<slug>.md`, the
+  HTML mockups, and the built UI all live and get committed here.
+- **Work package** (`.commission/<slug>/<n>-disegno/`) — in the **main
+  checkout**, not under the worktree. `contract.md` is read here, and Build's
+  `report.md` is written here.
 
 ## Red flags
 

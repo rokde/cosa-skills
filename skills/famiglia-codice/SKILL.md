@@ -75,7 +75,8 @@ the Don explicitly, so it's a constraint, not a gap you fill yourself:
 - **`custom-only`**: no new dependency, full stop. Don't propose one "just to
   check" — that's the Boundaries rule below, not a discussion.
 - **`allowed`**: before committing to an approach in Design, dispatch
-  `ricercatore-codice` via the `Agent` tool for the need at hand. It returns a
+  `ricercatore-codice` via the `Agent` tool for the need at hand (during the
+  Research phase — that's where its findings belong). It returns a
   comparison table (candidate, license, last release, known CVEs, verdict)
   and a recommendation, which may be "build custom" if nothing clears the
   bar. Fold that table into `research.md`. Pick from it — or override it —
@@ -116,6 +117,18 @@ worktree and the existing `research.md`/`design.md`/`plan.md`/checked-off
 items **before** doing anything. Continue from the last completed item.
 Never redo work that's already there, never duplicate a commit.
 
+## Where things live
+
+Two directories, both handed to you by absolute path in the Phase Brief:
+
+- **Worktree** — the checkout you `cd` into. All code, tests, and commits
+  happen here.
+- **Work package** (`.commission/<slug>/<n>-codice/`) — sits in the **main
+  checkout**, not under the worktree. `contract.md` and every phase artifact
+  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  here, by absolute path. Don't look for them inside the worktree; they
+  aren't there and creating them there strands them.
+
 ## Before starting any phase
 
 1. Read the Contratto (`contract.md` in the work package directory) fully,
@@ -143,11 +156,17 @@ Never redo work that's already there, never duplicate a commit.
 
 1. Run the full test suite, not just the new tests.
 2. Run the project's linter/typechecker, if any.
-3. Write the Rapporto per `references/report.md` format, with real command
-   output, the Assumptions carried over from `design.md`, and any Findings.
-4. **Call the Revisore** (`revisore-codice`) and hand over the Contratto and
-   Rapporto.
-5. On `respinto`: work through the blockers, update the Rapporto, resubmit.
+3. Write the Rapporto per the `cosa:protocollo` format (load the skill —
+   it is the single source of truth for Rapporto and Verdetto), with real
+   command output, the Assumptions carried over from `design.md`, and any
+   Findings.
+4. **Call the Revisore** (`revisore-codice`) and hand over the Contratto, the
+   Rapporto, the work-package path, and the review round — count the existing
+   `verdict-r*.md` files in the work package and add one. The Revisore is a
+   fresh dispatch with no memory of earlier rounds; you are the only
+   participant that survives the loop, so the count is yours to keep.
+5. On `respinto`: work through the blockers, update the Rapporto, resubmit at
+   the next round.
 
 ## Red flags
 

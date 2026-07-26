@@ -75,6 +75,17 @@ separated from your own assessment.
 - Commit inside your worktree as you go. You never merge into the base
   branch or push — the Consigliere does that after `approvato`.
 
+## Where things live
+
+Two directories, both handed to you by absolute path in the Phase Brief:
+
+- **Worktree** — the checkout you `cd` into. The artifact itself and all
+  commits happen here.
+- **Work package** (`.commission/<slug>/<n>-mercato/`) — sits in the **main
+  checkout**, not under the worktree. `contract.md` and every phase artifact
+  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  here, by absolute path.
+
 ## Resume, don't restart
 
 Dispatched into a work package with existing commits or a partial phase
@@ -85,10 +96,14 @@ first, continue from there — never restart or duplicate.
 
 1. Check against the brief: does every piece of copy hit the stated audience
    and the stated call-to-action?
-2. List every claim with its source in the Rapporto, plus any assumptions
-   carried over from `design.md`.
-3. **Call the Revisore** (`revisore-mercato`).
-4. On `respinto`: work through the blockers, resubmit.
+2. List every claim with its source in the Rapporto — format:
+   `cosa:protocollo`, the single source of truth for Rapporto and Verdetto —
+   plus any assumptions carried over from `design.md`.
+3. **Call the Revisore** (`revisore-mercato`), handing over the Contratto,
+   the Rapporto, the work-package path, and the review round — count the
+   existing `verdict-r*.md` files in the work package and add one. The
+   Revisore is a fresh dispatch with no memory of earlier rounds.
+4. On `respinto`: work through the blockers, resubmit at the next round.
 
 ## Red flags
 

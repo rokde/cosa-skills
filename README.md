@@ -127,9 +127,11 @@ Request
                                   ┌──────────────┴──────────────┐
                                   │ respinto                    │ approvato
                                  ▼                              ▼
-                          back to IMPLEMENT      ┌──────────────────────┐
-                          (round+1, max 3        │ RAPPORTO + VERDETTO  │
-                          before escalation)     │ → Consigliere        │
+                          back to the CAPO       ┌──────────────────────┐
+                          (review round+1,       │ RAPPORTO + VERDETTO  │
+                          max 3; the Capo        │ → Consigliere        │
+                          counts them, not       │                      │
+                          the Revisore)          │                      │
                                                  └────────────┬─────────┘
                                                               ▼
                                        ┌─────────────────────────────────────────┐
@@ -155,6 +157,14 @@ drift re-runs the phase it gated, not the whole chain; acceptance failure
 re-runs Implement against a corrected Contratto, never a hand-fix by the
 Consigliere itself.
 
+Two loops, two counters, deliberately separate. A **review round** is one
+Capo⇄Revisore exchange inside a single Implement phase — capped at three,
+counted by the Capo (the Revisore is a fresh dispatch each time and remembers
+nothing; the count comes from the `verdict-r<n>.md` files on disk). A
+**rework Contratto** is the Consigliere reissuing after an `approvato`
+Rapporto failed its acceptance — capped at two, then it goes to the
+requester.
+
 ## Directory structure
 
 ```
@@ -172,10 +182,12 @@ agents/                        Subagent definitions (executors)
 └── skills/                    Doctrine (the HOW)
     ├── consigliere/           Main skill — orchestration
     │   └── references/
-    │       ├── contract.md    Work order format
-    │       ├── report.md      Report & verdict format
     │       ├── families.md    Registry of all Famiglie
     │       └── models.md      Model policy
+    ├── protocollo/            Shared wire format, loaded by every agent
+    │   ├── SKILL.md           Rapporto & Verdetto
+    │   └── references/
+    │       └── contract.md    Contratto, phase chain, Phase Brief
     ├── famiglia-codice/       Software development doctrine (TDD)
     ├── famiglia-disegno/      Visual doctrine (concept before code)
     ├── famiglia-mercato/      Marketing doctrine
@@ -183,13 +195,29 @@ agents/                        Subagent definitions (executors)
 ```
 
 Installed as a plugin, skills are namespaced (`/cosa:consigliere`) to avoid
-clashing with other plugins. Locally, during development, `claude
---plugin-dir .` loads it without installing anything.
+clashing with other plugins — which is why agents reference each other's
+doctrine as `cosa:famiglia-codice` rather than by relative path: an agent
+file lives in `agents/` and has no `references/` sibling to point at.
+Locally, during development, `claude --plugin-dir .` loads it without
+installing anything.
+
+The protocol formats deliberately sit in their own `protocollo` skill rather
+than under `consigliere/references/`: Capi and Revisori need them but must
+not load the Consigliere's orchestration doctrine, and a skill name resolves
+from anywhere while a relative path does not.
 
 Generated working documents also use English names: `.commission/<slug>/plan.md`
-for the overall Plan, `docs/design/<slug>.md` for Disegno (design) concepts, and 
-per work package `.commission/<slug>/<n>-<famiglia>/{contract,research,design,
-plan,report}.md` for the phase chain's artifacts.
+for the overall Plan, and per work package
+`.commission/<slug>/<n>-<famiglia>/{contract,research,design,plan,report}.md`
+plus `verdict-r<n>.md` for the phase chain's artifacts.
+
+`.commission/` lives in the **main checkout** and is gitignored — a worktree
+is a fresh checkout of a branch, so orchestration artifacts written there
+before it exists would be invisible to the phase agents, and merging them
+back would drag working documents into the base branch. Deliverables go the
+other way: source, tests, and Disegno's `docs/design/<slug>.md` concept plus
+its `docs/design/<slug>/<variant>.html` mockups live in the worktree and are
+committed there. Phase Briefs carry both paths, absolute.
 
 ## Installation
 
@@ -197,15 +225,15 @@ This repo doubles as its own single-plugin marketplace
 (`.claude-plugin/marketplace.json`):
 
 ```
-claude plugin marketplace add rokde/cosa-claude
-claude plugin install cosa@cosa-claude
+claude plugin marketplace add rokde/cosa-skills
+claude plugin install cosa@cosa-skills
 ```
 
 For local development, point Claude Code straight at the checkout instead —
 no install step, no marketplace:
 
 ```
-claude --plugin-dir /path/to/cosa-claude
+claude --plugin-dir /path/to/cosa-skills
 ```
 
 ## Usage

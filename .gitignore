@@ -1,1 +1,4 @@
 .DS_Store
+
+# Cosa orchestration working documents — never part of a deliverable
+.commission/
