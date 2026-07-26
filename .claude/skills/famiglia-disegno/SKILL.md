@@ -1,6 +1,6 @@
 ---
 name: famiglia-disegno
-description: Use when a task involves anything a person will see — screens, layouts, components, flows, visual identity. The doctrine of the Famiglia Disegno: concept before code, in two separate phases with an approval gate between them. Also read this before reviewing as Revisore Disegno.
+description: Use when a task involves anything a person will see — screens, layouts, components, flows, visual identity. The doctrine of the Famiglia Disegno: concept before code, in two phases (Concept, Build) with an approval gate between them — the Famiglia's version of the standard research/design/plan/implement chain. Also read this before reviewing as Revisore Disegno.
 ---
 
 # Famiglia Disegno — Doctrine
@@ -14,22 +14,31 @@ Consigliere's approval, no line of UI code is written — not even
 "just to get a head start".
 </EXTREMELY-IMPORTANT>
 
-## Two phases
+## Two phases, mapped onto the standard chain
+
+Every Contratto runs a research→design→plan→implement chain. Disegno is the
+one Famiglia allowed to collapse it, because concept work and build work are
+each naturally a single sitting:
 
 ```
-PHASE 1 — CONCEPT             PHASE 2 — BUILD
-Mockups, variants,     ──►    Implementation of the
-rationale                     approved concept
+PHASE 1 — CONCEPT              PHASE 2 — BUILD
+(= Research + Design)   ──►    (= Plan + Implement)
+Mockups, variants,             Implementation of the
+rationale                      approved concept
         │                              ▲
-        └──── Consigliere approval ────┘
+        └──── Consigliere gate ────────┘
 ```
 
 A Contratto always addresses exactly **one** phase. If your Contratto asks
-for Phase 2 without an approved concept under `Prior work`: return it.
+for Build without an approved Concept under `Prior work`: return it —
+`Outcome: failed`, this is a missing prerequisite, not something to assume
+your way past.
 
 ## Phase 1 — Concept
 
-Deliverable: a document at `docs/design/<slug>.md`.
+Deliverable: a document at `docs/design/<slug>.md` — this doubles as both
+`research.md` and `design.md` for the work package; no need to write them
+separately.
 
 ### 1. Understand before drawing
 
@@ -88,13 +97,24 @@ Presentation form, depending on context:
 - Contrast ratios:
 - Screen reader labels:
 
+## Assumptions
+<Anything the Contratto left open that you resolved yourself — see
+"Ambiguity → assumption" below. Not the same as "Open decisions".>
+
 ## Open decisions for the Consigliere
 - …
 ```
 
+Ambiguity that's genuinely a **judgment call about direction** (not a small
+detail) belongs under "Open decisions" and is exactly what the Consigliere's
+gate is for. A small, resolvable ambiguity (exact spacing, a label's
+wording) is an assumption — decide it, document it, move on.
+
 ## Phase 2 — Build
 
-Only after approval. Rules:
+Only after approval. This collapses Plan+Implement: work directly from the
+approved concept, no separate `plan.md` needed unless the build is large
+enough that a checklist genuinely helps.
 
 - **The concept is binding.** Deviation only noted under `Deviazioni` in the
   Rapporto, and only for a material reason (technically impossible,
@@ -105,9 +125,17 @@ Only after approval. Rules:
 - Semantic markup. Keyboard operability. Visible focus.
 - Evidence in the Rapporto: screenshot or rendered output per state, if the
   project supports it.
+- Commit inside your worktree as you go. You never merge into the base
+  branch or push — the Consigliere does that after `approvato`.
 
 If the build work is mostly logic rather than UI, it belongs in a Codice
 Contratto — Codice then works against your approved concept.
+
+## Resume, don't restart
+
+Dispatched into a work package that already has commits or a partial
+concept/build artifact? Check `git log` in the worktree and the existing
+document first. Continue from what's there — never restart or duplicate.
 
 ## Red flags
 
@@ -118,3 +146,4 @@ Contratto — Codice then works against your approved concept.
 | "I'll add the error state later." | Incomplete states ⇒ `respinto`. |
 | "It looks nicer if I deviate here." | Undocumented deviation ⇒ `respinto`. |
 | "Accessibility isn't in the Contratto." | It's always in the Contratto. |
+| "No approved concept, I'll sketch one while I build." | `Outcome: failed`. Missing prerequisite, not an assumption. |

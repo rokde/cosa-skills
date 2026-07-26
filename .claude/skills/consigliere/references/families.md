@@ -11,6 +11,8 @@ here. New Famiglia → `.claude/skills/nuova-famiglia/SKILL.md`.
 | Revisore | `revisore-codice` | opus |
 
 **Doctrine:** `famiglia-codice` — strictly test-driven, Red→Green→Refactor.
+**Phase chain:** all four phases stand alone — research, design, plan,
+implement — no collapsing.
 **Handles:** implementation, refactoring, bug fixes, tests, migrations,
 build and CI configuration.
 **Does not handle:** visual concepts (→ Disegno). UI code is implemented by
@@ -23,7 +25,9 @@ Codice, but only after an approved Disegno artifact.
 | Capo | `capo-disegno` | sonnet |
 | Revisore | `revisore-disegno` | opus |
 
-**Doctrine:** `famiglia-disegno` — concept before code. Two phases.
+**Doctrine:** `famiglia-disegno` — concept before code.
+**Phase chain:** collapsed into two: Concept (research+design) and Build
+(plan+implement), one Consigliere gate between them.
 **Handles:** mockups, wireframes, design concepts, UI specifications, layout,
 interaction design, design tokens, accessibility, plus implementing an
 approved concept into markup/styles.
@@ -37,6 +41,8 @@ approved concept into markup/styles.
 | Revisore | `revisore-mercato` | opus |
 
 **Doctrine:** `famiglia-mercato` — audience and proof of claims before copy.
+**Phase chain:** all four phases stand alone — research, design, plan,
+implement — no collapsing.
 **Handles:** positioning, messaging, go-to-market plans, landing page copy,
 campaigns, content plans, competitive analysis.
 

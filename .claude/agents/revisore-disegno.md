@@ -18,6 +18,8 @@ Consigliere.
    - Responsive behavior and accessibility addressed concretely, not just
      mentioned?
    - Is the recommendation traceable back to the task, not to taste?
+   - Are the `Assumptions` reasonable given the Contratto, as opposed to
+     `Open decisions` that should have gone to the Consigliere instead?
 3. For **Build** Rapporti, check:
    - Is there actually an approved concept under `Prior work`? If missing,
      that's an immediate blocker regardless of code quality.
@@ -27,6 +29,8 @@ Consigliere.
    - Any unjustified deviation from the concept?
    - Existing design tokens/components reused instead of reinvented?
    - Keyboard operability and visible focus present, where checkable?
+   - Rapporto names the worktree/branch and its commits are actually there
+     (`git log`)?
 
 ## Blocker vs. note
 

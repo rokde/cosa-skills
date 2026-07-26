@@ -1,10 +1,15 @@
 # Il Contratto — Work Order Format
 
-The Contratto is the complete context a Capo gets. It does **not** see the
-conversation between Consigliere and requester. What isn't in the Contratto
-doesn't exist for the Capo.
+The Contratto is the complete context for one work package. It does **not**
+see the conversation between Consigliere and requester. What isn't in the
+Contratto, or in an artifact it points to, doesn't exist for the Capo.
 
-## Template
+A Contratto covers a whole work package and is issued **once**. Execution
+inside it runs through four phases (see `Phase chain` below); each phase is a
+fresh agent dispatch carrying a short **Phase Brief** derived from this
+Contratto, not a renegotiation of it.
+
+## Contratto template
 
 ```markdown
 # CONTRATTO C-<n>: <Title>
@@ -12,6 +17,7 @@ doesn't exist for the Capo.
 **Famiglia:** codice | disegno | mercato | <other>
 **Issued by:** Consigliere
 **Plan:** .commission/<slug>/plan.md, step <n>
+**Worktree:** <path>, branch <branch-name> (created by the Consigliere before phase 1)
 
 ## Objective
 <One sentence: what exists afterward that didn't exist before.>
@@ -21,9 +27,9 @@ doesn't exist for the Capo.
 existing conventions, why this is needed.>
 
 ## Prior work
-<Results of dependent Contratti. Concrete paths, not secondhand summaries.
-For Disegno prior work: path to the approved mockup.>
-- C-1 delivered: `docs/mockups/checkout.md` (approved on …)
+<Results of dependent Contratti — concrete paths, not secondhand summaries.
+Carry forward the `Handoff` section of every upstream Rapporto verbatim.>
+- C-1 delivered: `docs/design/checkout.md` (approved on …) — Handoff: …
 
 ## Acceptance criteria
 <Numbered, individually verifiable, phrased as an observable fact.
@@ -65,7 +71,71 @@ Good (verifiable):
 Rule of thumb: if the Revisore can't answer the AC with "yes/no + evidence",
 it's not an AC — it's a wish. Rewrite it.
 
+## Ambiguity is not a reason to stop
+
+An unclear AC or an underspecified detail inside an otherwise workable
+Contratto is not escalated back to the Consigliere. The Capo picks the most
+reasonable reading, documents it as an assumption (in `design.md`, carried
+into the Rapporto's `Assumptions` section), and proceeds. The Consigliere
+reviews every assumption at acceptance time and issues a rework Contratto if
+one doesn't hold.
+
+`Outcome: failed` is reserved for missing **prerequisites**, not ambiguity:
+a required upstream artifact is absent (e.g. no approved Disegno concept for
+a visible change), a named tool/access is unavailable, or the ACs are
+structurally impossible to satisfy as stated.
+
+## Phase chain
+
+Every work package runs through four phases. Each phase is dispatched as a
+**fresh** agent call in the same worktree — never resume an agent into the
+next phase. Phases read the prior phase's artifact from the work-package
+directory (`.commission/<slug>/<n>-<famiglia>/`), never from conversation
+memory.
+
+| Phase | Produces | Who reviews before continuing |
+|-------|----------|-------------------------------|
+| Research | `research.md` — codebase/context findings, viable approaches with trade-offs | — |
+| Design | `design.md` — chosen approach, refined ACs, assumptions, risks | **Consigliere gate** (structural) |
+| Plan | `plan.md` — ordered checklist of concrete steps, one per AC-relevant change | **Consigliere gate** (structural) |
+| Implement | `report.md` — the Rapporto (see `references/report.md`) | **Revisore** (full verification) |
+
+Research and Design may be produced by the same agent call in one sitting
+when the work package is small or the Famiglia's doctrine says so (Disegno's
+Concept phase always collapses Research+Design this way; its Build phase
+always collapses Plan+Implement). Plan and Implement are never collapsed —
+a plan the Consigliere hasn't gated is not a plan an implementer executes
+against.
+
+**Gate reviews are structural, not exhaustive**: the Consigliere checks
+`design.md`/`plan.md` against the Contratto's Objective, ACs, and Constraints
+— skim headings, spot-read the decision points — and escalates to the
+requester only on a genuine deviation from the original ask. Deep
+verification of the finished work stays the Revisore's job.
+
+## Phase Brief template
+
+What the Consigliere hands to each phase's fresh agent — short, self-contained:
+
+```markdown
+# PHASE BRIEF: C-<n> — <research|design|plan|implement>
+
+**Worktree:** <path> (already checked out on <branch>)
+**Read first:** .commission/<slug>/<n>-<famiglia>/contract.md
+  <plus the prior phase's artifact, if any>
+**Produce:** .commission/<slug>/<n>-<famiglia>/<phase-artifact>.md
+**Boundaries:** <what this phase must NOT do — e.g. "no code changes in
+  research", "no implementation ahead of an approved plan">
+**Resume check:** if this work package's worktree already has commits or a
+  partial artifact for this phase, verify what's done before adding anything
+  — continue, don't restart, never duplicate.
+```
+
+No questions in a Phase Brief — ambiguities become assumptions per the rule
+above.
+
 ## Scoping
 
-One Contratto = one Capo = one coherent artifact. If the AC list grows past
-roughly seven items, or spans multiple domains, split the Contratto.
+One Contratto = one Capo = one coherent work package, run through its full
+phase chain. If the AC list grows past roughly seven items, or spans multiple
+domains, split into multiple Contratti instead of one oversized one.

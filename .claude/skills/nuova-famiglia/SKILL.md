@@ -35,10 +35,18 @@ Answer before writing anything:
 
 1. One non-negotiable core rule that prevents the domain's typical quality
    trap (see `famiglia-codice`: TDD prevents unevidenced claims of behavior).
-2. A concrete workflow for execution.
-3. Boundaries: what this Famiglia does not touch.
-4. A wrap-up step that always leads to the Revisore.
-5. A "Red flags" table with typical rationalizations for this domain.
+2. How the standard **research → design → plan → implement** phase chain
+   maps onto this domain — decide per phase what's produced, and whether any
+   phases naturally collapse (only Disegno collapses today: Concept =
+   research+design, Build = plan+implement). Plan and Implement are never
+   collapsed.
+3. The line between an **assumption** (ambiguity the Capo resolves itself,
+   documents, and proceeds past) and a **missing prerequisite** (a genuine
+   blocker, `Outcome: failed`) — every doctrine needs this distinction
+   spelled out concretely for its domain, not just inherited by reference.
+4. Boundaries: what this Famiglia does not touch.
+5. A wrap-up step (Implement phase) that always leads to the Revisore.
+6. A "Red flags" table with typical rationalizations for this domain.
 
 Frontmatter `description` starts with "Use when …" and names the trigger,
 not the content.
@@ -57,8 +65,11 @@ model: sonnet
 ```
 
 Content: brief. References the doctrine (`Skill: famiglia-<name>`), describes
-receiving a Contratto, always calls `revisore-<name>` at the end before
-delivering to the Consigliere. See `capo-codice.md` as a template.
+receiving a **Phase Brief** for one phase at a time (never the whole
+Contratto in one dispatch), working inside the assigned worktree, resuming
+instead of restarting if work is already there, and calling
+`revisore-<name>` only at the end of the Implement phase before delivering
+to the Consigliere. See `capo-codice.md` as a template.
 
 ## Step 4 — Revisore agent
 
@@ -90,7 +101,11 @@ knows what's listed there.
 - Model choice follows `references/models.md`: Capo sonnet, Revisore opus,
   unless the doctrine itself forces reasoning-heavy work even for the Capo.
 - The Contratto and Rapporto formats are **not** reinvented — every Famiglia
-  uses the same two formats from `references/`. Only the content of the
-  acceptance criteria is domain-specific.
+  uses the same two formats from `references/`, including the phase chain,
+  the `Assumptions`/`Findings`/`Handoff` sections, and the worktree fields.
+  Only the content of the acceptance criteria is domain-specific.
+- Capi commit inside their own worktree; only the Consigliere merges into
+  the base branch and deletes the worktree, after `approvato`. Never write a
+  Capo that merges or pushes itself.
 - If the new task only partly doesn't fit an existing Famiglia, extending its
   doctrine is usually the better call than founding a new Famiglia.

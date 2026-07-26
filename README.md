@@ -1,4 +1,8 @@
-# Cosa Claude
+![logo](./docs/art/cosa-logo.png)
+
+# Cosa
+
+> Cosa - Make AI an offer it can't refuse.
 
 A skill and agent system for Claude Code built on the *Commissione* principle:
 a **Consigliere** plans and orchestrates, specialized **Famiglie** execute,
@@ -12,28 +16,144 @@ it goes back to the Consigliere.
    Request  ─────────► │   CONSIGLIERE    │  plans, delegates, accepts
                        │   (main skill)   │  NEVER writes code
                        └────────┬─────────┘
-                                │ CONTRATTO
+                                │ CONTRATTO + worktree
                 ┌───────────────┼───────────────┐
                 ▼               ▼               ▼
         ┌──────────────┐ ┌─────────────┐ ┌─────────────┐
-        │ Capo Codice  │ │Capo Disegno │ │ Capo Mercato│   executes
-        └──────┬───────┘ └──────┬──────┘ └──────┬──────┘
-               │ deliverable    │               │
+        │ Capo Codice  │ │Capo Disegno │ │ Capo Mercato│   research → design
+        └──────┬───────┘ └──────┬──────┘ └──────┬──────┘   ↑ Consigliere gate
+               │                │               │           plan → implement
+               │                │               │           ↑ Consigliere gate
                ▼                ▼               ▼
         ┌──────────────┐ ┌─────────────┐ ┌─────────────┐
         │Revisore Cod. │ │Revisore Dis.│ │Revisore Mer.│   checks, approves
-        └──────┬───────┘ └──────┬──────┘ └──────┬──────┘
+        └──────┬───────┘ └──────┬──────┘ └──────┬──────┘   the Implement phase
                └────────────────┼───────────────┘
                                 │ RAPPORTO (only when `approvato`)
                                 ▼
                        ┌──────────────────┐
-                       │   CONSIGLIERE    │  accepts against the Contratto
+                       │   CONSIGLIERE    │  accepts, merges worktree, deletes it
                        └──────────────────┘
 ```
 
 Core rule: **A Rapporto only reaches the Consigliere once its Revisore has
 issued `approvato`.** The Consigliere doesn't trust the Rapporto — it checks
 the evidence against its own Contratto's acceptance criteria.
+
+Every work package runs through a **phase chain**: research → design → plan
+→ implement, each a fresh dispatch inside a dedicated git worktree. The
+Consigliere gates Design and Plan itself (structural check against the
+Contratto); the Revisore only ever reviews the Implement phase's Rapporto.
+Capi commit freely inside their worktree; only the Consigliere merges it
+into the base branch and deletes it, once `approvato`. Ambiguity inside a
+phase becomes a documented **assumption**, not a question back — only a
+genuinely missing prerequisite (e.g. no approved Disegno concept) stops the
+chain with `Outcome: failed`. Disegno collapses the chain into two phases
+(Concept = research+design, Build = plan+implement); the other Famiglie run
+all four separately.
+
+## End-to-end process for one requirement
+
+The overview above shows the actors. Here's the full lifecycle of a single
+work package, start to finish:
+
+```
+Request
+   │
+   ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ CONSIGLIERE — Understand                                        │
+│ observable outcome? domains? out of scope? worthless-if-wrong?  │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │ unfamiliar codebase?
+                            ▼
+                   ┌──────────────────┐
+                   │  OCCHIO (recon)  │  read-only, facts only, optional
+                   └────────┬─────────┘
+                            ▼
+┌───────────────────────────────────────────────────────────────┐
+│ CONSIGLIERE — Il Piano                                        │
+│ .commission/<slug>/plan.md : goal, steps, assumptions, risks  │
+│ → aligned with requester before any Capo is touched           │
+└───────────────────────────┬───────────────────────────────────┘
+                            ▼
+┌───────────────────────────────────────────────────────────┐
+│ CONSIGLIERE — per step: write CONTRATTO, create worktree  │
+│ .commission/<slug>/<n>-<famiglia>/contract.md             │
+└───────────────────────────┬───────────────────────────────┘
+                            ▼
+        ╔════════════════════════════════════════════════╗
+        ║          PHASE CHAIN (fresh Capo dispatch      ║
+        ║          per phase, same worktree throughout)  ║
+        ╚════════════════════════════════════════════════╝
+                            │
+                            ▼
+                  ┌─────────────────┐
+                  │  RESEARCH       │  research.md
+                  │  (Capo, fresh)  │  no code changes
+                  └─────────┬───────┘
+                            ▼
+                  ┌─────────────────┐
+                  │  DESIGN         │  design.md
+                  │  (Capo, fresh)  │  approach + Assumptions
+                  └─────────┬───────┘
+                            ▼
+                  ◇──────────────────◇
+                  │ CONSIGLIERE GATE │  structural: matches Contratto?
+                  ◇──────────────────◇
+                   │ drift        │ ok
+                   ▼              ▼
+            back to DESIGN   ┌─────────────────┐
+                             │  PLAN           │  plan.md
+                             │  (Capo, fresh)  │  ordered checklist
+                             └─────────┬───────┘
+                                       ▼
+                             ◇──────────────────◇
+                             │ CONSIGLIERE GATE │  structural: matches Contratto?
+                             ◇──────────────────◇
+                              │ drift        │ ok
+                              ▼              ▼
+                       back to PLAN    ┌─────────────────┐
+                                       │  IMPLEMENT      │  report.md
+                                       │  (Capo, fresh)  │  red→green→refactor,
+                                       │                 │  commits in worktree
+                                       └─────────┬───────┘
+                                                 ▼
+                                       ┌─────────────────┐
+                                       │  REVISORE       │  runs it itself,
+                                       │                 │  doesn't trust text
+                                       └─────────┬───────┘
+                                                 │
+                                  ┌──────────────┴──────────────┐
+                                  │ respinto                    │ approvato
+                                 ▼                              ▼
+                          back to IMPLEMENT      ┌──────────────────────┐
+                          (round+1, max 3        │ RAPPORTO + VERDETTO  │
+                          before escalation)     │ → Consigliere        │
+                                                 └────────────┬─────────┘
+                                                              ▼
+                                       ┌─────────────────────────────────────────┐
+                                       │ CONSIGLIERE — Acceptance                │
+                                       │ every AC: evidenced? spot-checked?      │
+                                       │ assumptions reasonable? deviations ok?  │
+                                       └────────┬──────────────────┬─────────────┘
+                                                │ AC not covered   │ all covered
+                                                ▼                  ▼
+                                        rework CONTRATTO    ┌────────────────────────┐
+                                        (back to IMPLEMENT) │ merge worktree → base  │
+                                                            │ delete worktree        │
+                                                            │ carry Handoff forward  │
+                                                            └───────────┬────────────┘
+                                                                        ▼
+                                                             next step's Contratto,
+                                                             or Wrap-up to requester
+```
+
+Every arrow that isn't a phase-to-phase step is a place the loop can repeat:
+Revisore rejection re-runs Implement only; a Consigliere gate finding
+drift re-runs the phase it gated, not the whole chain; acceptance failure
+re-runs Implement against a corrected Contratto, never a hand-fix by the
+Consigliere itself.
 
 ## Directory structure
 
@@ -61,7 +181,9 @@ the evidence against its own Contratto's acceptance criteria.
 ```
 
 Generated working documents also use English names: `.commission/<slug>/plan.md`
-for plans, `docs/design/<slug>.md` for design concepts.
+for the overall Plan, `docs/design/<slug>.md` for Disegno (design) concepts, and 
+per work package `.commission/<slug>/<n>-<famiglia>/{contract,research,design,
+plan,report}.md` for the phase chain's artifacts.
 
 ## Usage
 

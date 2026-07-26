@@ -3,6 +3,8 @@
 Two documents, two senders:
 
 - **Rapporto** — the Capo reports what it did. Goes to the Revisore first.
+  This is the `implement` phase's artifact — it lives at
+  `.commission/<slug>/<n>-<famiglia>/report.md`.
 - **Verdetto** — the Revisore judges. Only `approvato` opens the path to
   the Consigliere.
 
@@ -13,6 +15,7 @@ Two documents, two senders:
 
 **Outcome:** completed | partial | failed
 **Famiglia:** <name>
+**Worktree:** <path>, branch <branch-name>, commits: <short-sha>..<short-sha>
 
 ## Acceptance criteria
 | AC | Status | Evidence |
@@ -23,6 +26,12 @@ Two documents, two senders:
 
 ## Approach
 <Brief: which path was chosen and why. For software: the TDD cycles.>
+
+## Assumptions
+<Every ambiguity you resolved yourself instead of asking. What was unclear,
+what you decided, why that's the reasonable reading. Empty means: nothing
+was ambiguous — that's an assertion, not an omission.>
+- A1: Contratto didn't specify X, assumed Y because Z.
 
 ## Changed artifacts
 | Path | Kind | Core of the change |
@@ -36,11 +45,24 @@ $ pytest tests/rate_limit_test.py
 12 passed in 0.84s
 ```
 
+## Findings
+<Surprises encountered along the way that the Consigliere should know about
+even though they didn't block the work: unexpected tool/environment
+behavior, a workaround you had to apply, existing code that contradicted the
+Contratto's assumptions. Empty means: nothing surprising came up.>
+- …
+
 ## Deviazioni
 <Where and why the work deviated from the Contratto. Empty means: no
 deviation — that's an assertion, not an omission.>
 
 ## Open items / risks
+- …
+
+## Handoff
+<What the next phase or the next Contratto needs to know to build on this
+correctly — the Consigliere copies this verbatim into the next Contratto's
+"Prior work" section. Empty only if this is truly the last step.>
 - …
 ```
 
@@ -53,6 +75,15 @@ Evidence is one of:
 - A path to an artifact (mockup, document)
 
 Not evidence: "was implemented", "was tested", "works as intended".
+
+### Assumptions vs. Deviazioni
+
+- **Assumption**: the Contratto was silent or ambiguous, you picked a
+  reading and proceeded. Expected, not a fault — but the Consigliere reviews
+  every one at acceptance.
+- **Deviazione**: the Contratto was clear and you did something else anyway
+  (scope change, different approach than instructed, skipped an AC). Needs
+  explicit justification, and the Consigliere may reject it outright.
 
 ## Verdetto (Revisore)
 
@@ -80,9 +111,12 @@ Not evidence: "was implemented", "was tested", "works as intended".
 ### Rules for the Revisore
 
 - You verify **yourself**, not by reading the Rapporto. Run tests, open
-  files, cross-check claims.
+  files, cross-check claims — inside the worktree named in the Rapporto.
 - An unevidenced AC is a **blocker**, even if the implementation is correct.
 - Taste is a note, not a blocker.
+- An assumption is not automatically a blocker — check it's *reasonable*,
+  not that it matches what you'd have picked. Whether it matches the
+  requester's actual intent is the Consigliere's call, not yours.
 - On `respinto`, the work goes back to the Capo, not to the Consigliere.
 - After **three** rounds without `approvato`: escalate to the Consigliere with
   `Verdetto: respinto` and the note `Escalation: round 3 reached`.
@@ -95,4 +129,8 @@ Capo ──Rapporto──► Revisore ──respinto──► Capo (round+1)
                     approvato
                        ▼
                   Consigliere ──acceptance failed──► new Contratto
+                       │
+                  acceptance passed
+                       ▼
+              merge worktree, delete it, carry Handoff forward
 ```
