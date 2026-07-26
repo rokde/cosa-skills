@@ -2,3 +2,6 @@
 
 # Cosa orchestration working documents — never part of a deliverable
 .commission/
+
+# Cosa worktrees — one per Contratto, merged and removed by the Consigliere
+.worktrees/

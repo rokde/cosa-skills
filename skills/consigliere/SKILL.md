@@ -170,10 +170,33 @@ notes, constraints, acceptance criteria.
 
 Before dispatching phase 1, create the worktree for this work package: one
 worktree per Contratto, covering all four phases and the Revisore's review,
-merged and deleted once — not one worktree per phase. The mechanics are
-plain `git worktree add <path> -b <branch>` from the main checkout; if the
-`using-git-worktrees` skill is available in this session, follow it, but its
-absence is not a blocker.
+merged and deleted once — not one worktree per phase. It goes at
+`<repo-root>/.worktrees/<branch>`, project-local. Add `.worktrees/` to the
+project's `.gitignore` **before** creating it — an unignored worktree
+directory commits the entire tree into itself. The mechanics are plain
+`git worktree add .worktrees/<branch> -b <branch>` from the main checkout;
+if the `using-git-worktrees` skill is available in this session, follow it —
+it takes a declared directory over its own default, so `.worktrees/` still
+wins — but its absence is not a blocker.
+
+A fresh worktree has no installed dependencies, and a full
+`npm install`/`composer install` per Contratto is the slowest step of the
+setup. Where the filesystem supports copy-on-write, seed them from the main
+checkout instead of reinstalling — the clone is near-instant and costs no
+disk until something is written:
+
+```bash
+cp -c -R node_modules vendor .worktrees/<branch>/                # APFS (macOS)
+cp -R --reflink=auto node_modules vendor .worktrees/<branch>/    # btrfs/XFS
+```
+
+Skip whichever of those directories the project doesn't have, and fall back
+to its normal install command if neither flag is supported — this is an
+optimization, never a prerequisite. Do **not** CoW-clone the whole checkout
+as a substitute for the worktree: that copies `.git` along with it, giving a
+detached repository whose commits never reach the main checkout's object
+store, cannot be merged with `git merge <branch>`, and are destroyed
+silently by an `rm -rf` cleanup.
 
 Persist the Contratto text to
 `<repo-root>/.commission/<slug>/<n>-<famiglia>/contract.md` so every phase

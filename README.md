@@ -219,6 +219,14 @@ other way: source, tests, and Disegno's `docs/design/<slug>.md` concept plus
 its `docs/design/<slug>/<variant>.html` mockups live in the worktree and are
 committed there. Phase Briefs carry both paths, absolute.
 
+Worktrees themselves go to `.worktrees/<branch>` in the project, one per
+Contratto, and `.worktrees/` is gitignored like `.commission/`. Where the
+filesystem supports copy-on-write (`cp -c` on APFS, `cp --reflink` on
+btrfs/XFS), `node_modules`/`vendor` are cloned in from the main checkout
+rather than reinstalled. The checkout as a whole is never CoW-cloned as a
+worktree substitute — that would copy `.git` too, and the resulting
+repository's commits never reach the main checkout.
+
 ## Installation
 
 This repo doubles as its own single-plugin marketplace
