@@ -1,7 +1,7 @@
 {
   "name": "cosa",
   "description": "Consigliere-orchestrated Famiglie (Codice, Disegno, Mercato, Impresa) with Capo/Revisore agents, TDD, design-first and burden-of-proof doctrine, and a research/design/plan/implement phase chain.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Robert Kummer"
   },
