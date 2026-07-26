@@ -14,7 +14,7 @@ Contratto, not a renegotiation of it.
 ```markdown
 # CONTRATTO C-<n>: <Title>
 
-**Famiglia:** codice | disegno | mercato | <other>
+**Famiglia:** codice | disegno | mercato | impresa | <other>
 **Issued by:** Consigliere
 **Plan:** .commission/<slug>/plan.md, step <n>
 **Worktree:** <absolute path>, branch <branch-name> (created by the Consigliere before phase 1)
@@ -122,8 +122,8 @@ checkout of a branch, so anything written to `.commission/` before the
 worktree was created is not visible inside it. Every Phase Brief therefore
 names the work-package directory by **absolute** path, and phase agents read
 and write their artifacts there while `cd`-ed into the worktree for the
-actual work. Deliverables — source, tests, `docs/design/<slug>.md`, mockups
-— live in the worktree and are committed there; `.commission/` is gitignored
+actual work. Deliverables — source, tests, `docs/design/<slug>.md`, mockups,
+`docs/assessment/<slug>.md` — live in the worktree and are committed there; `.commission/` is gitignored
 and never merged.
 
 | Phase | Produces | Who reviews before continuing |

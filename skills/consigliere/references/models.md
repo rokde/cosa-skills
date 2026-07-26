@@ -19,9 +19,11 @@ the task.
 | `revisore-codice` | opus | Must find what the Capo missed — harder than doing the work. A weak Revisore is worse than none: it produces false confidence. |
 | `revisore-disegno` | opus | Judges consistency, user flow, accessibility — holistic, not rule-based. |
 | `revisore-mercato` | opus | Checks positioning logic and whether claims are backed by evidence. |
+| `revisore-impresa` | opus | Must catch an assessment that talked itself into a verdict — recomputes the business case and re-tests the evidence against the recommendation. |
 | `capo-codice` | sonnet | Works against a Contratto with testable ACs. The TDD cycle supplies the guidance that would otherwise require deep reasoning. |
 | `capo-disegno` | sonnet | The concept phase is structurally prescribed; the doctrine substitutes for reasoning depth. |
 | `capo-mercato` | sonnet | Copy production against a given brief. |
+| `capo-impresa` | opus | The documented exception to "Capo = sonnet": its acceptance criteria cannot be phrased as testable, and the work *is* the reasoning — weighing six dimensions of evidence into one defensible verdict. A weak judgment here sends the whole Commissione down a dead end. |
 | `occhio` | haiku | Broad search, high token volume, shallow judgment depth. |
 | `ricercatore-codice` | sonnet | Evaluates candidates against a concrete rubric (license, maintenance activity, CVEs) — bounded research, not open-ended judgment. The final pick still passes through the Design gate and, at Implement, the Revisore. |
 

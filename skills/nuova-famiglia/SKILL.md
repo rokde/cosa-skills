@@ -31,8 +31,8 @@ Answer before writing anything:
 - What observable artifact does this Famiglia deliver? (not "advice", but a
   document, a diff, a dated plan)
 - How does this domain differ from the existing Famiglie (`codice`,
-  `disegno`, `mercato`)? Overlap ⇒ extend an existing Famiglia rather than
-  founding a new one.
+  `disegno`, `mercato`, `impresa`)? Overlap ⇒ extend an existing Famiglia
+  rather than founding a new one.
 - What are the typical quality traps of this domain? (for Codice: untested
   code; for Legal: unsupported legal opinion; etc.) — this becomes the core
   rule of the doctrine.
@@ -105,7 +105,8 @@ the existing `verdict-r*.md` files, because only the Capo survives the whole
 Capo⇄Revisore loop. A Revisore never infers or renumbers a round.
 
 The Revisore verifies **itself**, not just the Rapporto's text. For Codice:
-actually run the tests. For Mercato: actually look up the sources. Reuse the
+actually run the tests. For Mercato: actually look up the sources. For
+Impresa: actually recompute the business case. Reuse the
 Verdetto format from the `cosa:protocollo` skill unchanged — it's the
 protocol the Consigliere expects across every Famiglia. Both the Capo and the
 Revisore load that skill; neither restates the format in its own file.
@@ -127,7 +128,10 @@ Two files, both required:
 ## Don't forget
 
 - Model choice follows `references/models.md`: Capo sonnet, Revisore opus,
-  unless the doctrine itself forces reasoning-heavy work even for the Capo.
+  unless the doctrine itself forces reasoning-heavy work even for the Capo —
+  precedent: `capo-impresa` runs opus because its acceptance criteria can't
+  be made testable and the work *is* the judgment. Document the exception in
+  `models.md`, don't leave it implicit in the agent file.
 - The Contratto and Rapporto formats are **not** reinvented — every Famiglia
   uses the same formats from the `cosa:protocollo` skill, including the phase
   chain, the `Assumptions`/`Findings`/`Handoff` sections, and the worktree

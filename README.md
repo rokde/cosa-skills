@@ -17,18 +17,18 @@ it goes back to the Consigliere.
                        │   (main skill)   │  NEVER writes code
                        └────────┬─────────┘
                                 │ CONTRATTO + worktree
-                ┌───────────────┼───────────────┐
-                ▼               ▼               ▼
-        ┌──────────────┐ ┌─────────────┐ ┌─────────────┐
-        │ Capo Codice  │ │Capo Disegno │ │ Capo Mercato│   research → design
-        └──────┬───────┘ └──────┬──────┘ └──────┬──────┘   ↑ Consigliere gate
-               │                │               │           plan → implement
-               │                │               │           ↑ Consigliere gate
-               ▼                ▼               ▼
-        ┌──────────────┐ ┌─────────────┐ ┌─────────────┐
-        │Revisore Cod. │ │Revisore Dis.│ │Revisore Mer.│   checks, approves
-        └──────┬───────┘ └──────┬──────┘ └──────┬──────┘   the Implement phase
-               └────────────────┼───────────────┘
+             ┌─────────────┬────┴─────────┬─────────────┐
+             ▼             ▼              ▼             ▼
+       ┌───────────┐ ┌────────────┐ ┌───────────┐ ┌────────────┐
+       │Capo Codice│ │Capo Disegno│ │Capo Merc. │ │Capo Impresa│  research → design
+       └─────┬─────┘ └─────┬──────┘ └─────┬─────┘ └─────┬──────┘  ↑ Consigliere gate
+             │             │              │             │          plan → implement
+             │             │              │             │          ↑ Consigliere gate
+             ▼             ▼              ▼             ▼
+       ┌───────────┐ ┌────────────┐ ┌───────────┐ ┌────────────┐
+       │Revis. Cod.│ │Revis. Dis. │ │Revis. Mer.│ │Revis. Impr.│  checks, approves
+       └─────┬─────┘ └─────┬──────┘ └─────┬─────┘ └─────┬──────┘  the Implement phase
+             └─────────────┴────┬─────────┴─────────────┘
                                 │ RAPPORTO (only when `approvato`)
                                 ▼
                        ┌──────────────────┐
@@ -178,6 +178,8 @@ agents/                        Subagent definitions (executors)
 │   ├── revisore-disegno.md    Design acceptance
 │   ├── capo-mercato.md        Marketing, positioning, content
 │   ├── revisore-mercato.md    Marketing acceptance
+│   ├── capo-impresa.md        Idea grilling, viability & business case
+│   ├── revisore-impresa.md    Assessment acceptance
 │   └── occhio.md              Recon, read-only research
 └── skills/                    Doctrine (the HOW)
     ├── consigliere/           Main skill — orchestration
@@ -193,6 +195,7 @@ agents/                        Subagent definitions (executors)
     │       └── tooling.md     Test/lint/analysis baseline per ecosystem
     ├── famiglia-disegno/      Visual doctrine (concept before code)
     ├── famiglia-mercato/      Marketing doctrine
+    ├── famiglia-impresa/      Idea assessment doctrine (burden of proof)
     └── nuova-famiglia/        Guide: founding a new Famiglia
 ```
 
@@ -275,7 +278,7 @@ via Bash (see `skills/protocollo/SKILL.md`) — if you see an agent silently
 switching tools to force the write through, that's a doctrine violation to
 report.
 
-## Two non-negotiable doctrines
+## Three non-negotiable doctrines
 
 1. **Software is built test-driven.** Red test first, evidence in the
    Rapporto. No test = no `approvato`. The project's test, lint, and
@@ -286,6 +289,9 @@ report.
    approved by the **Don**, not the Consigliere — the Consigliere renders it
    in-browser (`Artifact` tool) as the decision basis and waits for an
    explicit yes before implementation starts. See `famiglia-disegno`.
+3. **Ideas carry the burden of proof.** An assessment that can't evidence a
+   dimension returns `too-early` or `drop`, never a hopeful `pursue` — and a
+   `drop` is completed work, not a failed Contratto. See `famiglia-impresa`.
 
 ## Model policy (short version)
 

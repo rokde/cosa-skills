@@ -69,6 +69,36 @@ implement — no collapsing.
 **Handles:** positioning, messaging, go-to-market plans, landing page copy,
 campaigns, content plans, competitive analysis.
 
+## Famiglia Impresa — Idea & Business Assessment
+
+| Role | Agent | Model |
+|------|-------|-------|
+| Capo | `capo-impresa` | opus |
+| Revisore | `revisore-impresa` | opus |
+
+**Doctrine:** `famiglia-impresa` — the burden of proof lies on the idea.
+**Phase chain:** all four phases stand alone — research, design, plan,
+implement — no collapsing.
+**Deliverable:** `docs/assessment/<slug>.md` in the worktree, committed,
+ending in `pursue` | `pursue-if` | `too-early` | `drop`. `report.md` goes to
+the work package as usual and points at it.
+**Handles:** grilling a product idea, feature bet, or venture across six
+dimensions — problem, solution/feasibility, market fit, launch survival,
+sustained operation, business case. Build-or-not decisions, "is this a good
+business" questions, post-mortem viability checks on something already
+running.
+**Does not handle:** building it (→ Codice), designing it (→ Disegno),
+selling it (→ Mercato). No legal or tax advice — regulatory exposure is
+named as a risk, not answered.
+**Boundary against Mercato:** Mercato positions a product whose existence is
+already decided; Impresa decides whether it should exist. Where both are
+wanted, Impresa runs first and Mercato consumes its assessment as
+`Prior work`. Never one mixed Contratto.
+**A `drop` is a successful work package** — `Outcome: completed` with a
+negative recommendation. Don't reissue a rework Contratto hoping for a
+friendlier answer; the way to overturn a `drop` is new evidence, and that's
+a new Contratto that says so.
+
 ## L'Occhio — Recon
 
 | Role | Agent | Model |
@@ -88,6 +118,7 @@ existing work.
 | Function, endpoint, bug, test, deployment | codice |
 | Screen, layout, color, component, user flow | disegno, then codice |
 | Audience, message, launch, pricing, outward-facing copy | mercato |
+| "Should we build this at all?", idea, viability, business case | impresa |
 | "What does this actually look like right now?" | occhio |
 
 If more than one applies, write more than one Contratto — never a mixed one.
