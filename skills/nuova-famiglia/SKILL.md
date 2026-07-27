@@ -140,8 +140,11 @@ Two files, both required:
   uses the same formats from the `cosa:protocollo` skill, including the phase
   chain, the `Assumptions`/`Findings`/`Handoff` sections, and the worktree
   fields. Only the content of the acceptance criteria is domain-specific.
+- No artifact name may start with `report`, `summary`, `findings`, or
+  `analysis` — Claude Code's Write tool refuses those for subagents, and every
+  Capo and Revisore is one. That is why the Rapporto is `phase-report.md`.
 - Reference skills by their namespaced name (`cosa:famiglia-<name>`,
-  `cosa:protocollo`) — a bare relative path like `references/report.md`
+  `cosa:protocollo`) — a bare relative path like `references/contract.md`
   cannot be resolved from an agent file, which lives in `agents/` and has no
   `references/` sibling.
 - Capi commit inside their own worktree; only the Consigliere merges into

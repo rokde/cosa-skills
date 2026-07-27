@@ -23,7 +23,7 @@ Mercato runs the full chain, undivided:
 | Research | `research.md` | Audience facts, competitor claims, available data/sources for every planned claim. No copy yet. |
 | Design | `design.md` | The brief: audience, core promise, positioning, one call-to-action, tone. Consigliere gates this. |
 | Plan | `plan.md` | Structure/outline of the artifact (sections of a landing page, channels of a GTM plan) mapped to the brief. Consigliere gates this. |
-| Implement | `report.md` | The finished copy/artifact — the Rapporto, with a source per claim. |
+| Implement | `phase-report.md` | The finished copy/artifact — the Rapporto, with a source per claim. |
 
 ## The brief (built in Research/Design)
 
@@ -83,7 +83,7 @@ Two directories, both handed to you by absolute path in the Phase Brief:
   commits happen here.
 - **Work package** (`.commission/<slug>/<n>-mercato/`) — sits in the **main
   checkout**, not under the worktree. `contract.md` and every phase artifact
-  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  (`research.md`, `design.md`, `plan.md`, `phase-report.md`) are read and written
   here, by absolute path.
 
 ## Resume, don't restart

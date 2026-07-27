@@ -131,7 +131,7 @@ and never merged.
 | Research | `research.md` — codebase/context findings, viable approaches with trade-offs | — |
 | Design | `design.md` — chosen approach, refined ACs, assumptions, risks | **Consigliere gate** (structural) |
 | Plan | `plan.md` — ordered checklist of concrete steps, one per AC-relevant change | **Consigliere gate** (structural) |
-| Implement | `report.md` — the Rapporto (format: this skill's `SKILL.md`) | **Revisore** (full verification) |
+| Implement | `phase-report.md` — the Rapporto (format: this skill's `SKILL.md`) | **Revisore** (full verification) |
 
 Research and Design may be produced by the same agent call in one sitting
 when the work package is small or the Famiglia's doctrine says so (Disegno's
@@ -149,7 +149,7 @@ package. Its two phases produce:
 | Disegno phase | Produces | Where |
 |---------------|----------|-------|
 | Concept (= research + design) | `docs/design/<slug>.md`, plus `docs/design/<slug>/<variant>.html` mockups where layout/color/spacing matter | **worktree**, committed |
-| Build (= plan + implement) | the implementation, plus `report.md` — the Rapporto | implementation in the worktree; `report.md` in the work package |
+| Build (= plan + implement) | the implementation, plus `phase-report.md` — the Rapporto | implementation in the worktree; `phase-report.md` in the work package |
 
 Build writes no separate `plan.md` unless the build is large enough that a
 checklist genuinely helps; if it writes one, it goes in the work package like

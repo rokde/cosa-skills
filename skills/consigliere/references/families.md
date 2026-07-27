@@ -49,7 +49,7 @@ before Build is dispatched.
 **Artifact paths:** Concept output is a deliverable, so it lives in the
 worktree at `docs/design/<slug>.md` (+ `docs/design/<slug>/<variant>.html`)
 and is committed — not as `research.md`/`design.md` in the work package.
-Build's Rapporto goes to the work package as `report.md`, like every other
+Build's Rapporto goes to the work package as `phase-report.md`, like every other
 Famiglia's.
 **Handles:** mockups, wireframes, design concepts, UI specifications, layout,
 interaction design, design tokens, accessibility, plus implementing an
@@ -80,7 +80,7 @@ campaigns, content plans, competitive analysis.
 **Phase chain:** all four phases stand alone — research, design, plan,
 implement — no collapsing.
 **Deliverable:** `docs/assessment/<slug>.md` in the worktree, committed,
-ending in `pursue` | `pursue-if` | `too-early` | `drop`. `report.md` goes to
+ending in `pursue` | `pursue-if` | `too-early` | `drop`. `phase-report.md` goes to
 the work package as usual and points at it.
 **Handles:** grilling a product idea, feature bet, or venture across six
 dimensions — problem, solution/feasibility, market fit, launch survival,

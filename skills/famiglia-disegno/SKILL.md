@@ -49,7 +49,7 @@ names the `<slug>` so there's nothing to guess.
 That's the exception, not a second convention: everything else follows the
 normal split — deliverables in the worktree, orchestration artifacts in the
 work package (absolute path, main checkout). Build's Rapporto is an
-orchestration artifact and goes to `<work package>/report.md` like every
+orchestration artifact and goes to `<work package>/phase-report.md` like every
 other Famiglia's.
 
 ### 1. Understand before drawing
@@ -175,7 +175,7 @@ Two directories, both handed to you by absolute path in the Phase Brief:
   HTML mockups, and the built UI all live and get committed here.
 - **Work package** (`.commission/<slug>/<n>-disegno/`) — in the **main
   checkout**, not under the worktree. `contract.md` is read here, and Build's
-  `report.md` is written here.
+  `phase-report.md` is written here.
 
 ## Red flags
 

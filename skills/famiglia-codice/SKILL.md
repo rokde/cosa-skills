@@ -18,7 +18,7 @@ worktree, reading the prior phase's artifact:
 | Research | `research.md` | Existing conventions, test framework, affected modules, viable approaches with trade-offs. No code changes. If the Contratto's `Libraries` field is `allowed`, includes the `ricercatore-codice` library comparison (see below). |
 | Design | `design.md` | Chosen approach, ACs refined into concrete test descriptions, assumptions made, risks. Consigliere gates this. |
 | Plan | `plan.md` | Ordered checklist, one red/green/refactor cycle per AC, as `- [ ]` items. Consigliere gates this. |
-| Implement | `report.md` | The Rapporto — execute the plan, check items off, call the Revisore. |
+| Implement | `phase-report.md` | The Rapporto — execute the plan, check items off, call the Revisore. |
 
 Never skip straight to Implement because the change "looks obvious" — the
 Design and Plan gates are what let the Consigliere catch a wrong approach
@@ -179,7 +179,7 @@ Two directories, both handed to you by absolute path in the Phase Brief:
   happen here.
 - **Work package** (`.commission/<slug>/<n>-codice/`) — sits in the **main
   checkout**, not under the worktree. `contract.md` and every phase artifact
-  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  (`research.md`, `design.md`, `plan.md`, `phase-report.md`) are read and written
   here, by absolute path. Don't look for them inside the worktree; they
   aren't there and creating them there strands them.
 

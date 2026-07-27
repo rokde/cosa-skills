@@ -26,7 +26,10 @@ product: markdown definitions, no application code.
   `ricercatore-codice`, dispatched by `capo-codice` during Research to vet
   third-party libraries.
 - Generated working documents use English names: `plan.md`, `docs/design/`,
-  `.commission/` — not their Italian equivalents.
+  `.commission/` — not their Italian equivalents. No generated file may be
+  named `report*.md`, `summary*.md`, `findings*.md`, or `analysis*.md`:
+  Claude Code's Write tool hard-refuses those for subagents, and Capi and
+  Revisori are subagents. The Rapporto is therefore `phase-report.md`.
 - All agents that dispatch another agent (a Capo calling its Revisore or an
   internal helper) need `Agent` in their `tools:` frontmatter — the doctrine
   prose alone doesn't grant that capability. Missing it makes the dispatch

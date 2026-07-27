@@ -209,7 +209,7 @@ into `.commission/` before creating it simply isn't there, and a phase agent
 that `cd`s into the worktree would find no Contratto. So:
 
 - Working documents (`plan.md`, `contract.md`, `research.md`, `design.md`,
-  the phase `plan.md`, `report.md`, `verdict-r<n>.md`) live under
+  the phase `plan.md`, `phase-report.md`, `verdict-r<n>.md`) live under
   `<repo-root>/.commission/…` in the **main checkout**, and every Phase Brief
   names that directory by **absolute** path.
 - Deliverables — source, tests, `docs/design/<slug>.md`, mockups — live in
@@ -253,7 +253,7 @@ The four phases:
      Design against a corrected Contratto. Not your call to absorb.
 3. **Plan** → `plan.md`. **You** gate this the same way, same three
    outcomes, then → Implement.
-4. **Implement** → `report.md` (the Rapporto). The Capo calls its own
+4. **Implement** → `phase-report.md` (the Rapporto). The Capo calls its own
    Revisore before this reaches you — see step 6.
 
 Some Famiglie collapse phases (Disegno's Concept = Research+Design in one
@@ -265,7 +265,7 @@ itself a deliverable: it goes to `docs/design/<slug>.md` **in the worktree**
 (with `docs/design/<slug>/<variant>.html` mockups alongside), not to a
 `design.md` in the work package. Read the concept gate there; there is no
 `design.md` coming. Name the `<slug>` in the Contratto so neither side has to
-guess. Build's Rapporto lands in the work package as `report.md` like
+guess. Build's Rapporto lands in the work package as `phase-report.md` like
 everyone else's.
 
 **Disegno's Concept gate is not a structural read-through — it's the Don's
@@ -286,7 +286,7 @@ got interrupted.
 ### 6. Acceptance
 
 For every acceptance criterion in the Contratto, once you have an
-`approvato` Rapporto (`<work package>/report.md`, with the matching
+`approvato` Rapporto (`<work package>/phase-report.md`, with the matching
 `verdict-r<n>.md` beside it — if no `verdict-r*.md` file exists, there was no
 Revisore and Iron Rule 2 applies):
 

@@ -19,7 +19,7 @@ both at once, never a resumed conversation from the other phase.
    `docs/design/<slug>.md` for anything already there — resume it, don't
    restart or duplicate. The **work package** directory is a separate
    absolute path in the main checkout: `contract.md` is read there, and
-   Build's `report.md` is written there. The concept document and its mockups
+   Build's `phase-report.md` is written there. The concept document and its mockups
    are deliverables and stay in the worktree — you never write
    `research.md`/`design.md` for a Disegno work package.
 3. Run the phase you were briefed for:

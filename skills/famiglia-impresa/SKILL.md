@@ -33,7 +33,7 @@ recommendations:
 | `too-early` | A decisive question is unanswered and answerable. Names the single cheapest experiment that would answer it — not "do more research". |
 | `drop` | At least one dimension fails, or the business case doesn't close. States which one and why. |
 
-`report.md` (the Rapporto) goes to the work package as usual and points at
+`phase-report.md` (the Rapporto) goes to the work package as usual and points at
 the assessment. The assessment is what the Don reads.
 
 ## The six dimensions
@@ -127,7 +127,7 @@ Impresa runs the full chain, undivided:
 | Research | `research.md` | Thesis and kill criteria **first**, then the evidence dossier per dimension — sourced, dated, gaps marked. No verdict yet. |
 | Design | `design.md` | The judgment frame: which evidence decides which dimension, tightened kill criteria, the comparison baseline (status quo / competitor / do-nothing). Consigliere gates this. |
 | Plan | `plan.md` | Ordered `- [ ]` checklist: one grilling pass per dimension, then the business-case arithmetic, then the aggregation. Consigliere gates this. |
-| Implement | `docs/assessment/<slug>.md` + `report.md` | The grilling itself, the six verdicts, the recommendation, and the Rapporto. |
+| Implement | `docs/assessment/<slug>.md` + `phase-report.md` | The grilling itself, the six verdicts, the recommendation, and the Rapporto. |
 
 Never jump to a recommendation in Research because the answer "is obvious
 after ten minutes". An obvious answer is cheap to evidence, so evidence it.
@@ -175,7 +175,7 @@ Two directories, both handed to you by absolute path in the Phase Brief:
   all commits happen here.
 - **Work package** (`.commission/<slug>/<n>-impresa/`) — sits in the **main
   checkout**, not under the worktree. `contract.md` and every phase artifact
-  (`research.md`, `design.md`, `plan.md`, `report.md`) are read and written
+  (`research.md`, `design.md`, `plan.md`, `phase-report.md`) are read and written
   here, by absolute path.
 
 ## Resume, don't restart

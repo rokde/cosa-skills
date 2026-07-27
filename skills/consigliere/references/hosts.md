@@ -1,6 +1,6 @@
 # Hosts — where Cosa runs, and what changes
 
-Cosa's protocol is host-neutral. Contratto, Phase Brief, `report.md`,
+Cosa's protocol is host-neutral. Contratto, Phase Brief, `phase-report.md`,
 `verdict-r<n>.md` are files with absolute paths, and no phase agent ever
 inherits a conversation. That part works anywhere.
 
