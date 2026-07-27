@@ -9,7 +9,8 @@
  * hosts.md` is the prose version of the same idea.
  */
 
-import { FAMIGLIE } from "./roster.ts"
+import type { Famiglia } from "./roster.ts"
+import { MCP_NAME, type Search } from "./search.ts"
 
 const SKILL_NOTE = [
   "- **Loading a doctrine.** Use the `skill` tool with the bare skill name.",
@@ -34,7 +35,14 @@ function dispatchNote(subagents: string[]) {
   ].join("\n")
 }
 
-export function agentAddendum(input: { subagents: string[]; webSearch: boolean }): string {
+export function agentAddendum(input: {
+  subagents: string[]
+  /** Whether this agent's own definition grants search *and* the host has it. */
+  webSearch: boolean
+  /** Whether the agent's definition asked for search at all. */
+  wantsWebSearch: boolean
+  search: Search
+}): string {
   const lines = [
     "",
     "---",
@@ -47,28 +55,64 @@ export function agentAddendum(input: { subagents: string[]; webSearch: boolean }
     SKILL_NOTE,
   ]
 
-  if (!input.webSearch) {
-    lines.push(
-      [
-        "- **No web search.** opencode exposes `websearch` only on the",
-        "  `opencode` provider or with an Exa/Parallel key configured. Where the",
-        "  doctrine asks you to search, you have `webfetch` (fetch a known URL)",
-        "  and nothing else. Do not present recalled knowledge as researched",
-        "  evidence — say what you could not verify, in the Rapporto.",
-      ].join("\n"),
-    )
-  }
+  if (input.wantsWebSearch) lines.push(searchNote(input.webSearch, input.search))
 
   lines.push("")
   return lines.join("\n")
 }
 
-export function consigliereAddendum(): string {
-  const registered = FAMIGLIE.map(
+/**
+ * Named explicitly because the tool is not called what the doctrine calls it.
+ * An agent told only "you can search" will look for `WebSearch`, fail to find
+ * it, and quietly proceed on recall — which is the single failure this whole
+ * search path exists to prevent.
+ */
+function searchNote(available: boolean, search: Search): string {
+  if (!available) {
+    return [
+      "- **No web search.** This host has none configured, and the doctrine's",
+      "  research steps cannot be carried out by recall. You have `webfetch`",
+      "  (fetch a URL you already know) and nothing else. Do not present",
+      "  recalled knowledge as researched evidence — name what you could not",
+      "  verify, in the Rapporto, and let it count against the verdict.",
+    ].join("\n")
+  }
+
+  if (search.mode === "builtin") {
+    return [
+      "- **Web search.** Where Cosa says *the WebSearch tool*, use opencode's",
+      "  `websearch` tool. `webfetch` retrieves a specific URL.",
+    ].join("\n")
+  }
+
+  const lines = [
+    `- **Web search.** ${search.label}, served over MCP. Where Cosa says *the`,
+    `  WebSearch tool*, use the tools prefixed \`${MCP_NAME}_\` (e.g.`,
+    `  \`${MCP_NAME}_web_search_exa\`) — there is no tool literally named`,
+    "  `WebSearch` here. `webfetch` retrieves a specific URL.",
+  ]
+
+  if (search.keyless) {
+    lines.push(
+      "  The search runs on an unauthenticated quota and can fail or return",
+      "  thin results. A failed search is a finding: report it as an unverified",
+      "  claim rather than filling the gap from memory.",
+    )
+  }
+
+  return lines.join("\n")
+}
+
+export function consigliereAddendum(input: {
+  famiglie: Famiglia[]
+  omitted: Famiglia[]
+  search: Search
+}): string {
+  const registered = input.famiglie.map(
     (f) => `  - **${title(f.id)}** — Capo \`${f.capo}\`, Revisore \`${f.revisore}\``,
   )
 
-  return [
+  const lines = [
     "",
     "---",
     "",
@@ -80,16 +124,39 @@ export function consigliereAddendum(): string {
     SKILL_NOTE,
     "- **Registered Famiglie in this host:**",
     ...registered,
-    "- **Mercato and Impresa are not registered here.** Do not write a",
-    "  Contratto for them and do not attempt to dispatch `capo-mercato` or",
-    "  `capo-impresa` — the agents do not exist. Both rest on evidence this",
-    "  host cannot reliably gather. A task that genuinely needs one of them is",
-    "  a task you report as out of scope for this host, not one you absorb",
-    "  into Codice or handle yourself. Iron Rule 1 does not bend for a missing",
-    "  Famiglia.",
+  ]
+
+  if (input.omitted.length > 0) {
+    const names = input.omitted.map((f) => title(f.id)).join(" and ")
+    const agents = input.omitted.map((f) => `\`${f.capo}\``).join(", ")
+    lines.push(
+      `- **${names} ${input.omitted.length > 1 ? "are" : "is"} not registered here.** Do not`,
+      `  write a Contratto for ${input.omitted.length > 1 ? "them" : "it"} and do not attempt to dispatch ${agents} —`,
+      "  the agents do not exist. Their doctrine rests on evidence this host",
+      "  cannot gather, because no web search is configured. A task that",
+      "  genuinely needs one of them is a task you report as out of scope for",
+      "  this host, not one you absorb into another Famiglia or handle",
+      "  yourself. Iron Rule 1 does not bend for a missing Famiglia.",
+    )
+  }
+
+  lines.push(
+    `- **Web search.** ${searchSummary(input.search)}`,
     "- **Recon.** `occhio` is registered and read-only, as everywhere.",
     "",
-  ].join("\n")
+  )
+
+  return lines.join("\n")
+}
+
+function searchSummary(search: Search): string {
+  if (search.mode === "none") {
+    return "Not available in this host. Weigh it when you set an evidence bar in a Contratto."
+  }
+  if (search.keyless) {
+    return `${search.label}. It can fail or thin out under load — treat a Rapporto that reports failed searches as honest, not as incomplete work.`
+  }
+  return `${search.label}, available to the agents whose definition grants it.`
 }
 
 function title(value: string) {

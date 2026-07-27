@@ -1,8 +1,9 @@
 # Cosa for opencode
 
-An [opencode](https://opencode.ai) plugin that registers Cosa's Consigliere,
-Famiglia Codice and Famiglia Disegno as native opencode agents and points
-opencode's skill loader at Cosa's doctrine skills.
+An [opencode](https://opencode.ai) plugin that registers Cosa's Consigliere
+and its four Famiglie as native opencode agents, points opencode's skill
+loader at Cosa's doctrine skills, and wires up the web search the research
+roles depend on.
 
 The agent markdown in `../agents/` and the skills in `../skills/` are the
 single source of truth and are never modified. The plugin translates the
@@ -34,7 +35,8 @@ Verify:
 
 ```bash
 opencode agent list      # consigliere (primary) + capi, revisori, occhio
-opencode debug skill     # consigliere, protocollo, famiglia-codice, famiglia-disegno
+opencode debug skill     # consigliere, protocollo, and one per Famiglia
+opencode debug config    # mcp.websearch, skills.paths
 ```
 
 ## What you get
@@ -47,6 +49,10 @@ opencode debug skill     # consigliere, protocollo, famiglia-codice, famiglia-di
 | `ricercatore-codice` | subagent | Vets third-party libraries for Capo Codice. |
 | `capo-disegno` | subagent | Runs a Disegno phase (Concept or Build). |
 | `revisore-disegno` | subagent | Independent Verdetto on Disegno work. |
+| `capo-mercato` | subagent | Marketing, positioning, go-to-market. Needs search. |
+| `revisore-mercato` | subagent | Re-checks claims, audience fit, legal risk. |
+| `capo-impresa` | subagent | Grills an idea on viability and business case. Needs search. |
+| `revisore-impresa` | subagent | Re-verifies sources and recomputes the case. |
 | `occhio` | subagent | Read-only reconnaissance for the Consigliere. |
 
 The Consigliere becomes `default_agent` unless you already set one, and a
@@ -57,19 +63,34 @@ opencode has no equivalent of "the conversation you are already in", so it is
 a primary agent whose prompt does one thing: load the `consigliere` skill.
 The doctrine is not duplicated into the prompt.
 
-## Why Mercato and Impresa are missing
+## Web search
 
-Both Famiglie rest on a burden of proof that assumes web search. opencode
-ships a `websearch` tool, but only exposes it when the session runs on the
-`opencode` provider or an Exa/Parallel key is configured. Registering them
-regardless would hand the Consigliere two Famiglie whose evidence bar
-silently degrades to "sources the model already knows" — the exact failure
-Cosa exists to prevent. They return once the capability can be detected
-rather than hoped for.
+opencode ships a `websearch` tool but only offers it on the `opencode`
+provider or with an Exa/Parallel key. Everywhere else the six agents that
+declare `WebSearch` — Occhio, Ricercatore Codice, and both Capi and Revisori
+of Mercato and Impresa — would run search-blind without saying so.
 
-The plugin reads `EXA_API_KEY` / `PARALLEL_API_KEY` to decide whether the
-remaining agents are told search is available. Override with the `webSearch`
-option if you know better.
+So the plugin registers a remote search MCP in the config and gates it per
+agent, which is what other opencode plugins do about the same gap. Search
+tools arrive named `websearch_<tool>` (e.g. `websearch_web_search_exa`), and
+each agent carries a `websearch_*` permission that mirrors whether its Cosa
+definition granted `WebSearch`. An agent that was not given search cannot
+reach the server just because another agent in the session can.
+
+The default (`search: "auto"`) is Exa: authenticated when `EXA_API_KEY` is
+set, on the unauthenticated quota otherwise. `TAVILY_API_KEY` selects Tavily.
+Agents on the unauthenticated quota are told so, and told that a failed
+search is a finding to report, not a gap to fill from memory.
+
+**Mercato and Impresa are registered only when search resolves to something.**
+With `search: "none"` both Famiglie, their doctrines and their agents are left
+out entirely, and the Consigliere's prompt says so and forbids absorbing their
+work into another Famiglia. Their burden of proof is the point of them;
+running them on recall produces confident, unsourced verdicts, which is worse
+than not running them at all.
+
+If `mcp.websearch` already exists in your config — you configured it, or
+another plugin registered it — the plugin leaves it alone and uses it.
 
 ## Options
 
@@ -77,7 +98,7 @@ Options are passed as the second element of the plugin entry:
 
 ```jsonc
 {
-  "plugin": [["cosa-opencode", { "preset": "anthropic" }]]
+  "plugin": [["cosa-opencode", { "preset": "anthropic", "search": "exa" }]]
 }
 ```
 
@@ -85,7 +106,7 @@ Options are passed as the second element of the plugin entry:
 |--------|---------|--------|
 | `preset` | `inherit` | Model preset: `inherit`, `anthropic`, `github-copilot`, `zen`. `inherit` sets no model, so every agent runs on the session's. |
 | `models` | — | Per-alias overrides on top of the preset, e.g. `{ "opus": "anthropic/claude-opus-5" }`. |
-| `webSearch` | detected | Force the web-search verdict instead of guessing from env vars. |
+| `search` | `auto` | `auto`, `exa`, `tavily`, `builtin` (opencode's own tool), or `none`. Also decides whether Mercato and Impresa exist. |
 | `setDefaultAgent` | `true` | Set `default_agent` to the Consigliere when none is configured. |
 | `registerCommand` | `true` | Register the `/consigliere` command. |
 
@@ -107,7 +128,10 @@ agent definitions in first and your keys override them per agent.
   `permission` block, keep `task: "allow"`.
 - **Tool names.** An unknown entry in opencode's tool map is not an error, it
   is a missing capability. The translation in `src/tools.ts` is explicit for
-  that reason, and unmapped names are logged as warnings at startup.
+  that reason, and unmapped names are logged as warnings at startup. Search is
+  the sharpest case: the tool is not called `WebSearch` here and no `tools:`
+  entry can name it ahead of time, so it is gated by permission and the real
+  name is stated in each agent's prompt.
 
 Check `opencode debug agent capo-codice` if a chain misbehaves.
 
@@ -125,4 +149,5 @@ next restart without a sync. `prepack` runs the sync and fails if any roster
 agent or skill is missing.
 
 `src/roster.ts` defines what this host registers. Adding a Famiglia is an
-entry there plus the agent files in `../agents/`.
+entry there plus the agent files in `../agents/`; set `requiresSearch` if its
+doctrine cannot be executed honestly without web search.

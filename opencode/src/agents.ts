@@ -11,7 +11,8 @@ import { readAgentFile } from "./assets.ts"
 import { parseFrontmatter, parseToolList } from "./frontmatter.ts"
 import { agentAddendum, consigliereAddendum } from "./host.ts"
 import { resolveModel, type ModelMap } from "./models.ts"
-import { CONSIGLIERE_AGENT, FAMIGLIE, rosterAgents, SHARED_AGENTS } from "./roster.ts"
+import { CONSIGLIERE_AGENT, type Famiglia, type Roster, rosterAgents, SHARED_AGENTS } from "./roster.ts"
+import type { Search } from "./search.ts"
 import { translateTools } from "./tools.ts"
 
 export type AgentConfig = Record<string, unknown>
@@ -21,15 +22,19 @@ export type BuildResult = {
   warnings: string[]
 }
 
-export function buildAgents(input: {
+export type BuildInput = {
   assets: Assets
   models: ModelMap
-  webSearch: boolean
-}): BuildResult {
+  roster: Roster
+  search: Search
+}
+
+export function buildAgents(input: BuildInput): BuildResult {
   const warnings: string[] = []
   const agents: Record<string, AgentConfig> = {}
+  const famiglie = input.roster.famiglie
 
-  for (const name of rosterAgents()) {
+  for (const name of rosterAgents(famiglie)) {
     const source = readAgentFile(input.assets, name)
     if (!source) {
       warnings.push(`agent file not found: agents/${name}.md — "${name}" not registered`)
@@ -38,13 +43,13 @@ export function buildAgents(input: {
 
     const { data, body } = parseFrontmatter(source)
     const requested = parseToolList(data.tools)
-    const { tools, permission, unmapped } = translateTools(requested)
+    const { tools, permission, unmapped, webSearch } = translateTools(requested, input.search)
 
     if (unmapped.length > 0) {
       warnings.push(`agent "${name}": no opencode equivalent for ${unmapped.join(", ")}`)
     }
 
-    const subagents = subagentsOf(name)
+    const subagents = subagentsOf(name, famiglie)
     if (subagents.length > 0 && !tools.task) {
       // Worth shouting about: the agent still loads without `task` and quietly
       // reviews its own work instead of dispatching its Revisore.
@@ -61,9 +66,15 @@ export function buildAgents(input: {
       model,
       tools,
       permission,
-      color: colorOf(name),
+      color: colorOf(name, famiglie),
       prompt:
-        body.trimEnd() + agentAddendum({ subagents, webSearch: input.webSearch && tools.websearch === true }),
+        body.trimEnd() +
+        agentAddendum({
+          subagents,
+          webSearch,
+          wantsWebSearch: tools.websearch === true,
+          search: input.search,
+        }),
     })
   }
 
@@ -79,7 +90,7 @@ export function buildAgents(input: {
  * the doctrine. Inlining the skill body here would break the relative
  * `references/` paths it points at, and would fork the doctrine.
  */
-function buildConsigliere(input: { models: ModelMap; webSearch: boolean }): AgentConfig {
+function buildConsigliere(input: BuildInput): AgentConfig {
   const prompt = [
     "You are the Consigliere of the Cosa. You plan, delegate, and accept.",
     "You never produce the work itself.",
@@ -97,7 +108,11 @@ function buildConsigliere(input: { models: ModelMap; webSearch: boolean }): Agen
     "   artifacts under `.commission/` only — never for a deliverable.",
     "2. **No Rapporto without a Verdetto.** A Capo's result that its Revisore",
     "   has not marked `approvato` does not exist for you.",
-    consigliereAddendum(),
+    consigliereAddendum({
+      famiglie: input.roster.famiglie,
+      omitted: input.roster.omitted,
+      search: input.search,
+    }),
   ].join("\n")
 
   return strip({
@@ -116,7 +131,7 @@ function buildConsigliere(input: { models: ModelMap; webSearch: boolean }): Agen
       task: true,
       skill: true,
       webfetch: true,
-      websearch: input.webSearch,
+      websearch: input.search.mode === "builtin",
       todowrite: true,
     },
     permission: {
@@ -125,21 +140,25 @@ function buildConsigliere(input: { models: ModelMap; webSearch: boolean }): Agen
       edit: "allow",
       bash: "ask",
       webfetch: "allow",
+      websearch: "allow",
       todowrite: "allow",
+      // Matches Claude Code, where the Consigliere runs in the main loop with
+      // the Don's own tools. Researching is still the Occhio's job.
+      ...(input.search.permissionKey ? { [input.search.permissionKey]: "allow" } : {}),
     },
     color: "#B8860B",
     prompt,
   })
 }
 
-function subagentsOf(name: string): string[] {
-  const famiglia = FAMIGLIE.find((f) => f.capo === name)
+function subagentsOf(name: string, famiglie: Famiglia[]): string[] {
+  const famiglia = famiglie.find((f) => f.capo === name)
   if (!famiglia) return []
   return [famiglia.revisore, ...famiglia.helpers]
 }
 
-function colorOf(name: string): string | undefined {
-  const famiglia = FAMIGLIE.find((f) => f.capo === name || f.revisore === name || f.helpers.includes(name))
+function colorOf(name: string, famiglie: Famiglia[]): string | undefined {
+  const famiglia = famiglie.find((f) => f.capo === name || f.revisore === name || f.helpers.includes(name))
   if (famiglia) return famiglia.color
   return SHARED_AGENTS.includes(name) ? "#6E7681" : undefined
 }

@@ -9,6 +9,8 @@
  * written to the map — `false` included — instead of being left to a default.
  */
 
+import type { Search } from "./search.ts"
+
 /** Cosa (Claude Code) tool name → opencode tool id. `null` = no equivalent. */
 export const TOOL_IDS: Record<string, string | null> = {
   Read: "read",
@@ -57,9 +59,11 @@ export type ToolTranslation = {
   tools: Record<string, boolean>
   permission: Record<string, unknown>
   unmapped: string[]
+  /** Whether this agent asked for web search and got it. */
+  webSearch: boolean
 }
 
-export function translateTools(names: string[]): ToolTranslation {
+export function translateTools(names: string[], search: Search): ToolTranslation {
   const granted = new Set<string>()
   const unmapped: string[] = []
 
@@ -79,7 +83,9 @@ export function translateTools(names: string[]): ToolTranslation {
   const tools: Record<string, boolean> = {}
   for (const id of MANAGED) tools[id] = granted.has(id)
 
-  return { tools, permission: buildPermission(granted), unmapped }
+  const webSearch = granted.has("websearch") && search.mode !== "none"
+
+  return { tools, permission: buildPermission(granted, search), unmapped, webSearch }
 }
 
 /**
@@ -87,10 +93,16 @@ export function translateTools(names: string[]): ToolTranslation {
  * opencode denies the task tool to every subagent *unless the subagent's own
  * ruleset names it* (see `deriveSubagentSessionPermission` in opencode). That
  * rule is the only reason Capo → Revisore works at all here.
+ *
+ * Search is the other case the tool map cannot express: when it comes from an
+ * MCP server the tools are named `<server>_<tool>`, which no `tools:` entry of
+ * ours predicts. The permission key does the gating instead, and it is written
+ * for every agent — an agent whose Cosa definition withholds `WebSearch` must
+ * not reach the server just because another agent in the session may.
  */
-function buildPermission(granted: Set<string>) {
+function buildPermission(granted: Set<string>, search: Search) {
   const action = (id: string) => (granted.has(id) ? "allow" : "deny")
-  return {
+  const permission: Record<string, unknown> = {
     task: action("task"),
     skill: action("skill"),
     edit: granted.has("edit") || granted.has("write") ? "allow" : "deny",
@@ -99,4 +111,8 @@ function buildPermission(granted: Set<string>) {
     websearch: action("websearch"),
     todowrite: action("todowrite"),
   }
+
+  if (search.permissionKey) permission[search.permissionKey] = action("websearch")
+
+  return permission
 }

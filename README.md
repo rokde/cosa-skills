@@ -267,9 +267,9 @@ automatically.
 ## Installing cosa-skills in opencode
 
 cosa-skills ships an [opencode](https://opencode.ai) plugin in `opencode/`.
-It registers the Consigliere, Famiglia Codice and Famiglia Disegno as native
-opencode agents and points opencode's skill loader at the doctrine skills —
-no copying, symlinking, or frontmatter conversion by hand.
+It registers the Consigliere and all four Famiglie as native opencode agents
+and points opencode's skill loader at the doctrine skills — no copying,
+symlinking, or frontmatter conversion by hand.
 
 `opencode.json`, project or global:
 
@@ -290,10 +290,13 @@ Restart opencode afterwards — it does not hot-reload config. Then
 `opencode agent list` shows the Consigliere as the primary agent, and
 `/consigliere <task>` hands it a job.
 
-Famiglia Mercato and Famiglia Impresa are deliberately not registered there:
-opencode only exposes its `websearch` tool on the `opencode` provider or with
-an Exa/Parallel key, and both Famiglie rest on a burden of proof that assumes
-search. Details, model presets and options: `opencode/README.md`.
+opencode only exposes its own `websearch` tool on the `opencode` provider or
+with an Exa/Parallel key, so the plugin registers a search MCP itself and
+gates it per agent — the agents that Cosa grants `WebSearch` get it, the rest
+do not. Mercato and Impresa depend on it: with `search: "none"` they are not
+registered at all, since their burden of proof cannot be met by recall.
+
+Details, model presets and options: `opencode/README.md`.
 
 ## Troubleshooting
 

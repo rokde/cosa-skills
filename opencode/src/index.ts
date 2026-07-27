@@ -12,7 +12,8 @@ import type { Plugin } from "@opencode-ai/plugin"
 import { buildAgents } from "./agents.ts"
 import { locateAssets } from "./assets.ts"
 import { resolveModelMap, type ModelMap } from "./models.ts"
-import { CONSIGLIERE_AGENT } from "./roster.ts"
+import { CONSIGLIERE_AGENT, resolveRoster } from "./roster.ts"
+import { resolveSearch, type SearchProvider } from "./search.ts"
 import { resolveSkillPaths } from "./skills.ts"
 
 export type CosaOptions = {
@@ -21,10 +22,11 @@ export type CosaOptions = {
   /** Per-alias model overrides, applied on top of the preset. */
   models?: ModelMap
   /**
-   * Force the web-search verdict instead of detecting it. Detection is a
-   * guess; if you know an Exa or Parallel key is configured, say so.
+   * Where web search comes from, and therefore whether Mercato and Impresa
+   * are registered at all: `auto` (default), `exa`, `tavily`, `builtin`
+   * (opencode's own tool, for the `opencode` provider), or `none`.
    */
-  webSearch?: boolean
+  search?: SearchProvider
   /** Set `default_agent` to the Consigliere when the user has not chosen one. */
   setDefaultAgent?: boolean
   /** Register the `/consigliere` command. */
@@ -56,15 +58,25 @@ export const CosaPlugin: Plugin = async ({ client }, options) => {
   const { models, warning } = resolveModelMap(opts)
   if (warning) await log("warn", warning)
 
-  const webSearch = opts.webSearch ?? detectWebSearch()
-  const skills = resolveSkillPaths(assets)
-  const built = buildAgents({ assets, models, webSearch })
+  const { search, warnings: searchWarnings } = resolveSearch(opts.search)
+  const roster = resolveRoster(search.mode !== "none")
+  const skills = resolveSkillPaths(assets, roster.famiglie)
+  const built = buildAgents({ assets, models, roster, search })
 
-  for (const message of [...skills.warnings, ...built.warnings]) await log("warn", message)
+  for (const message of [...searchWarnings, ...skills.warnings, ...built.warnings]) {
+    await log("warn", message)
+  }
+
+  if (roster.omitted.length > 0) {
+    await log(
+      "warn",
+      `no web search configured — ${roster.omitted.map((f) => f.id).join(" and ")} not registered, because their burden of proof cannot be met without it. Set an EXA_API_KEY or TAVILY_API_KEY, or pass search: "builtin" on the opencode provider.`,
+    )
+  }
 
   await log(
     "info",
-    `registered ${Object.keys(built.agents).length} agents and ${skills.paths.length} skills from ${assets.root} (websearch: ${webSearch})`,
+    `registered ${Object.keys(built.agents).length} agents and ${skills.paths.length} skills from ${assets.root} (search: ${search.label})`,
   )
 
   return {
@@ -82,6 +94,14 @@ export const CosaPlugin: Plugin = async ({ client }, options) => {
       const paths = new Set([...(configured.paths ?? []), ...skills.paths])
       config.skills = { ...configured, paths: [...paths] }
 
+      // Never overwrite an existing server of the same name: the user may have
+      // configured it, or another plugin registered it first. Either way their
+      // search is the one that already works, and the permission keys the
+      // agents carry are keyed on the name, not on who defined it.
+      const mcp = (config.mcp ?? {}) as Record<string, unknown>
+      for (const [name, definition] of Object.entries(search.mcp)) mcp[name] ??= definition
+      if (Object.keys(mcp).length > 0) config.mcp = mcp
+
       if (opts.setDefaultAgent !== false && !config.default_agent) {
         config.default_agent = CONSIGLIERE_AGENT
       }
@@ -97,17 +117,6 @@ export const CosaPlugin: Plugin = async ({ client }, options) => {
       }
     },
   }
-}
-
-/**
- * opencode only offers its `websearch` tool when the session runs on the
- * `opencode` provider or an Exa/Parallel key is present. There is no way to
- * ask at config time, so this reads the same signals opencode does and errs
- * towards "no search" — an agent that wrongly believes it can search produces
- * confident, unsourced claims, which is the expensive direction to be wrong in.
- */
-function detectWebSearch(): boolean {
-  return Boolean(process.env.EXA_API_KEY || process.env.PARALLEL_API_KEY)
 }
 
 export default CosaPlugin

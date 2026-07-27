@@ -70,8 +70,12 @@ Three consequences worth stating before anyone converts anything:
 - `websearch` exists but is gated: opencode exposes it only when the session
   runs on the `opencode` provider or an Exa/Parallel key is configured.
   Where it is missing, Mercato's proof-of-claims and Impresa's burden of
-  proof degrade to sources the agent already knows the URL of. Note it in
-  the Contratto rather than pretending the evidence bar is unchanged — the
+  proof degrade to sources the agent already knows the URL of. The usual fix
+  is a remote search MCP registered in `mcp:` (Exa, Tavily) and gated per
+  agent with a `<server>_*` permission key — note that its tools are then
+  named `<server>_<tool>`, so no `tools:` entry can name them in advance and
+  the agent has to be *told* the name. Without any of that, say so in the
+  Contratto rather than pretending the evidence bar is unchanged; the
   bundled plugin instead leaves both Famiglie unregistered.
 
 Do not set `OPENCODE_DISABLE_CLAUDE_CODE=1` — it turns off the `.claude/`
