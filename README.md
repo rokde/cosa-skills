@@ -197,6 +197,9 @@ agents/                        Subagent definitions (executors)
     ├── famiglia-mercato/      Marketing doctrine
     ├── famiglia-impresa/      Idea assessment doctrine (burden of proof)
     └── nuova-famiglia/        Guide: founding a new Famiglia
+opencode/                      opencode plugin — registers the same agents
+    ├── src/                   and skills natively in opencode
+    └── README.md
 ```
 
 Installed as a plugin, skills are namespaced (`/cosa:consigliere`) to avoid
@@ -263,102 +266,37 @@ automatically.
 
 ## Installing cosa-skills in opencode
 
-cosa-skills is built as a **Claude Code plugin** (skills + agents +
-`.claude-plugin/plugin.json`). [opencode](https://opencode.ai) has no
-equivalent "plugin" concept for this (its `plugin:` field is reserved for
-JS/TS modules with hooks), but it reads the same `SKILL.md` /
-Markdown-frontmatter format natively. You can register cosa-skills' skills
-and agents directly, without any install step.
+cosa-skills ships an [opencode](https://opencode.ai) plugin in `opencode/`.
+It registers the Consigliere and all four Famiglie as native opencode agents
+and points opencode's skill loader at the doctrine skills — no copying,
+symlinking, or frontmatter conversion by hand.
 
-### Option A: Git submodule (recommended for versioned projects)
-
-Pin the plugin to a specific revision by adding it as a submodule under
-`.opencode/vendor/`:
-
-```bash
-mkdir -p .opencode/vendor
-git submodule add https://github.com/rokde/cosa-skills.git .opencode/vendor/cosa-skills
-```
-
-Then point opencode's skill loader at the checked-out `skills/` directory via
-`opencode.json` (project root):
+`opencode.json`, project or global:
 
 ```jsonc
 {
   "$schema": "https://opencode.ai/config.json",
-  "skills": {
-    "paths": [".opencode/vendor/cosa-skills/skills"]
-  }
+  "plugin": ["cosa-opencode"]
 }
 ```
 
-This loads every `**/SKILL.md` under that path (`consigliere`, `protocollo`,
-`famiglia-codice`, `famiglia-disegno`, `famiglia-mercato`, `famiglia-impresa`,
-`nuova-famiglia`) as native opencode skills.
-
-To also expose the Capo/Revisore/Occhio subagents to opencode, copy (or
-symlink) the agent definitions into `.opencode/agent/`:
-
-```bash
-mkdir -p .opencode/agent
-cp .opencode/vendor/cosa-skills/agents/*.md .opencode/agent/
-```
-
-Update the submodule later with:
-
-```bash
-git submodule update --remote .opencode/vendor/cosa-skills
-```
-
-### Option B: Plain clone (no submodule, quick local setup)
-
-If you don't want to track the dependency in git history, clone it directly
-and add the checkout to `.gitignore`:
-
-```bash
-git clone https://github.com/rokde/cosa-skills.git .opencode/vendor/cosa-skills
-echo ".opencode/vendor/cosa-skills" >> .gitignore
-```
-
-Then reference it the same way as in Option A:
+Or from a local checkout, pointing at the `opencode/` directory:
 
 ```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "skills": {
-    "paths": [".opencode/vendor/cosa-skills/skills"]
-  }
-}
+{ "plugin": ["/path/to/cosa-skills/opencode"] }
 ```
 
-Or, if you don't need `opencode.json` at all, copy the skills straight into
-opencode's default skill directory:
+Restart opencode afterwards — it does not hot-reload config. Then
+`opencode agent list` shows the Consigliere as the primary agent, and
+`/consigliere <task>` hands it a job.
 
-```bash
-mkdir -p .opencode/skills
-cp -r /path/to/cosa-skills/skills/* .opencode/skills/
-```
+opencode only exposes its own `websearch` tool on the `opencode` provider or
+with an Exa/Parallel key, so the plugin registers a search MCP itself and
+gates it per agent — the agents that Cosa grants `WebSearch` get it, the rest
+do not. Mercato and Impresa depend on it: with `search: "none"` they are not
+registered at all, since their burden of proof cannot be met by recall.
 
-Copy the agents the same way as in Option A if you want the Capo/Revisore
-subagents available too.
-
-### Notes
-
-- **Restart required.** opencode does not hot-reload config. After adding
-  `opencode.json` or files under `.opencode/`, quit and restart opencode for
-  the skills/agents to load.
-- **Namespace differences.** In Claude Code, agents cross-reference doctrine
-  via the plugin namespace (e.g. `cosa:famiglia-codice`). opencode has no
-  plugin namespace — skills are addressed by their folder name only (e.g.
-  `famiglia-codice`). If any copied agent file references a `cosa:`-prefixed
-  skill path, update it to the bare skill name for opencode.
-- **Agent frontmatter.** opencode accepts these top-level agent frontmatter
-  fields: `name, model, variant, description, mode, hidden, color, steps,
-  options, permission, disable, temperature, top_p`. Any other field (e.g.
-  Claude Code's `tools` list) is routed into `options` rather than rejected,
-  but you may want to explicitly set `mode: subagent` on each cosa-skills
-  agent file for correct behavior in opencode.
-
+Details, model presets and options: `opencode/README.md`.
 
 ## Troubleshooting
 
