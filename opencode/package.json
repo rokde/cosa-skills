@@ -1,0 +1,34 @@
+{
+  "name": "cosa-opencode",
+  "version": "0.1.0",
+  "description": "Cosa for opencode — registers the Consigliere, Famiglia Codice and Famiglia Disegno as opencode agents and points the skill loader at Cosa's doctrine skills.",
+  "type": "module",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "cosa",
+    "agents",
+    "orchestration"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rokde/cosa-skills",
+    "directory": "opencode"
+  },
+  "files": [
+    "src",
+    "assets",
+    "README.md"
+  ],
+  "scripts": {
+    "sync-assets": "node scripts/sync-assets.ts",
+    "prepack": "npm run sync-assets"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.18.7",
+    "@types/node": "^24.13.3",
+    "typescript": "^5.9.3"
+  }
+}

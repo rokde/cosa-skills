@@ -23,18 +23,24 @@ Reference host. Nothing to adapt.
 
 ## opencode
 
+Cosa ships an opencode plugin in `opencode/` that does everything below
+automatically. Convert by hand only when you cannot install it; the rest of
+this section is what the plugin does, so it doubles as the manual recipe.
+
 Skills work unmodified. Agents do not.
 
 **Skills.** opencode scans `.opencode/skills/<name>/SKILL.md`,
 `~/.config/opencode/skills/`, `.claude/skills/`, `~/.claude/skills/`,
-`.agents/skills/`, `~/.agents/skills/`. Plugin directories are **not**
-scanned — Cosa installed as a plugin is invisible until each skill directory
-is linked into one of those paths. Of the frontmatter, only `name`,
-`description`, `license`, `compatibility`, and `metadata` are recognized;
-Cosa's skills carry `name` + `description`, so they pass as-is. Skills load
-on demand through a native `skill` tool, not automatically by description —
-so every agent that must load a doctrine needs that tool enabled, and the
-`cosa:` prefix drops (`cosa:protocollo` → `protocollo`).
+`.agents/skills/`, `~/.agents/skills/`. A plugin directory is not among them,
+but `skills.paths` in the config is scanned for `**/SKILL.md` including depth
+0 — so one entry per skill directory registers Cosa's doctrines from wherever
+they actually live, and skills left out of that list stay unregistered. Of the
+frontmatter, only `name`, `description`, `license`, `compatibility`, and
+`metadata` are recognized; Cosa's skills carry `name` + `description`, so they
+pass as-is. Skills load on demand through a native `skill` tool, not
+automatically by description — so every agent that must load a doctrine needs
+that tool enabled, and the `cosa:` prefix drops (`cosa:protocollo` →
+`protocollo`).
 
 **Agents.** opencode does not read `.claude/agents`. Roles must exist as its
 own agent files, where the filename is the agent id. Structural differences
@@ -48,17 +54,25 @@ against Cosa's frontmatter:
 | `tools:` as a list | boolean map (`read: true`, `edit: false`, …) |
 | `Agent` | `task` |
 | `Skill` | `skill` |
-| `WebSearch` | **no equivalent** — only fetch-by-URL exists |
+| `WebSearch` | `websearch` — **conditional**, see below |
 | `model: opus` | provider-qualified id, or omitted to inherit the session's |
 | — | optional `permission:` block (`edit: deny`, `bash: deny`) |
+| `Write`/`Edit` | opencode folds these into one file-editing tool per provider (`apply_patch` on Anthropic models). Set all of `write`, `edit`, `patch` and back it with `permission.edit`. |
 
-Two consequences worth stating before anyone converts anything:
+Three consequences worth stating before anyone converts anything:
 
 - A Capo without `task` cannot reach its Revisore. The agent still loads,
   still works, and silently self-reviews. Verify `task` on every Capo.
-- Without web search, Mercato's proof-of-claims and Impresa's burden of
+- **A subagent is denied `task` unless its own permission ruleset names it.**
+  Granting the tool is not enough: without an explicit `task` rule on the
+  Capo, depth 2 (Consigliere → Capo → Revisore) fails silently. This is the
+  opencode counterpart to Copilot's `allowInvocationsFromSubagents`.
+- `websearch` exists but is gated: opencode exposes it only when the session
+  runs on the `opencode` provider or an Exa/Parallel key is configured.
+  Where it is missing, Mercato's proof-of-claims and Impresa's burden of
   proof degrade to sources the agent already knows the URL of. Note it in
-  the Contratto rather than pretending the evidence bar is unchanged.
+  the Contratto rather than pretending the evidence bar is unchanged — the
+  bundled plugin instead leaves both Famiglie unregistered.
 
 Do not set `OPENCODE_DISABLE_CLAUDE_CODE=1` — it turns off the `.claude/`
 fallbacks the skills rely on.
