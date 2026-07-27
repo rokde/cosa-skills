@@ -361,11 +361,17 @@ the blueprint: Capo + Revisore + doctrine skill + registry entry.
 
 ## Releasing
 
-Run the `Release` workflow from the Actions tab with the target version
-(`1.0.0`, no leading `v`). It writes the version into
-`.claude-plugin/plugin.json`, commits that to `main`, tags **that** commit
-`v<version>` and publishes a GitHub release with generated notes — in that
-order, so the tagged tree always states the version it is named after.
+Two artifacts on independent version tracks: the Claude Code plugin
+(`.claude-plugin/plugin.json`, released by a GitHub workflow) and the
+`cosa-opencode` npm package (`opencode/package.json`, released by
+`npm publish`). Nothing keeps their numbers in step, and they are not meant
+to match.
 
-Installed plugins track the default branch, so the bump on `main` is what
-reaches users; the tag is the record of what changed when.
+```bash
+make release-plugin VERSION=1.4.0   # Claude Code
+make release-npm VERSION=0.2.0      # opencode / npm
+make check                          # type-check + asset sync
+make pack                           # tarball contents, publishes nothing
+```
+
+Which change belongs to which track, and what cannot be undone: `RELEASE.md`.
